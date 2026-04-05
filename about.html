@@ -33,6 +33,7 @@
   <link rel="preload" href="https://cdn.prod.website-files.com/62faa9dc6b970a350019a1cd/633ef7f128c4c727f72cee5a_savoya-logo-gold.svg" as="image">
 
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -154,12 +155,17 @@
   <!-- ========== HERO ========== -->
   <section class="relative pt-[72px] overflow-hidden">
     <div class="ambient-orb w-[300px] h-[300px] md:w-[600px] md:h-[600px] -top-40 -right-40"></div>
-    <div class="max-w-page mx-auto px-6 py-24 md:py-32 text-center relative">
+    <div class="max-w-page mx-auto px-6 pt-24 md:pt-32 pb-4 text-center relative z-10">
       <div class="reveal">
         <p class="text-[11px] text-white/50 uppercase tracking-[0.2em] font-medium mb-6">About Savoya</p>
         <h1 class="font-display text-[28px] sm:text-[36px] md:text-[68px] leading-[1.08] font-light tracking-[-0.02em] mb-6">Raising the Bar<br>for Travel</h1>
         <div class="w-10 h-px bg-gold mx-auto mt-5"></div>
       </div>
+    </div>
+    <!-- Dotted Surface Wave -->
+    <div class="relative w-full h-[200px] md:h-[300px] -mt-8">
+      <div class="absolute inset-0 bg-gradient-to-b from-transparent via-lux-surface/60 to-transparent"></div>
+      <div id="dotted-surface" class="absolute inset-0 pointer-events-none" style="mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);"></div>
     </div>
   </section>
 
@@ -346,6 +352,115 @@
 
   <!-- ========== SCRIPTS ========== -->
   <script>
+    // ===== DOTTED SURFACE WAVE (Three.js) =====
+    (function() {
+      const container = document.getElementById('dotted-surface');
+      if (!container || typeof THREE === 'undefined') return;
+
+      // Reduce particles on mobile for performance
+      const isMobile = window.innerWidth < 768;
+      const SEPARATION = isMobile ? 120 : 100;
+      const AMOUNTX = isMobile ? 25 : 40;
+      const AMOUNTY = isMobile ? 15 : 25;
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(
+        50,
+        container.offsetWidth / container.offsetHeight,
+        1,
+        10000
+      );
+      camera.position.set(0, 350, 900);
+      camera.lookAt(0, 0, 0);
+
+      const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setSize(container.offsetWidth, container.offsetHeight);
+      renderer.setClearColor(0x000000, 0);
+      container.appendChild(renderer.domElement);
+
+      // Create particle positions and colors
+      const positions = [];
+      const colors = [];
+      // Gold-tinted dots: rgb(197, 165, 90) normalized = (0.77, 0.65, 0.35)
+      for (let ix = 0; ix < AMOUNTX; ix++) {
+        for (let iy = 0; iy < AMOUNTY; iy++) {
+          const x = ix * SEPARATION - (AMOUNTX * SEPARATION) / 2;
+          const z = iy * SEPARATION - (AMOUNTY * SEPARATION) / 2;
+          positions.push(x, 0, z);
+          colors.push(0.95, 0.82, 0.45); // Bright gold
+        }
+      }
+
+      const geometry = new THREE.BufferGeometry();
+      geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+      geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+
+      const material = new THREE.PointsMaterial({
+        size: isMobile ? 7 : 10,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.85,
+        sizeAttenuation: true,
+      });
+
+      const points = new THREE.Points(geometry, material);
+      scene.add(points);
+
+      let count = 0;
+      let animationId;
+
+      function animate() {
+        animationId = requestAnimationFrame(animate);
+        const posArr = geometry.attributes.position.array;
+        let i = 0;
+        for (let ix = 0; ix < AMOUNTX; ix++) {
+          for (let iy = 0; iy < AMOUNTY; iy++) {
+            const idx = i * 3;
+            posArr[idx + 1] = Math.sin((ix + count) * 0.3) * 40 + Math.sin((iy + count) * 0.5) * 40;
+            i++;
+          }
+        }
+        geometry.attributes.position.needsUpdate = true;
+        renderer.render(scene, camera);
+        count += 0.06;
+      }
+
+      // Only animate when in viewport
+      const surfaceObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            animate();
+          } else {
+            cancelAnimationFrame(animationId);
+          }
+        });
+      }, { threshold: 0.1 });
+      surfaceObserver.observe(container);
+
+      // Resize handler
+      window.addEventListener('resize', () => {
+        camera.aspect = container.offsetWidth / container.offsetHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(container.offsetWidth, container.offsetHeight);
+      });
+
+      // Respect reduced motion
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        // Render one static frame
+        const posArr = geometry.attributes.position.array;
+        let i = 0;
+        for (let ix = 0; ix < AMOUNTX; ix++) {
+          for (let iy = 0; iy < AMOUNTY; iy++) {
+            posArr[i * 3 + 1] = Math.sin(ix * 0.3) * 40 + Math.sin(iy * 0.5) * 40;
+            i++;
+          }
+        }
+        geometry.attributes.position.needsUpdate = true;
+        renderer.render(scene, camera);
+      }
+    })();
+
     // Reveal on scroll
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
