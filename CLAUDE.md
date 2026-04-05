@@ -25,13 +25,22 @@ When the user asks to create a new page and provides a Savoya.com URL (e.g. `htt
 - Fix and re-screenshot — **minimum 2 comparison rounds**
 - Stop only when no visible differences remain
 
+### 3.5. Mobile Validation (MANDATORY)
+- Screenshot the page at **375px width** (iPhone SE) using Playwright `browser_resize({ width: 375, height: 812 })`
+- Check for: text overflow, image clipping, form fields fully visible, no horizontal scroll
+- Verify mobile hamburger menu works (opens/closes)
+- Verify all touch targets are at least 48x48px
+- Check text sizes follow mobile scale from `DESIGN-SYSTEM.md` section 8
+- Fix any issues and re-screenshot at 375px
+
 ### 4. Final Audit
 - Follow `VALIDATION-GUIDE.md` Phase 3: run automated checks via Playwright
 - Verify design system compliance (tokens, fonts, components)
 - Verify SEO (meta tags, structured data, sitemap entry)
 - Verify accessibility (labels, headings, contrast, skip nav)
 - Verify performance (lazy loading, image dimensions, font preconnect)
-- Compare side-by-side at 1440px desktop and 375px mobile
+- Compare side-by-side at **1440px desktop AND 375px mobile**
+- Verify no horizontal scroll on mobile
 
 ### 5. Deploy
 - Add the page URL to `sitemap.xml`

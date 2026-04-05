@@ -323,6 +323,41 @@ Add every new page to `sitemap.xml`:
 
 ---
 
+## Mobile-First Development Rules
+
+### Mandatory for every page
+1. **Never use fixed pixel text sizes without a mobile override.** Every `text-[Xpx]` above 22px must have a smaller mobile default.
+2. **Use `min-h-screen` instead of `h-screen`** for hero/full-height sections. `h-screen` clips content on short mobile screens.
+3. **Every page must have a mobile hamburger menu.** Desktop nav is `hidden md:flex`; mobile menu is toggled via JS.
+4. **Test at 375px width before committing.** Use Playwright `browser_resize({ width: 375, height: 812 })` or Chrome DevTools.
+5. **Touch targets minimum 48x48px.** All buttons and links must be at least 48px in the smallest dimension.
+6. **Avoid horizontal scroll.** No element should cause horizontal overflow on 375px screens.
+7. **Images must have responsive heights.** Never use fixed `h-[Xpx]` without a mobile variant (e.g., `h-[180px] md:h-[220px]`).
+8. **Grid gaps must be responsive.** Use `gap-6 md:gap-12` instead of just `gap-12`.
+9. **Decorative elements (ambient orbs, etc.) must be responsive.** Use `w-[300px] h-[300px] md:w-[600px] md:h-[600px]` or `hidden md:block`.
+
+### Mobile navigation pattern
+```html
+<!-- Hamburger button (mobile only) -->
+<button id="mobile-menu-btn" class="md:hidden flex items-center justify-center w-10 h-10 text-white/60"
+        aria-label="Open menu" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"/>
+  </svg>
+</button>
+
+<!-- Desktop nav (hidden on mobile) -->
+<nav class="hidden md:flex items-center gap-8">...</nav>
+
+<!-- Mobile menu panel (hidden by default, toggled by button) -->
+<div id="mobile-menu" class="hidden md:hidden bg-lux-bg/95 backdrop-blur-xl border-t border-white/6 px-6 py-4 space-y-3">
+  <a href="..." class="block py-2 text-white/60">Link</a>
+  ...
+</div>
+```
+
+---
+
 ## Hosting & Deployment
 
 ### GitHub Pages

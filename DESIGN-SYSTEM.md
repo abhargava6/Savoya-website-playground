@@ -520,7 +520,59 @@ Starter template for any new page:
 
 ---
 
-## 8. File Reference
+## 8. Mobile Responsive Rules
+
+### Mobile-First Typography Scale
+
+Never use a fixed text size without a mobile override. Use this responsive scale:
+
+| Element | Mobile (default) | SM (640px+) | MD (768px+) | LG (1024px+) | Tailwind |
+|---------|-----------------|-------------|-------------|---------------|----------|
+| Hero H1 | 28px | 36px | 68px | -- | `text-[28px] sm:text-[36px] md:text-[68px]` |
+| Section H2 | 28px | -- | 44px | -- | `text-[28px] md:text-[44px]` |
+| CTA H2 | 26px | -- | 40px | -- | `text-[26px] md:text-[40px]` |
+| Tab Title H3 | 22px | -- | 28px | -- | `text-[22px] md:text-[28px]` |
+| Quote Text | 18px | -- | 24px | 30px | `text-[18px] md:text-[24px] lg:text-[30px]` |
+| Quote Mark | 48px | -- | 80px | -- | `text-[48px] md:text-[80px]` |
+| Stat Number | 32px | -- | 52px | -- | `text-[32px] md:text-[52px]` |
+| Decorative Number | 32px | -- | 48px | -- | `text-[32px] md:text-[48px]` |
+| Body, Nav, Button | No change needed | -- | -- | -- | Same across breakpoints |
+
+### Mobile Spacing Rules
+
+| Pattern | Mobile | Desktop | Tailwind |
+|---------|--------|---------|----------|
+| Hero gap | 24px | 48px | `gap-6 md:gap-12` |
+| Stats grid gap | 24px | 48px | `gap-6 md:gap-12` |
+| Section padding | py-20 px-6 | py-20 px-6 | Same (already works) |
+| Hero top padding | 96px | 72px | `pt-24 md:pt-[72px]` |
+
+### Mobile Image Heights
+
+| Component | Mobile | Desktop | Tailwind |
+|-----------|--------|---------|----------|
+| Service card image | 180px | 220px | `h-[180px] md:h-[220px]` |
+| Chauffeur card image | 250px | 300px | `h-[250px] md:h-[300px]` |
+| City carousel card | 260px min-w | 300px min-w | `min-w-[260px] md:min-w-[300px]` |
+
+### Mobile Layout Rules
+
+- Use `min-h-screen` instead of `h-screen` for hero sections (allows content to overflow on short screens)
+- Ambient orbs: always add mobile size `w-[300px] h-[300px] md:w-[600px] md:h-[600px]`
+- Every page must have a mobile hamburger menu (visible below `md:` breakpoint)
+- `flex-col md:flex-row` for all split layouts
+- Booking form: `w-full md:w-[320px]` (full width on mobile)
+
+### Mobile Navigation
+
+Every page must include:
+1. A hamburger button visible on mobile (`md:hidden`)
+2. A slide-down mobile menu panel with all nav links
+3. The desktop nav hidden on mobile (`hidden md:flex`)
+
+---
+
+## 9. File Reference
 
 | File | Purpose |
 |------|---------|

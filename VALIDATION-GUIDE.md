@@ -266,6 +266,81 @@ If any score is below target, check the failing audits and fix before marking th
 
 ---
 
+## Mobile Validation Phase
+
+### Mobile Screenshot Testing
+
+Test at three viewports to cover the most common devices:
+
+```javascript
+// iPhone SE (smallest common mobile)
+browser_resize({ width: 375, height: 667 });
+browser_take_screenshot({ fullPage: true, filename: "mobile-375.png" });
+
+// iPhone 14 (standard mobile)
+browser_resize({ width: 390, height: 844 });
+browser_take_screenshot({ fullPage: true, filename: "mobile-390.png" });
+
+// iPhone 14 Pro Max (large mobile)
+browser_resize({ width: 428, height: 926 });
+browser_take_screenshot({ fullPage: true, filename: "mobile-428.png" });
+```
+
+### Mobile Checklist
+
+For each mobile screenshot, verify:
+
+| Check | What to Look For |
+|-------|-----------------|
+| **No horizontal scroll** | Page fits within viewport width, no elements overflow right |
+| **Hero text readable** | H1 is ~28px on mobile, not overlapping other elements |
+| **Booking form visible** | Full form visible, not clipped or hidden behind other content |
+| **Images not cropped** | Card images show faces/content properly at mobile heights |
+| **Navigation** | Hamburger menu visible, desktop nav hidden |
+| **Touch targets** | All buttons and links at least 48x48px |
+| **Form fields** | Full width, easy to tap, labels visible |
+| **Text sizes** | No text larger than 32px on mobile (except decorative stat numbers) |
+| **Grid layouts** | Properly stacked to single column on mobile |
+| **Spacing** | No excessive gaps pushing content off screen |
+
+### Mobile Automated Check
+
+```javascript
+browser_evaluate({ function: `() => {
+  const results = {};
+  
+  // Check for horizontal overflow
+  results.hasHorizontalScroll = document.body.scrollWidth > window.innerWidth;
+  
+  // Check hamburger menu exists
+  results.hasMobileMenu = !!document.getElementById('mobile-menu');
+  results.hasMobileMenuBtn = !!document.getElementById('mobile-menu-btn');
+  
+  // Check no text is too large
+  const allText = document.querySelectorAll('h1, h2, h3, p, span, a, button');
+  const oversizedText = [];
+  allText.forEach(el => {
+    const size = parseFloat(getComputedStyle(el).fontSize);
+    if (size > 36) oversizedText.push(el.tagName + ': ' + size + 'px');
+  });
+  results.oversizedText = oversizedText;
+  
+  // Check touch targets
+  const smallTargets = [];
+  document.querySelectorAll('a, button, input, textarea, select').forEach(el => {
+    const rect = el.getBoundingClientRect();
+    if (rect.width > 0 && rect.height > 0 && (rect.width < 44 || rect.height < 44)) {
+      smallTargets.push(el.tagName + ': ' + Math.round(rect.width) + 'x' + Math.round(rect.height));
+    }
+  });
+  results.smallTouchTargets = smallTargets;
+  
+  return results;
+}` });
+```
+
+---
+
 ## Validation Checklist Summary
 
 Use this as a final sign-off checklist:
@@ -273,11 +348,22 @@ Use this as a final sign-off checklist:
 ### Design System
 - [ ] Colors match palette (no raw hex outside tokens)
 - [ ] Fonts are Playfair Display + Inter only
-- [ ] Type scale matches DESIGN-SYSTEM.md
+- [ ] Type scale matches DESIGN-SYSTEM.md (including mobile overrides)
 - [ ] Spacing uses established patterns
 - [ ] Components reuse existing patterns
 - [ ] Animations use standard easing curve
 - [ ] Responsive at 375px, 768px, 1440px
+
+### Mobile Responsiveness
+- [ ] No horizontal scroll at 375px
+- [ ] Hero text readable (28-32px on mobile)
+- [ ] Images not cropped or clipped
+- [ ] Hamburger menu present and functional
+- [ ] All touch targets >= 48x48px
+- [ ] Form fields full-width and usable on mobile
+- [ ] Grid layouts stack to single column
+- [ ] No oversized text (nothing > 32px on mobile except stat numbers)
+- [ ] Ambient orbs/decorative elements responsive or hidden on mobile
 
 ### Reference Fidelity
 - [ ] Screenshot compared at 1440px desktop
