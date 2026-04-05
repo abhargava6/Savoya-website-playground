@@ -4,7 +4,34 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Savoya - The Global Chauffeur Service</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <meta name="description" content="Savoya connects travelers to vetted, professional chauffeurs across 300+ markets on 6 continents. Book luxury ground transportation today.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.savoya.com/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Savoya - The Global Chauffeur Service">
+  <meta property="og:description" content="Connecting travelers to the world's top chauffeurs across 300+ markets on 6 continents.">
+  <meta property="og:url" content="https://www.savoya.com/">
+  <meta property="og:image" content="https://cdn.prod.website-files.com/62faa9dc6b970a350019a1cd/633ef7f128c4c727f72cee5a_savoya-logo-gold.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="Savoya">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Savoya - The Global Chauffeur Service">
+  <meta name="twitter:description" content="Connecting travelers to the world's top chauffeurs across 300+ markets on 6 continents.">
+  <meta name="twitter:image" content="https://cdn.prod.website-files.com/62faa9dc6b970a350019a1cd/633ef7f128c4c727f72cee5a_savoya-logo-gold.svg">
+
+  <!-- Preconnect for fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Preload critical assets -->
+  <link rel="preload" href="https://cdn.prod.website-files.com/62faa9dc6b970a350019a1cd/633ef7f128c4c727f72cee5a_savoya-logo-gold.svg" as="image">
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -125,13 +152,66 @@
       * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
     }
   </style>
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Savoya",
+    "url": "https://www.savoya.com",
+    "logo": "https://cdn.prod.website-files.com/62faa9dc6b970a350019a1cd/633ef7f128c4c727f72cee5a_savoya-logo-gold.svg",
+    "description": "The global chauffeur service connecting travelers to vetted, professional chauffeurs across 300+ markets on 6 continents.",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "Customer Service",
+      "availableLanguage": "English",
+      "areaServed": ["US", "GB", "FR", "AE", "Worldwide"]
+    },
+    "sameAs": []
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What areas do you serve?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "We operate in over 300 markets across 6 continents, covering major cities and business destinations worldwide including New York, London, Paris, Dubai, Tokyo, and more."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How are your chauffeurs vetted?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Every chauffeur undergoes a rigorous multi-step vetting process including comprehensive background checks, driving record review, insurance verification, and signed confidentiality agreements."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I book for a group or event?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Absolutely. We offer event-specific dashboards for multi-vehicle coordination, group transportation management, and on-site logistics support with a dedicated concierge team."
+        }
+      }
+    ]
+  }
+  </script>
 </head>
 <body class="min-h-screen">
+
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:bg-gold focus:text-black focus:px-4 focus:py-2 focus:rounded-lg focus:font-semibold focus:text-sm">Skip to main content</a>
 
   <!-- ========== HEADER ========== -->
   <header id="site-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 border-b border-transparent">
     <div class="max-w-page mx-auto px-6 flex items-center justify-between h-[72px]">
-      <img src="https://cdn.prod.website-files.com/62faa9dc6b970a350019a1cd/633ef7f128c4c727f72cee5a_savoya-logo-gold.svg" alt="Savoya" class="h-[28px]">
+      <img src="https://cdn.prod.website-files.com/62faa9dc6b970a350019a1cd/633ef7f128c4c727f72cee5a_savoya-logo-gold.svg" alt="Savoya" class="h-[28px]" width="120" height="28">
       <nav class="hidden md:flex items-center gap-8 text-[15px] font-medium">
         <a href="#" class="text-white/60 hover:text-white transition-colors duration-200">Company</a>
         <a href="#" class="text-white/60 hover:text-white transition-colors duration-200">Benefits</a>
@@ -146,10 +226,11 @@
     </div>
   </header>
 
+  <main id="main-content">
   <!-- ========== HERO ========== -->
   <section class="relative h-screen flex items-center overflow-hidden">
     <div class="absolute inset-0">
-      <img src="https://cdn.prod.website-files.com/62faa9dc6b970a350019a1cd/633f3249166e26827ad65187_menu-company.webp" alt="" class="w-full h-full object-cover">
+      <img src="https://cdn.prod.website-files.com/62faa9dc6b970a350019a1cd/633f3249166e26827ad65187_menu-company.webp" alt="" class="w-full h-full object-cover" width="1200" height="800">
       <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40"></div>
       <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent"></div>
     </div>
@@ -172,37 +253,37 @@
         </div>
         <div class="p-4 space-y-3">
           <div class="bg-white/5 rounded-xl p-3 border border-white/6">
-            <label class="text-[10px] text-white/30 uppercase tracking-wider flex items-center gap-1 mb-1">
+            <label class="text-[10px] text-white/50 uppercase tracking-wider flex items-center gap-1 mb-1">
               <svg class="w-3 h-3 text-gold" fill="currentColor" viewBox="0 0 20 20"><circle cx="10" cy="10" r="4"/></svg> From
             </label>
-            <input type="text" value="Dallas/Fort Worth International Airport (DFW)" class="w-full bg-transparent text-[14px] text-white outline-none placeholder:text-white/20" placeholder="Enter pickup location">
+            <input type="text" value="Dallas/Fort Worth International Airport (DFW)" aria-label="Pickup location" class="w-full bg-transparent text-[14px] text-white outline-none placeholder:text-white/20" placeholder="Enter pickup location">
           </div>
           <div class="bg-white/5 rounded-xl p-3 border border-white/6">
-            <label class="text-[10px] text-white/30 uppercase tracking-wider flex items-center gap-1 mb-1">
+            <label class="text-[10px] text-white/50 uppercase tracking-wider flex items-center gap-1 mb-1">
               <svg class="w-3 h-3 text-white/40" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/></svg> To
             </label>
-            <input type="text" value="4034 Rawlins St" class="w-full bg-transparent text-[14px] text-white outline-none placeholder:text-white/20" placeholder="Enter drop-off location">
+            <input type="text" value="4034 Rawlins St" aria-label="Drop-off location" class="w-full bg-transparent text-[14px] text-white outline-none placeholder:text-white/20" placeholder="Enter drop-off location">
           </div>
           <div class="bg-white/5 rounded-xl p-3 border border-white/6">
-            <label class="text-[10px] text-white/30 uppercase tracking-wider flex items-center gap-1 mb-1">
+            <label class="text-[10px] text-white/50 uppercase tracking-wider flex items-center gap-1 mb-1">
               <svg class="w-3 h-3 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg> Date
             </label>
             <input type="date" value="2026-04-06" class="w-full bg-transparent text-[14px] text-white outline-none cursor-pointer">
           </div>
           <div class="bg-white/5 rounded-xl p-3 border border-white/6">
-            <label class="text-[10px] text-white/30 uppercase tracking-wider flex items-center gap-1 mb-1">
+            <label class="text-[10px] text-white/50 uppercase tracking-wider flex items-center gap-1 mb-1">
               <svg class="w-3 h-3 text-white/40" fill="currentColor" viewBox="0 0 20 20"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"/></svg> Flight number
             </label>
-            <input type="text" class="w-full bg-transparent text-[14px] text-white outline-none placeholder:text-white/20" placeholder="Add your flight number">
+            <input type="text" aria-label="Flight number" class="w-full bg-transparent text-[14px] text-white outline-none placeholder:text-white/20" placeholder="Add your flight number">
           </div>
-          <div class="text-[11px] text-white/20">e.g. LH 202, U24567, BA2490</div>
+          <div class="text-[11px] text-white/40">e.g. LH 202, U24567, BA2490</div>
           <div class="bg-white/5 rounded-xl p-3 border border-white/6">
-            <label class="text-[10px] text-white/30 uppercase tracking-wider flex items-center gap-1 mb-1">
+            <label class="text-[10px] text-white/50 uppercase tracking-wider flex items-center gap-1 mb-1">
               <svg class="w-3 h-3 text-white/40" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.828a1 1 0 101.415-1.414L11 9.586V6z" clip-rule="evenodd"/></svg> Pickup time
             </label>
             <input type="time" value="20:50" class="w-full bg-transparent text-[14px] text-white outline-none cursor-pointer">
           </div>
-          <div class="text-[11px] text-white/20">Chauffeur will wait 60 minutes free of charge.</div>
+          <div class="text-[11px] text-white/40">Chauffeur will wait 60 minutes free of charge.</div>
           <button class="btn-gold w-full font-semibold text-[15px] py-3.5 rounded-full hover:scale-[1.02] transition-transform duration-200">Search</button>
         </div>
       </div>
@@ -217,28 +298,28 @@
         <div class="font-display text-[52px] leading-none text-gold-gradient mb-3">
           <span class="counter" data-target="61" data-suffix="%" data-decimals="0">0%</span>
         </div>
-        <div class="text-[11px] text-white/30 uppercase tracking-[0.2em] font-medium">Fortune 100 Companies</div>
+        <div class="text-[11px] text-white/50 uppercase tracking-[0.2em] font-medium">Fortune 100 Companies</div>
       </div>
       <div class="reveal stat-item" style="transition-delay:60ms">
         <div class="w-8 h-px bg-gold/40 mx-auto mb-6"></div>
         <div class="font-display text-[52px] leading-none text-gold-gradient mb-3">
           <span class="counter" data-target="99.5" data-suffix="%" data-decimals="1">0%</span>
         </div>
-        <div class="text-[11px] text-white/30 uppercase tracking-[0.2em] font-medium">Trips Without Issue</div>
+        <div class="text-[11px] text-white/50 uppercase tracking-[0.2em] font-medium">Trips Without Issue</div>
       </div>
       <div class="reveal stat-item" style="transition-delay:120ms">
         <div class="w-8 h-px bg-gold/40 mx-auto mb-6"></div>
         <div class="font-display text-[52px] leading-none text-gold-gradient mb-3">
           <span class="counter" data-target="350" data-suffix="+" data-decimals="0">0+</span>
         </div>
-        <div class="text-[11px] text-white/30 uppercase tracking-[0.2em] font-medium">Global Service Areas</div>
+        <div class="text-[11px] text-white/50 uppercase tracking-[0.2em] font-medium">Global Service Areas</div>
       </div>
       <div class="reveal stat-item" style="transition-delay:180ms">
         <div class="w-8 h-px bg-gold/40 mx-auto mb-6"></div>
         <div class="font-display text-[52px] leading-none text-gold-gradient mb-3">
           <span class="counter" data-target="7200" data-suffix="+" data-decimals="0" data-comma="true">0+</span>
         </div>
-        <div class="text-[11px] text-white/30 uppercase tracking-[0.2em] font-medium">Professional Chauffeurs</div>
+        <div class="text-[11px] text-white/50 uppercase tracking-[0.2em] font-medium">Professional Chauffeurs</div>
       </div>
     </div>
   </section>
@@ -254,7 +335,7 @@
         <div class="reveal group cursor-pointer">
           <div class="bg-lux-surface rounded-2xl overflow-hidden border border-white/6 card-premium hover:border-gold/20">
             <div class="relative h-[220px] overflow-hidden">
-              <img src="https://cdn.prod.website-files.com/62faa9dc6b970a350019a1cd/633f3249166e26827ad65187_menu-company.webp" alt="City-to-city" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-110">
+              <img src="https://cdn.prod.website-files.com/62faa9dc6b970a350019a1cd/633f3249166e26827ad65187_menu-company.webp" alt="City-to-city" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-110" loading="lazy" decoding="async" width="400" height="300">
               <div class="absolute inset-0 bg-gradient-to-t from-lux-surface via-transparent to-transparent"></div>
             </div>
             <div class="p-5">
@@ -266,7 +347,7 @@
         <div class="reveal group cursor-pointer">
           <div class="bg-lux-surface rounded-2xl overflow-hidden border border-white/6 card-premium hover:border-gold/20">
             <div class="relative h-[220px] overflow-hidden">
-              <img src="https://cdn.prod.website-files.com/62faa9dc6b970a350019a1cd/633f338820465d103de1d149_menu-benefits.webp" alt="Chauffeur hailing" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-110">
+              <img src="https://cdn.prod.website-files.com/62faa9dc6b970a350019a1cd/633f338820465d103de1d149_menu-benefits.webp" alt="Chauffeur hailing" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-110" loading="lazy" decoding="async" width="400" height="300">
               <div class="absolute inset-0 bg-gradient-to-t from-lux-surface via-transparent to-transparent"></div>
             </div>
             <div class="p-5">
@@ -278,7 +359,7 @@
         <div class="reveal group cursor-pointer">
           <div class="bg-lux-surface rounded-2xl overflow-hidden border border-white/6 card-premium hover:border-gold/20">
             <div class="relative h-[220px] overflow-hidden">
-              <img src="https://cdn.prod.website-files.com/62faa9dc6b970a350019a1cd/633f34d7a0e0b9c1f263c9a3_menu-travel.webp" alt="Airport transfers" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-110">
+              <img src="https://cdn.prod.website-files.com/62faa9dc6b970a350019a1cd/633f34d7a0e0b9c1f263c9a3_menu-travel.webp" alt="Airport transfers" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-110" loading="lazy" decoding="async" width="400" height="300">
               <div class="absolute inset-0 bg-gradient-to-t from-lux-surface via-transparent to-transparent"></div>
             </div>
             <div class="p-5">
@@ -290,7 +371,7 @@
         <div class="reveal group cursor-pointer">
           <div class="bg-lux-surface rounded-2xl overflow-hidden border border-white/6 card-premium hover:border-gold/20">
             <div class="relative h-[220px] overflow-hidden">
-              <img src="https://cdn.prod.website-files.com/62faa9dc6b970a350019a1cd/635aaaad4ef7abb567e2db51_customer-support-portrait.webp" alt="Hourly hire" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-110">
+              <img src="https://cdn.prod.website-files.com/62faa9dc6b970a350019a1cd/635aaaad4ef7abb567e2db51_customer-support-portrait.webp" alt="Hourly hire" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-110" loading="lazy" decoding="async" width="400" height="300">
               <div class="absolute inset-0 bg-gradient-to-t from-lux-surface via-transparent to-transparent"></div>
             </div>
             <div class="p-5">
@@ -355,7 +436,7 @@
               <div class="flex items-start gap-3"><svg class="w-5 h-5 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><p class="text-white/50 text-[15px] leading-relaxed">Centralized billing, reporting, and recurring trip automation</p></div>
             </div>
           </div>
-          <div class="flex-1 mt-6 md:mt-0"><img src="https://cdn.prod.website-files.com/62faa9dc6b970a350019a1cd/663502551742e27ab41c8621_black%20car%20service%20notification%20to%20executive%20assistant.webp" alt="Platform" class="rounded-2xl w-full border border-white/6"></div>
+          <div class="flex-1 mt-6 md:mt-0"><img src="https://cdn.prod.website-files.com/62faa9dc6b970a350019a1cd/663502551742e27ab41c8621_black%20car%20service%20notification%20to%20executive%20assistant.webp" alt="Platform" class="rounded-2xl w-full border border-white/6" loading="lazy" decoding="async" width="600" height="400"></div>
         </div>
         <div id="panel-fd" class="tab-panel flex-col md:flex-row items-start gap-10">
           <div class="flex-1">
@@ -366,7 +447,7 @@
               <div class="flex items-start gap-3"><svg class="w-5 h-5 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><p class="text-white/50 text-[15px] leading-relaxed">Insurance validation and ground-to-air scheduling synchronization</p></div>
             </div>
           </div>
-          <div class="flex-1 mt-6 md:mt-0"><img src="https://cdn.prod.website-files.com/62faa9dc6b970a350019a1cd/663502c4bf7d6f43b069f41a_flight%20aware%20for%20black%20car%20service%20pick%20ups.webp" alt="Flight tracking" class="rounded-2xl w-full border border-white/6"></div>
+          <div class="flex-1 mt-6 md:mt-0"><img src="https://cdn.prod.website-files.com/62faa9dc6b970a350019a1cd/663502c4bf7d6f43b069f41a_flight%20aware%20for%20black%20car%20service%20pick%20ups.webp" alt="Flight tracking" class="rounded-2xl w-full border border-white/6" loading="lazy" decoding="async" width="600" height="400"></div>
         </div>
         <div id="panel-st" class="tab-panel flex-col md:flex-row items-start gap-10">
           <div class="flex-1">
@@ -377,7 +458,7 @@
               <div class="flex items-start gap-3"><svg class="w-5 h-5 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><p class="text-white/50 text-[15px] leading-relaxed">Access to chauffeurs with close protection and military backgrounds</p></div>
             </div>
           </div>
-          <div class="flex-1 mt-6 md:mt-0"><img src="https://cdn.prod.website-files.com/62faa9dc6b970a350019a1cd/639213024d1e2f5e124d2cb1_security.webp" alt="Security" class="rounded-2xl w-full border border-white/6"></div>
+          <div class="flex-1 mt-6 md:mt-0"><img src="https://cdn.prod.website-files.com/62faa9dc6b970a350019a1cd/639213024d1e2f5e124d2cb1_security.webp" alt="Security" class="rounded-2xl w-full border border-white/6" loading="lazy" decoding="async" width="600" height="400"></div>
         </div>
         <div id="panel-mp" class="tab-panel flex-col md:flex-row items-start gap-10">
           <div class="flex-1">
@@ -388,7 +469,7 @@
               <div class="flex items-start gap-3"><svg class="w-5 h-5 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><p class="text-white/50 text-[15px] leading-relaxed">Dedicated concierge team for on-site logistics and last-minute changes</p></div>
             </div>
           </div>
-          <div class="flex-1 mt-6 md:mt-0"><img src="https://cdn.prod.website-files.com/62faa9dc6b970a350019a1cd/66350333d58ab6bc9843e97a_conference%20room%20black%20car%20service.webp" alt="Events" class="rounded-2xl w-full border border-white/6"></div>
+          <div class="flex-1 mt-6 md:mt-0"><img src="https://cdn.prod.website-files.com/62faa9dc6b970a350019a1cd/66350333d58ab6bc9843e97a_conference%20room%20black%20car%20service.webp" alt="Events" class="rounded-2xl w-full border border-white/6" loading="lazy" decoding="async" width="600" height="400"></div>
         </div>
       </div>
     </div>
@@ -405,35 +486,35 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 stagger">
         <div class="reveal group"><div class="bg-lux-surface rounded-2xl overflow-hidden border border-white/6 card-premium hover:border-white/15">
           <div class="relative h-[300px] overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1618886614638-80e3c103d31a?w=400&h=500&fit=crop&crop=face&q=80" alt="Sam Janaby" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+            <img src="https://images.unsplash.com/photo-1618886614638-80e3c103d31a?w=400&h=500&fit=crop&crop=face&q=80" alt="Sam Janaby" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" decoding="async" width="400" height="500">
             <div class="absolute inset-0 bg-gradient-to-t from-lux-surface via-transparent to-transparent"></div>
             <div class="absolute top-3 left-3 bg-gold text-lux-bg text-[10px] px-2.5 py-1 rounded-full font-bold uppercase">15 Years</div>
           </div>
-          <div class="p-5"><h3 class="font-semibold text-[17px] text-white">Sam Janaby</h3><p class="text-[13px] text-white/30 mt-1">San Francisco &middot; 98th Percentile</p><p class="text-[13px] text-white/40 mt-1.5">Former Special Forces, 2 Medals of Valor</p></div>
+          <div class="p-5"><h3 class="font-semibold text-[17px] text-white">Sam Janaby</h3><p class="text-[13px] text-white/50 mt-1">San Francisco &middot; 98th Percentile</p><p class="text-[13px] text-white/40 mt-1.5">Former Special Forces, 2 Medals of Valor</p></div>
         </div></div>
         <div class="reveal group"><div class="bg-lux-surface rounded-2xl overflow-hidden border border-white/6 card-premium hover:border-white/15">
           <div class="relative h-[300px] overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=500&fit=crop&crop=face&q=80" alt="Miguel de la Cruz" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+            <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=500&fit=crop&crop=face&q=80" alt="Miguel de la Cruz" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" decoding="async" width="400" height="500">
             <div class="absolute inset-0 bg-gradient-to-t from-lux-surface via-transparent to-transparent"></div>
             <div class="absolute top-3 left-3 bg-gold text-lux-bg text-[10px] px-2.5 py-1 rounded-full font-bold uppercase">21 Years</div>
           </div>
-          <div class="p-5"><h3 class="font-semibold text-[17px] text-white">Miguel de la Cruz</h3><p class="text-[13px] text-white/30 mt-1">New York City &middot; 99th Percentile</p><p class="text-[13px] text-white/40 mt-1.5">Preferred driver designation</p></div>
+          <div class="p-5"><h3 class="font-semibold text-[17px] text-white">Miguel de la Cruz</h3><p class="text-[13px] text-white/50 mt-1">New York City &middot; 99th Percentile</p><p class="text-[13px] text-white/40 mt-1.5">Preferred driver designation</p></div>
         </div></div>
         <div class="reveal group"><div class="bg-lux-surface rounded-2xl overflow-hidden border border-white/6 card-premium hover:border-white/15">
           <div class="relative h-[300px] overflow-hidden">
-            <img src="https://plus.unsplash.com/premium_photo-1661962416772-33281b5a9dce?w=400&h=500&fit=crop&crop=face&q=80" alt="David Gonzalez" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+            <img src="https://plus.unsplash.com/premium_photo-1661962416772-33281b5a9dce?w=400&h=500&fit=crop&crop=face&q=80" alt="David Gonzalez" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" decoding="async" width="400" height="500">
             <div class="absolute inset-0 bg-gradient-to-t from-lux-surface via-transparent to-transparent"></div>
             <div class="absolute top-3 left-3 bg-gold text-lux-bg text-[10px] px-2.5 py-1 rounded-full font-bold uppercase">20 Years</div>
           </div>
-          <div class="p-5"><h3 class="font-semibold text-[17px] text-white">David Gonzalez</h3><p class="text-[13px] text-white/30 mt-1">Miami &middot; 97th Percentile</p><p class="text-[13px] text-white/40 mt-1.5">Investigation &amp; Security certified</p></div>
+          <div class="p-5"><h3 class="font-semibold text-[17px] text-white">David Gonzalez</h3><p class="text-[13px] text-white/50 mt-1">Miami &middot; 97th Percentile</p><p class="text-[13px] text-white/40 mt-1.5">Investigation &amp; Security certified</p></div>
         </div></div>
         <div class="reveal group"><div class="bg-lux-surface rounded-2xl overflow-hidden border border-white/6 card-premium hover:border-white/15">
           <div class="relative h-[300px] overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1562788869-4ed32648eb72?w=400&h=500&fit=crop&crop=face&q=80" alt="Anas Haddou" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+            <img src="https://images.unsplash.com/photo-1562788869-4ed32648eb72?w=400&h=500&fit=crop&crop=face&q=80" alt="Anas Haddou" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" decoding="async" width="400" height="500">
             <div class="absolute inset-0 bg-gradient-to-t from-lux-surface via-transparent to-transparent"></div>
             <div class="absolute top-3 left-3 bg-gold text-lux-bg text-[10px] px-2.5 py-1 rounded-full font-bold uppercase">13 Years</div>
           </div>
-          <div class="p-5"><h3 class="font-semibold text-[17px] text-white">Anas Haddou</h3><p class="text-[13px] text-white/30 mt-1">Los Angeles</p><p class="text-[13px] text-white/40 mt-1.5">First Aid &amp; CPR certified, preferred driver</p></div>
+          <div class="p-5"><h3 class="font-semibold text-[17px] text-white">Anas Haddou</h3><p class="text-[13px] text-white/50 mt-1">Los Angeles</p><p class="text-[13px] text-white/40 mt-1.5">First Aid &amp; CPR certified, preferred driver</p></div>
         </div></div>
       </div>
     </div>
@@ -450,45 +531,45 @@
       <div class="relative">
         <div class="flex gap-5 overflow-x-auto pb-4 scroll-hide snap-x snap-mandatory" id="city-carousel">
           <div class="min-w-[300px] snap-start rounded-2xl overflow-hidden relative group cursor-pointer flex-shrink-0">
-            <img src="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=600&h=400&fit=crop&q=80" alt="San Francisco" class="w-full h-[320px] object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-110">
+            <img src="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=600&h=400&fit=crop&q=80" alt="San Francisco" class="w-full h-[320px] object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-110" loading="lazy" decoding="async" width="600" height="400">
             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
             <div class="absolute bottom-0 left-0 p-6"><h3 class="font-display text-[24px] text-white">San Francisco</h3><p class="text-white/40 text-[13px] mt-1">California, USA</p></div>
           </div>
           <div class="min-w-[300px] snap-start rounded-2xl overflow-hidden relative group cursor-pointer flex-shrink-0">
-            <img src="https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=600&h=400&fit=crop&q=80" alt="New York City" class="w-full h-[320px] object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-110">
+            <img src="https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=600&h=400&fit=crop&q=80" alt="New York City" class="w-full h-[320px] object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-110" loading="lazy" decoding="async" width="600" height="400">
             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
             <div class="absolute bottom-0 left-0 p-6"><h3 class="font-display text-[24px] text-white">New York City</h3><p class="text-white/40 text-[13px] mt-1">New York, USA</p></div>
           </div>
           <div class="min-w-[300px] snap-start rounded-2xl overflow-hidden relative group cursor-pointer flex-shrink-0">
-            <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=600&h=400&fit=crop&q=80" alt="Paris" class="w-full h-[320px] object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-110">
+            <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=600&h=400&fit=crop&q=80" alt="Paris" class="w-full h-[320px] object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-110" loading="lazy" decoding="async" width="600" height="400">
             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
             <div class="absolute bottom-0 left-0 p-6"><h3 class="font-display text-[24px] text-white">Paris</h3><p class="text-white/40 text-[13px] mt-1">France</p></div>
           </div>
           <div class="min-w-[300px] snap-start rounded-2xl overflow-hidden relative group cursor-pointer flex-shrink-0">
-            <img src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=600&h=400&fit=crop&q=80" alt="London" class="w-full h-[320px] object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-110">
+            <img src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=600&h=400&fit=crop&q=80" alt="London" class="w-full h-[320px] object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-110" loading="lazy" decoding="async" width="600" height="400">
             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
             <div class="absolute bottom-0 left-0 p-6"><h3 class="font-display text-[24px] text-white">London</h3><p class="text-white/40 text-[13px] mt-1">United Kingdom</p></div>
           </div>
           <div class="min-w-[300px] snap-start rounded-2xl overflow-hidden relative group cursor-pointer flex-shrink-0">
-            <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&h=400&fit=crop&q=80" alt="Dubai" class="w-full h-[320px] object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-110">
+            <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&h=400&fit=crop&q=80" alt="Dubai" class="w-full h-[320px] object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-110" loading="lazy" decoding="async" width="600" height="400">
             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
             <div class="absolute bottom-0 left-0 p-6"><h3 class="font-display text-[24px] text-white">Dubai</h3><p class="text-white/40 text-[13px] mt-1">United Arab Emirates</p></div>
           </div>
           <div class="min-w-[300px] snap-start rounded-2xl overflow-hidden relative group cursor-pointer flex-shrink-0">
-            <img src="https://images.unsplash.com/photo-1533106497176-45ae19e68ba2?w=600&h=400&fit=crop&q=80" alt="Miami" class="w-full h-[320px] object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-110">
+            <img src="https://images.unsplash.com/photo-1533106497176-45ae19e68ba2?w=600&h=400&fit=crop&q=80" alt="Miami" class="w-full h-[320px] object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-110" loading="lazy" decoding="async" width="600" height="400">
             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
             <div class="absolute bottom-0 left-0 p-6"><h3 class="font-display text-[24px] text-white">Miami</h3><p class="text-white/40 text-[13px] mt-1">Florida, USA</p></div>
           </div>
           <div class="min-w-[300px] snap-start rounded-2xl overflow-hidden relative group cursor-pointer flex-shrink-0">
-            <img src="https://images.unsplash.com/photo-1534190760961-74e8c1c5c3da?w=600&h=400&fit=crop&q=80" alt="Los Angeles" class="w-full h-[320px] object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-110">
+            <img src="https://images.unsplash.com/photo-1534190760961-74e8c1c5c3da?w=600&h=400&fit=crop&q=80" alt="Los Angeles" class="w-full h-[320px] object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-110" loading="lazy" decoding="async" width="600" height="400">
             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
             <div class="absolute bottom-0 left-0 p-6"><h3 class="font-display text-[24px] text-white">Los Angeles</h3><p class="text-white/40 text-[13px] mt-1">California, USA</p></div>
           </div>
         </div>
-        <button onclick="document.getElementById('city-carousel').scrollBy({left:-320,behavior:'smooth'})" class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 w-10 h-10 rounded-full flex items-center justify-center text-white/60 hover:text-gold border border-white/10 hover:border-gold/30 bg-lux-bg/80 backdrop-blur-sm transition-all z-10">
+        <button aria-label="Previous cities" onclick="document.getElementById('city-carousel').scrollBy({left:-320,behavior:'smooth'})" class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 w-10 h-10 rounded-full flex items-center justify-center text-white/60 hover:text-gold border border-white/10 hover:border-gold/30 bg-lux-bg/80 backdrop-blur-sm transition-all z-10">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7"/></svg>
         </button>
-        <button onclick="document.getElementById('city-carousel').scrollBy({left:320,behavior:'smooth'})" class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 w-10 h-10 rounded-full flex items-center justify-center text-white/60 hover:text-gold border border-white/10 hover:border-gold/30 bg-lux-bg/80 backdrop-blur-sm transition-all z-10">
+        <button aria-label="Next cities" onclick="document.getElementById('city-carousel').scrollBy({left:320,behavior:'smooth'})" class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 w-10 h-10 rounded-full flex items-center justify-center text-white/60 hover:text-gold border border-white/10 hover:border-gold/30 bg-lux-bg/80 backdrop-blur-sm transition-all z-10">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"/></svg>
         </button>
       </div>
@@ -509,8 +590,8 @@
             <div class="font-display text-[80px] leading-none text-gold/15 mb-2">&ldquo;</div>
             <p class="font-display text-[24px] md:text-[30px] leading-relaxed text-white/90 -mt-12">Savoya has transformed how we manage executive transportation. The reliability and professionalism are unmatched.</p>
             <div class="mt-8 flex flex-col items-center gap-3">
-              <img src="https://cdn.prod.website-files.com/62faa9ec1b44f7f869535226/64c4069ac8577b3ca3ca06c4_Carly%20Veazey.webp" alt="Carly Veazey" class="w-12 h-12 rounded-full object-cover border border-white/10">
-              <div><p class="font-medium text-[14px] text-white/70">Carly Veazey</p><p class="text-[13px] text-white/30 mt-0.5">VP of Operations, Zillow Group</p></div>
+              <img src="https://cdn.prod.website-files.com/62faa9ec1b44f7f869535226/64c4069ac8577b3ca3ca06c4_Carly%20Veazey.webp" alt="Carly Veazey" class="w-12 h-12 rounded-full object-cover border border-white/10" loading="lazy" decoding="async" width="48" height="48">
+              <div><p class="font-medium text-[14px] text-white/70">Carly Veazey</p><p class="text-[13px] text-white/50 mt-0.5">VP of Operations, Zillow Group</p></div>
             </div>
           </div>
         </div>
@@ -519,8 +600,8 @@
             <div class="font-display text-[80px] leading-none text-gold/15 mb-2">&ldquo;</div>
             <p class="font-display text-[24px] md:text-[30px] leading-relaxed text-white/90 -mt-12">Consistency and reliability across every market. No matter where our executives travel, the experience is seamless.</p>
             <div class="mt-8 flex flex-col items-center gap-3">
-              <img src="https://cdn.prod.website-files.com/62faa9ec1b44f7f869535226/64cd2b63089976fdacdbc759_Elyse%20Eigle.webp" alt="Elyse Seigle" class="w-12 h-12 rounded-full object-cover border border-white/10">
-              <div><p class="font-medium text-[14px] text-white/70">Elyse Seigle</p><p class="text-[13px] text-white/30 mt-0.5">Travel Manager, Google</p></div>
+              <img src="https://cdn.prod.website-files.com/62faa9ec1b44f7f869535226/64cd2b63089976fdacdbc759_Elyse%20Eigle.webp" alt="Elyse Seigle" class="w-12 h-12 rounded-full object-cover border border-white/10" loading="lazy" decoding="async" width="48" height="48">
+              <div><p class="font-medium text-[14px] text-white/70">Elyse Seigle</p><p class="text-[13px] text-white/50 mt-0.5">Travel Manager, Google</p></div>
             </div>
           </div>
         </div>
@@ -529,8 +610,8 @@
             <div class="font-display text-[80px] leading-none text-gold/15 mb-2">&ldquo;</div>
             <p class="font-display text-[24px] md:text-[30px] leading-relaxed text-white/90 -mt-12">Their attention to detail is unmatched in the industry. Every interaction reflects true professionalism.</p>
             <div class="mt-8 flex flex-col items-center gap-3">
-              <img src="https://cdn.prod.website-files.com/62faa9ec1b44f7f869535226/64badfce518c33a99c89f57a_Nikky%20Arnold.webp" alt="Nikky Arnold" class="w-12 h-12 rounded-full object-cover border border-white/10">
-              <div><p class="font-medium text-[14px] text-white/70">Nikky Arnold</p><p class="text-[13px] text-white/30 mt-0.5">Director of Operations, San Francisco 49ers</p></div>
+              <img src="https://cdn.prod.website-files.com/62faa9ec1b44f7f869535226/64badfce518c33a99c89f57a_Nikky%20Arnold.webp" alt="Nikky Arnold" class="w-12 h-12 rounded-full object-cover border border-white/10" loading="lazy" decoding="async" width="48" height="48">
+              <div><p class="font-medium text-[14px] text-white/70">Nikky Arnold</p><p class="text-[13px] text-white/50 mt-0.5">Director of Operations, San Francisco 49ers</p></div>
             </div>
           </div>
         </div>
@@ -539,17 +620,17 @@
             <div class="font-display text-[80px] leading-none text-gold/15 mb-2">&ldquo;</div>
             <p class="font-display text-[24px] md:text-[30px] leading-relaxed text-white/90 -mt-12">The technology platform sets them apart from every competitor. Booking and tracking have never been easier.</p>
             <div class="mt-8 flex flex-col items-center gap-3">
-              <img src="https://cdn.prod.website-files.com/62faa9ec1b44f7f869535226/662c19b69697d846aa5caf05_Chad%20Bosques.webp" alt="Chad Bosques" class="w-12 h-12 rounded-full object-cover border border-white/10">
-              <div><p class="font-medium text-[14px] text-white/70">Chad Bosques</p><p class="text-[13px] text-white/30 mt-0.5">Head of Travel, Chime</p></div>
+              <img src="https://cdn.prod.website-files.com/62faa9ec1b44f7f869535226/662c19b69697d846aa5caf05_Chad%20Bosques.webp" alt="Chad Bosques" class="w-12 h-12 rounded-full object-cover border border-white/10" loading="lazy" decoding="async" width="48" height="48">
+              <div><p class="font-medium text-[14px] text-white/70">Chad Bosques</p><p class="text-[13px] text-white/50 mt-0.5">Head of Travel, Chime</p></div>
             </div>
           </div>
         </div>
       </div>
-      <div class="flex justify-center gap-2.5 mt-8" id="testimonial-dots">
-        <button class="w-2 h-2 rounded-full bg-gold transition-all" data-slide="0"></button>
-        <button class="w-2 h-2 rounded-full bg-white/15 transition-all" data-slide="1"></button>
-        <button class="w-2 h-2 rounded-full bg-white/15 transition-all" data-slide="2"></button>
-        <button class="w-2 h-2 rounded-full bg-white/15 transition-all" data-slide="3"></button>
+      <div class="flex justify-center gap-2.5 mt-8" id="testimonial-dots" role="tablist" aria-label="Testimonial slides">
+        <button class="w-2 h-2 rounded-full bg-gold transition-all" data-slide="0" aria-label="Testimonial 1" role="tab" aria-selected="true"></button>
+        <button class="w-2 h-2 rounded-full bg-white/15 transition-all" data-slide="1" aria-label="Testimonial 2" role="tab" aria-selected="false"></button>
+        <button class="w-2 h-2 rounded-full bg-white/15 transition-all" data-slide="2" aria-label="Testimonial 3" role="tab" aria-selected="false"></button>
+        <button class="w-2 h-2 rounded-full bg-white/15 transition-all" data-slide="3" aria-label="Testimonial 4" role="tab" aria-selected="false"></button>
       </div>
     </div>
   </section>
@@ -562,12 +643,12 @@
         <div class="w-10 h-px bg-gold mx-auto mt-5"></div>
       </div>
       <div class="space-y-0">
-        <div class="border-b border-white/6"><button class="w-full flex items-center justify-between py-5 text-left group" onclick="toggleAccordion(this)"><span class="font-medium text-[16px] text-white/80 group-hover:text-white transition-colors">What areas do you serve?</span><svg class="accordion-chevron w-4 h-4 text-white/20 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg></button><div class="accordion-content text-[14px] text-white/40 leading-relaxed">We operate in over 300 markets across 6 continents, covering major cities and business destinations worldwide including New York, London, Paris, Dubai, Tokyo, and more.</div></div>
-        <div class="border-b border-white/6"><button class="w-full flex items-center justify-between py-5 text-left group" onclick="toggleAccordion(this)"><span class="font-medium text-[16px] text-white/80 group-hover:text-white transition-colors">How are your chauffeurs vetted?</span><svg class="accordion-chevron w-4 h-4 text-white/20 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg></button><div class="accordion-content text-[14px] text-white/40 leading-relaxed">Every chauffeur undergoes a rigorous multi-step vetting process including comprehensive background checks, driving record review, insurance verification, and signed confidentiality agreements.</div></div>
-        <div class="border-b border-white/6"><button class="w-full flex items-center justify-between py-5 text-left group" onclick="toggleAccordion(this)"><span class="font-medium text-[16px] text-white/80 group-hover:text-white transition-colors">Can I book for a group or event?</span><svg class="accordion-chevron w-4 h-4 text-white/20 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg></button><div class="accordion-content text-[14px] text-white/40 leading-relaxed">Absolutely. We offer event-specific dashboards for multi-vehicle coordination, group transportation management, and on-site logistics support with a dedicated concierge team.</div></div>
-        <div class="border-b border-white/6"><button class="w-full flex items-center justify-between py-5 text-left group" onclick="toggleAccordion(this)"><span class="font-medium text-[16px] text-white/80 group-hover:text-white transition-colors">What happens if my flight is delayed?</span><svg class="accordion-chevron w-4 h-4 text-white/20 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg></button><div class="accordion-content text-[14px] text-white/40 leading-relaxed">Our integrated flight tracking system automatically detects delays and adjusts your chauffeur's pickup time accordingly. You'll receive real-time notifications throughout.</div></div>
-        <div class="border-b border-white/6"><button class="w-full flex items-center justify-between py-5 text-left group" onclick="toggleAccordion(this)"><span class="font-medium text-[16px] text-white/80 group-hover:text-white transition-colors">How does billing work for corporate accounts?</span><svg class="accordion-chevron w-4 h-4 text-white/20 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg></button><div class="accordion-content text-[14px] text-white/40 leading-relaxed">We offer centralized invoicing with custom cost centers, department coding, and detailed reporting dashboards. No contracts required -- simple, transparent pricing.</div></div>
-        <div class="border-b border-white/6"><button class="w-full flex items-center justify-between py-5 text-left group" onclick="toggleAccordion(this)"><span class="font-medium text-[16px] text-white/80 group-hover:text-white transition-colors">What vehicles are available?</span><svg class="accordion-chevron w-4 h-4 text-white/20 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg></button><div class="accordion-content text-[14px] text-white/40 leading-relaxed">We offer a full range of luxury vehicles including executive sedans, premium SUVs, sprinter vans, and specialty vehicles -- all maintained to the highest standards.</div></div>
+        <div class="border-b border-white/6"><button class="w-full flex items-center justify-between py-5 text-left group" onclick="toggleAccordion(this)" aria-expanded="false"><span class="font-medium text-[16px] text-white/80 group-hover:text-white transition-colors">What areas do you serve?</span><svg class="accordion-chevron w-4 h-4 text-white/40 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg></button><div class="accordion-content text-[14px] text-white/40 leading-relaxed">We operate in over 300 markets across 6 continents, covering major cities and business destinations worldwide including New York, London, Paris, Dubai, Tokyo, and more.</div></div>
+        <div class="border-b border-white/6"><button class="w-full flex items-center justify-between py-5 text-left group" onclick="toggleAccordion(this)" aria-expanded="false"><span class="font-medium text-[16px] text-white/80 group-hover:text-white transition-colors">How are your chauffeurs vetted?</span><svg class="accordion-chevron w-4 h-4 text-white/40 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg></button><div class="accordion-content text-[14px] text-white/40 leading-relaxed">Every chauffeur undergoes a rigorous multi-step vetting process including comprehensive background checks, driving record review, insurance verification, and signed confidentiality agreements.</div></div>
+        <div class="border-b border-white/6"><button class="w-full flex items-center justify-between py-5 text-left group" onclick="toggleAccordion(this)" aria-expanded="false"><span class="font-medium text-[16px] text-white/80 group-hover:text-white transition-colors">Can I book for a group or event?</span><svg class="accordion-chevron w-4 h-4 text-white/40 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg></button><div class="accordion-content text-[14px] text-white/40 leading-relaxed">Absolutely. We offer event-specific dashboards for multi-vehicle coordination, group transportation management, and on-site logistics support with a dedicated concierge team.</div></div>
+        <div class="border-b border-white/6"><button class="w-full flex items-center justify-between py-5 text-left group" onclick="toggleAccordion(this)" aria-expanded="false"><span class="font-medium text-[16px] text-white/80 group-hover:text-white transition-colors">What happens if my flight is delayed?</span><svg class="accordion-chevron w-4 h-4 text-white/40 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg></button><div class="accordion-content text-[14px] text-white/40 leading-relaxed">Our integrated flight tracking system automatically detects delays and adjusts your chauffeur's pickup time accordingly. You'll receive real-time notifications throughout.</div></div>
+        <div class="border-b border-white/6"><button class="w-full flex items-center justify-between py-5 text-left group" onclick="toggleAccordion(this)" aria-expanded="false"><span class="font-medium text-[16px] text-white/80 group-hover:text-white transition-colors">How does billing work for corporate accounts?</span><svg class="accordion-chevron w-4 h-4 text-white/40 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg></button><div class="accordion-content text-[14px] text-white/40 leading-relaxed">We offer centralized invoicing with custom cost centers, department coding, and detailed reporting dashboards. No contracts required -- simple, transparent pricing.</div></div>
+        <div class="border-b border-white/6"><button class="w-full flex items-center justify-between py-5 text-left group" onclick="toggleAccordion(this)" aria-expanded="false"><span class="font-medium text-[16px] text-white/80 group-hover:text-white transition-colors">What vehicles are available?</span><svg class="accordion-chevron w-4 h-4 text-white/40 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg></button><div class="accordion-content text-[14px] text-white/40 leading-relaxed">We offer a full range of luxury vehicles including executive sedans, premium SUVs, sprinter vans, and specialty vehicles -- all maintained to the highest standards.</div></div>
       </div>
     </div>
   </section>
@@ -589,14 +670,14 @@
           <div class="glass-dark rounded-2xl p-8 md:p-10">
             <form class="space-y-5">
               <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <input type="text" placeholder="Full Name" class="bg-transparent border-b border-white/10 text-white text-[14px] py-3 outline-none placeholder:text-white/20 focus:border-gold transition-colors">
-                <input type="email" placeholder="Email" class="bg-transparent border-b border-white/10 text-white text-[14px] py-3 outline-none placeholder:text-white/20 focus:border-gold transition-colors">
+                <input type="text" placeholder="Full Name" aria-label="Full Name" class="bg-transparent border-b border-white/10 text-white text-[14px] py-3 outline-none placeholder:text-white/20 focus:border-gold transition-colors">
+                <input type="email" placeholder="Email" aria-label="Email" class="bg-transparent border-b border-white/10 text-white text-[14px] py-3 outline-none placeholder:text-white/20 focus:border-gold transition-colors">
               </div>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <input type="text" placeholder="Company" class="bg-transparent border-b border-white/10 text-white text-[14px] py-3 outline-none placeholder:text-white/20 focus:border-gold transition-colors">
-                <input type="tel" placeholder="Phone" class="bg-transparent border-b border-white/10 text-white text-[14px] py-3 outline-none placeholder:text-white/20 focus:border-gold transition-colors">
+                <input type="text" placeholder="Company" aria-label="Company" class="bg-transparent border-b border-white/10 text-white text-[14px] py-3 outline-none placeholder:text-white/20 focus:border-gold transition-colors">
+                <input type="tel" placeholder="Phone" aria-label="Phone" class="bg-transparent border-b border-white/10 text-white text-[14px] py-3 outline-none placeholder:text-white/20 focus:border-gold transition-colors">
               </div>
-              <textarea rows="3" placeholder="How can we help?" class="bg-transparent border-b border-white/10 text-white text-[14px] py-3 outline-none placeholder:text-white/20 focus:border-gold transition-colors w-full resize-none"></textarea>
+              <textarea rows="3" placeholder="How can we help?" aria-label="Message" class="bg-transparent border-b border-white/10 text-white text-[14px] py-3 outline-none placeholder:text-white/20 focus:border-gold transition-colors w-full resize-none"></textarea>
               <button type="submit" class="btn-gold w-full font-semibold text-[15px] py-3.5 rounded-full hover:scale-[1.02] transition-transform duration-200 mt-2">Send Message</button>
             </form>
           </div>
@@ -605,6 +686,8 @@
     </div>
   </section>
 
+  </main>
+
   <!-- ========== FOOTER ========== -->
   <footer class="bg-[#050505] border-t border-gold/10">
     <div class="pt-14 pb-10 px-6">
@@ -612,10 +695,10 @@
         <!-- Logo row -->
         <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-12 pb-10 border-b border-white/6">
           <div class="flex items-center gap-8">
-            <img src="https://cdn.prod.website-files.com/62faa9dc6b970a350019a1cd/633ef7f128c4c727f72cee5a_savoya-logo-gold.svg" alt="Savoya" class="h-[26px]">
+            <img src="https://cdn.prod.website-files.com/62faa9dc6b970a350019a1cd/633ef7f128c4c727f72cee5a_savoya-logo-gold.svg" alt="Savoya" class="h-[26px]" width="110" height="26">
             <div class="flex gap-2.5">
-              <img src="https://cdn.prod.website-files.com/62faa9dc6b970a350019a1cd/63335b97a4691b6fe0cab2f2_ios.svg" alt="App Store" class="h-[32px] opacity-40 hover:opacity-80 transition-opacity">
-              <img src="https://cdn.prod.website-files.com/62faa9dc6b970a350019a1cd/63335bd59758df0c5790c7ad_play.svg" alt="Google Play" class="h-[32px] opacity-40 hover:opacity-80 transition-opacity">
+              <img src="https://cdn.prod.website-files.com/62faa9dc6b970a350019a1cd/63335b97a4691b6fe0cab2f2_ios.svg" alt="App Store" class="h-[32px] opacity-40 hover:opacity-80 transition-opacity" width="96" height="32">
+              <img src="https://cdn.prod.website-files.com/62faa9dc6b970a350019a1cd/63335bd59758df0c5790c7ad_play.svg" alt="Google Play" class="h-[32px] opacity-40 hover:opacity-80 transition-opacity" width="96" height="32">
             </div>
           </div>
           <a href="#" class="flex items-center gap-2 text-[13px] text-white/40 hover:text-gold transition-colors">
@@ -625,16 +708,16 @@
         </div>
         <!-- Link columns -->
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 text-[13px]">
-        <div><h4 class="text-[11px] uppercase tracking-[0.15em] text-white/20 mb-3 font-medium">Company</h4><ul class="space-y-2.5 text-white/35"><li><a href="#" class="hover:text-white transition-colors">About Us</a></li><li><a href="#" class="hover:text-white transition-colors">Careers</a></li><li><a href="#" class="hover:text-white transition-colors">Blog</a></li><li><a href="#" class="hover:text-white transition-colors">Share Savoya</a></li><li><a href="#" class="hover:text-white transition-colors">Drive With Us</a></li></ul></div>
-        <div><h4 class="text-[11px] uppercase tracking-[0.15em] text-white/20 mb-3 font-medium">Benefits</h4><ul class="space-y-2.5 text-white/35"><li><a href="#" class="hover:text-white transition-colors">Technology</a></li><li><a href="#" class="hover:text-white transition-colors">Safety</a></li><li><a href="#" class="hover:text-white transition-colors">Service</a></li><li><a href="#" class="hover:text-white transition-colors">Passenger Experience</a></li></ul></div>
-        <div><h4 class="text-[11px] uppercase tracking-[0.15em] text-white/20 mb-3 font-medium">Who We Serve</h4><ul class="space-y-2.5 text-white/35"><li><a href="#" class="hover:text-white transition-colors">Executive Assistants</a></li><li><a href="#" class="hover:text-white transition-colors">Flight Departments</a></li><li><a href="#" class="hover:text-white transition-colors">Security Teams</a></li><li><a href="#" class="hover:text-white transition-colors">Meeting Planners</a></li></ul></div>
-        <div><h4 class="text-[11px] uppercase tracking-[0.15em] text-white/20 mb-3 font-medium">Resources</h4><ul class="space-y-2.5 text-white/35"><li><a href="#" class="hover:text-white transition-colors">Service Areas</a></li><li><a href="#" class="hover:text-white transition-colors">Support</a></li><li><a href="#" class="hover:text-white transition-colors">Contact</a></li><li><a href="#" class="hover:text-white transition-colors">FAQ</a></li></ul></div>
-        <div><h4 class="text-[11px] uppercase tracking-[0.15em] text-white/20 mb-3 font-medium">Top Cities</h4><ul class="space-y-2.5 text-white/35"><li><a href="#" class="hover:text-white transition-colors">New York</a></li><li><a href="#" class="hover:text-white transition-colors">Los Angeles</a></li><li><a href="#" class="hover:text-white transition-colors">San Francisco</a></li><li><a href="#" class="hover:text-white transition-colors">Miami</a></li><li><a href="#" class="hover:text-white transition-colors">London</a></li></ul></div>
+        <div><h4 class="text-[11px] uppercase tracking-[0.15em] text-white/40 mb-3 font-medium">Company</h4><ul class="space-y-2.5 text-white/50"><li><a href="#" class="hover:text-white transition-colors">About Us</a></li><li><a href="#" class="hover:text-white transition-colors">Careers</a></li><li><a href="#" class="hover:text-white transition-colors">Blog</a></li><li><a href="#" class="hover:text-white transition-colors">Share Savoya</a></li><li><a href="#" class="hover:text-white transition-colors">Drive With Us</a></li></ul></div>
+        <div><h4 class="text-[11px] uppercase tracking-[0.15em] text-white/40 mb-3 font-medium">Benefits</h4><ul class="space-y-2.5 text-white/50"><li><a href="#" class="hover:text-white transition-colors">Technology</a></li><li><a href="#" class="hover:text-white transition-colors">Safety</a></li><li><a href="#" class="hover:text-white transition-colors">Service</a></li><li><a href="#" class="hover:text-white transition-colors">Passenger Experience</a></li></ul></div>
+        <div><h4 class="text-[11px] uppercase tracking-[0.15em] text-white/40 mb-3 font-medium">Who We Serve</h4><ul class="space-y-2.5 text-white/50"><li><a href="#" class="hover:text-white transition-colors">Executive Assistants</a></li><li><a href="#" class="hover:text-white transition-colors">Flight Departments</a></li><li><a href="#" class="hover:text-white transition-colors">Security Teams</a></li><li><a href="#" class="hover:text-white transition-colors">Meeting Planners</a></li></ul></div>
+        <div><h4 class="text-[11px] uppercase tracking-[0.15em] text-white/40 mb-3 font-medium">Resources</h4><ul class="space-y-2.5 text-white/50"><li><a href="#" class="hover:text-white transition-colors">Service Areas</a></li><li><a href="#" class="hover:text-white transition-colors">Support</a></li><li><a href="#" class="hover:text-white transition-colors">Contact</a></li><li><a href="#" class="hover:text-white transition-colors">FAQ</a></li></ul></div>
+        <div><h4 class="text-[11px] uppercase tracking-[0.15em] text-white/40 mb-3 font-medium">Top Cities</h4><ul class="space-y-2.5 text-white/50"><li><a href="#" class="hover:text-white transition-colors">New York</a></li><li><a href="#" class="hover:text-white transition-colors">Los Angeles</a></li><li><a href="#" class="hover:text-white transition-colors">San Francisco</a></li><li><a href="#" class="hover:text-white transition-colors">Miami</a></li><li><a href="#" class="hover:text-white transition-colors">London</a></li></ul></div>
       </div>
       </div>
     </div>
     <div class="border-t border-white/6 py-4 px-6">
-      <div class="max-w-page mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-[11px] text-white/20">
+      <div class="max-w-page mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-[11px] text-white/40">
         <div class="flex flex-wrap items-center gap-4"><span>&copy; 2026 Savoya</span><a href="#" class="hover:text-white/50 transition-colors">Privacy Policy</a><a href="#" class="hover:text-white/50 transition-colors">Terms</a><a href="#" class="hover:text-white/50 transition-colors">Accessibility</a></div>
         <div class="flex items-center gap-4">
           <a href="#" class="hover:text-gold transition-colors"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
@@ -729,7 +812,8 @@
       const isOpen = content.classList.contains('open');
       document.querySelectorAll('.accordion-content').forEach(c => c.classList.remove('open'));
       document.querySelectorAll('.accordion-chevron').forEach(c => { c.classList.remove('open'); c.style.color = ''; });
-      if (!isOpen) { content.classList.add('open'); chevron.classList.add('open'); chevron.style.color = '#C5A55A'; }
+      document.querySelectorAll('[aria-expanded]').forEach(b => b.setAttribute('aria-expanded', 'false'));
+      if (!isOpen) { content.classList.add('open'); chevron.classList.add('open'); chevron.style.color = '#C5A55A'; btn.setAttribute('aria-expanded', 'true'); }
     }
 
     // Testimonial dots
