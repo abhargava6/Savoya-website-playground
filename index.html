@@ -145,6 +145,9 @@
     input[type="date"], input[type="time"] { -webkit-appearance: none; font-family: 'Inter', system-ui, sans-serif; color-scheme: dark; }
     input[type="date"]::-webkit-calendar-picker-indicator,
     input[type="time"]::-webkit-calendar-picker-indicator { filter: invert(0.5); cursor: pointer; }
+    /* Select dropdown styling */
+    select option { background: #141414; color: #f5f5f5; }
+    select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.4)' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0 center; }
     /* Reduced motion */
     @media (prefers-reduced-motion: reduce) {
       .reveal, .word-reveal, .card-premium { transition: none !important; }
@@ -262,44 +265,83 @@
       </div>
 
       <!-- Booking Form -->
-      <div class="w-full md:w-[320px] glass-dark rounded-2xl flex-shrink-0">
+      <div id="booking-form" class="w-full md:w-[360px] glass-dark rounded-2xl flex-shrink-0">
         <div class="flex border-b border-white/6">
-          <button class="flex-1 py-3.5 px-4 text-[14px] font-semibold text-white border-b-2 border-gold">One way</button>
-          <button class="flex-1 py-3.5 px-4 text-[14px] text-white/40">By the hour</button>
+          <button id="tab-oneway" class="booking-tab flex-1 py-3.5 px-4 text-[14px] font-semibold text-white border-b-2 border-gold" onclick="switchBookingTab('oneway')">One way</button>
+          <button id="tab-hourly" class="booking-tab flex-1 py-3.5 px-4 text-[14px] text-white/40 border-b-2 border-transparent" onclick="switchBookingTab('hourly')">By the hour</button>
         </div>
         <div class="p-4 space-y-3">
-          <div class="bg-white/5 rounded-xl p-3 border border-white/6">
-            <label class="text-[10px] text-white/50 uppercase tracking-wider flex items-center gap-1 mb-1">
-              <svg class="w-3 h-3 text-gold" fill="currentColor" viewBox="0 0 20 20"><circle cx="10" cy="10" r="4"/></svg> From
-            </label>
-            <input type="text" value="Dallas/Fort Worth International Airport (DFW)" aria-label="Pickup location" class="w-full bg-transparent text-[14px] text-white outline-none placeholder:text-white/20" placeholder="Enter pickup location">
+          <!-- From -->
+          <div class="relative">
+            <div class="bg-white/5 rounded-xl p-3 border border-white/6">
+              <label class="text-[10px] text-white/50 uppercase tracking-wider flex items-center gap-1 mb-1">
+                <svg class="w-3 h-3 text-gold" fill="currentColor" viewBox="0 0 20 20"><circle cx="10" cy="10" r="4"/></svg> From
+              </label>
+              <input type="text" id="input-from" aria-label="Pickup location" autocomplete="off" class="w-full bg-transparent text-[14px] text-white outline-none placeholder:text-white/20" placeholder="Address, airport, hotel...">
+            </div>
+            <ul id="dropdown-from" class="hidden absolute left-0 right-0 top-full mt-1 bg-lux-surface border border-white/10 rounded-xl overflow-hidden z-50 max-h-[240px] overflow-y-auto shadow-lg"></ul>
           </div>
-          <div class="bg-white/5 rounded-xl p-3 border border-white/6">
-            <label class="text-[10px] text-white/50 uppercase tracking-wider flex items-center gap-1 mb-1">
-              <svg class="w-3 h-3 text-white/40" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/></svg> To
-            </label>
-            <input type="text" value="4034 Rawlins St" aria-label="Drop-off location" class="w-full bg-transparent text-[14px] text-white outline-none placeholder:text-white/20" placeholder="Enter drop-off location">
+          <!-- To -->
+          <div class="relative">
+            <div class="bg-white/5 rounded-xl p-3 border border-white/6">
+              <label class="text-[10px] text-white/50 uppercase tracking-wider flex items-center gap-1 mb-1">
+                <svg class="w-3 h-3 text-white/40" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/></svg> To
+              </label>
+              <input type="text" id="input-to" aria-label="Drop-off location" autocomplete="off" class="w-full bg-transparent text-[14px] text-white outline-none placeholder:text-white/20" placeholder="Address, airport, hotel...">
+            </div>
+            <ul id="dropdown-to" class="hidden absolute left-0 right-0 top-full mt-1 bg-lux-surface border border-white/10 rounded-xl overflow-hidden z-50 max-h-[240px] overflow-y-auto shadow-lg"></ul>
           </div>
+          <!-- Date -->
           <div class="bg-white/5 rounded-xl p-3 border border-white/6">
             <label class="text-[10px] text-white/50 uppercase tracking-wider flex items-center gap-1 mb-1">
               <svg class="w-3 h-3 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg> Date
             </label>
-            <input type="date" value="2026-04-06" aria-label="Date" class="w-full bg-transparent text-[14px] text-white outline-none cursor-pointer">
+            <input type="date" id="input-date" aria-label="Date" class="w-full bg-transparent text-[14px] text-white outline-none cursor-pointer">
           </div>
-          <div class="bg-white/5 rounded-xl p-3 border border-white/6">
-            <label class="text-[10px] text-white/50 uppercase tracking-wider flex items-center gap-1 mb-1">
-              <svg class="w-3 h-3 text-white/40" fill="currentColor" viewBox="0 0 20 20"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"/></svg> Flight number
-            </label>
-            <input type="text" aria-label="Flight number" class="w-full bg-transparent text-[14px] text-white outline-none placeholder:text-white/20" placeholder="Add your flight number">
+          <!-- Flight Number (shown only when airport detected) -->
+          <div id="flight-number-field" class="hidden">
+            <div class="bg-white/5 rounded-xl p-3 border border-white/6">
+              <label class="text-[10px] text-white/50 uppercase tracking-wider flex items-center gap-1 mb-1">
+                <svg class="w-3 h-3 text-white/40" fill="currentColor" viewBox="0 0 20 20"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"/></svg> Flight number
+              </label>
+              <input type="text" aria-label="Flight number" class="w-full bg-transparent text-[14px] text-white outline-none placeholder:text-white/20" placeholder="Add your flight number">
+            </div>
+            <div class="text-[11px] text-white/40 mt-1">e.g. LH 202, U24567, BA2490</div>
           </div>
-          <div class="text-[11px] text-white/40">e.g. LH 202, U24567, BA2490</div>
+          <!-- Pickup Time -->
           <div class="bg-white/5 rounded-xl p-3 border border-white/6">
             <label class="text-[10px] text-white/50 uppercase tracking-wider flex items-center gap-1 mb-1">
               <svg class="w-3 h-3 text-white/40" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.828a1 1 0 101.415-1.414L11 9.586V6z" clip-rule="evenodd"/></svg> Pickup time
             </label>
-            <input type="time" value="20:50" aria-label="Pickup time" class="w-full bg-transparent text-[14px] text-white outline-none cursor-pointer">
+            <input type="time" id="input-time" aria-label="Pickup time" class="w-full bg-transparent text-[14px] text-white outline-none cursor-pointer">
           </div>
           <div class="text-[11px] text-white/40">Chauffeur will wait 60 minutes free of charge.</div>
+          <!-- Duration (shown only in "By the hour" mode) -->
+          <div id="duration-field" class="hidden">
+            <div class="bg-white/5 rounded-xl p-3 border border-white/6">
+              <label class="text-[10px] text-white/50 uppercase tracking-wider flex items-center gap-1 mb-1">
+                <svg class="w-3 h-3 text-white/40" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.828a1 1 0 101.415-1.414L11 9.586V6z" clip-rule="evenodd"/></svg> Duration
+              </label>
+              <select aria-label="Duration" class="w-full bg-transparent text-[14px] text-white outline-none cursor-pointer appearance-none">
+                <option value="" class="bg-lux-surface">Select duration</option>
+                <option value="60" class="bg-lux-surface">1 hour</option>
+                <option value="90" class="bg-lux-surface">1.5 hours</option>
+                <option value="120" class="bg-lux-surface">2 hours</option>
+                <option value="150" class="bg-lux-surface">2.5 hours</option>
+                <option value="180" class="bg-lux-surface">3 hours</option>
+                <option value="210" class="bg-lux-surface">3.5 hours</option>
+                <option value="240" class="bg-lux-surface">4 hours</option>
+                <option value="300" class="bg-lux-surface">5 hours</option>
+                <option value="360" class="bg-lux-surface">6 hours</option>
+                <option value="420" class="bg-lux-surface">7 hours</option>
+                <option value="480" class="bg-lux-surface">8 hours</option>
+                <option value="540" class="bg-lux-surface">9 hours</option>
+                <option value="600" class="bg-lux-surface">10 hours</option>
+                <option value="660" class="bg-lux-surface">11 hours</option>
+                <option value="720" class="bg-lux-surface">12 hours</option>
+              </select>
+            </div>
+          </div>
           <button class="btn-gold w-full font-semibold text-[15px] py-3.5 rounded-full hover:scale-[1.02] transition-transform duration-200">Search</button>
         </div>
       </div>
@@ -746,6 +788,140 @@
 
   <!-- ========== SCRIPTS ========== -->
   <script>
+    // ===== BOOKING FORM: Default date/time to 24 hours from now =====
+    (function() {
+      const now = new Date();
+      const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+      const dateStr = tomorrow.toISOString().split('T')[0];
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      document.getElementById('input-date').value = dateStr;
+      document.getElementById('input-time').value = hours + ':' + minutes;
+
+      // Make entire date/time container clickable
+      document.getElementById('input-date').closest('.bg-white\\/5').addEventListener('click', function() {
+        document.getElementById('input-date').showPicker();
+      });
+      document.getElementById('input-time').closest('.bg-white\\/5').addEventListener('click', function() {
+        document.getElementById('input-time').showPicker();
+      });
+    })();
+
+    // ===== BOOKING FORM: Address Autocomplete =====
+    const GEOAPIFY_KEY = '7441dacefcaf493a8701eb9b5e64d262';
+
+    let debounceTimer = null;
+    let bookingMode = 'oneway'; // 'oneway' or 'hourly'
+    let fromIsAirport = false;
+    let toIsAirport = false;
+
+    // Switch between One Way and By the Hour tabs
+    function switchBookingTab(mode) {
+      bookingMode = mode;
+      document.querySelectorAll('.booking-tab').forEach(btn => {
+        btn.classList.remove('font-semibold', 'text-white', 'border-gold');
+        btn.classList.add('text-white/40', 'border-transparent');
+      });
+      const activeBtn = document.getElementById('tab-' + mode);
+      activeBtn.classList.add('font-semibold', 'text-white', 'border-gold');
+      activeBtn.classList.remove('text-white/40', 'border-transparent');
+
+      const durationField = document.getElementById('duration-field');
+      if (mode === 'hourly') {
+        durationField.classList.remove('hidden');
+      } else {
+        durationField.classList.add('hidden');
+      }
+    }
+
+    // Check if either From or To is an airport and show/hide flight number
+    function updateFlightFieldVisibility() {
+      const flightField = document.getElementById('flight-number-field');
+      if (fromIsAirport || toIsAirport) {
+        flightField.classList.remove('hidden');
+      } else {
+        flightField.classList.add('hidden');
+      }
+    }
+
+    // Detect if a result is an airport
+    function isAirportResult(feature) {
+      const cats = feature.properties.categories || [];
+      const resultType = feature.properties.result_type || '';
+      const name = (feature.properties.formatted || '').toLowerCase();
+      return cats.some(c => c.includes('airport')) ||
+             resultType === 'amenity' && name.includes('airport') ||
+             name.includes('international airport') ||
+             name.includes(' airport');
+    }
+
+    // Fetch autocomplete suggestions from Geoapify
+    function fetchSuggestions(query, dropdownId, inputId) {
+      if (query.length < 3) {
+        document.getElementById(dropdownId).classList.add('hidden');
+        return;
+      }
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(query)}&limit=5&apiKey=${GEOAPIFY_KEY}`;
+        fetch(url)
+          .then(r => r.json())
+          .then(data => {
+            const dropdown = document.getElementById(dropdownId);
+            if (!data.features || data.features.length === 0) {
+              dropdown.classList.add('hidden');
+              return;
+            }
+            dropdown.innerHTML = data.features.map((f, i) => {
+              const addr = f.properties.formatted || '';
+              const isAirport = isAirportResult(f);
+              const icon = isAirport
+                ? '<svg class="w-4 h-4 text-gold flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"/></svg>'
+                : '<svg class="w-4 h-4 text-white/30 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/></svg>';
+              return `<li class="px-3 py-2.5 flex items-start gap-2.5 cursor-pointer hover:bg-white/5 transition-colors text-[13px] text-white/70 hover:text-white border-b border-white/5 last:border-0" data-index="${i}">${icon}<span class="leading-snug">${addr}</span></li>`;
+            }).join('');
+            dropdown.classList.remove('hidden');
+
+            // Click handlers
+            dropdown.querySelectorAll('li').forEach(li => {
+              li.addEventListener('click', () => {
+                const idx = parseInt(li.dataset.index);
+                const feature = data.features[idx];
+                const input = document.getElementById(inputId);
+                input.value = feature.properties.formatted || '';
+                dropdown.classList.add('hidden');
+
+                const airport = isAirportResult(feature);
+                if (inputId === 'input-from') fromIsAirport = airport;
+                if (inputId === 'input-to') toIsAirport = airport;
+                updateFlightFieldVisibility();
+              });
+            });
+          })
+          .catch(() => {
+            document.getElementById(dropdownId).classList.add('hidden');
+          });
+      }, 300);
+    }
+
+    // Wire up inputs
+    document.getElementById('input-from').addEventListener('input', function() {
+      fetchSuggestions(this.value, 'dropdown-from', 'input-from');
+    });
+    document.getElementById('input-to').addEventListener('input', function() {
+      fetchSuggestions(this.value, 'dropdown-to', 'input-to');
+    });
+
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('#input-from') && !e.target.closest('#dropdown-from')) {
+        document.getElementById('dropdown-from').classList.add('hidden');
+      }
+      if (!e.target.closest('#input-to') && !e.target.closest('#dropdown-to')) {
+        document.getElementById('dropdown-to').classList.add('hidden');
+      }
+    });
+
     // Reveal on scroll
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
