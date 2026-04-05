@@ -1,37 +1,77 @@
-# Website Design Recreation
+# Savoya Website Project
 
-## Workflow
+## Creating a New Page
 
-When the user provides a reference image (screenshot) and optionally some CSS classes or style notes:
+When the user asks to create a new page and provides a Savoya.com URL (e.g. `https://www.savoya.com/about`):
 
-1. **Generate** a single `index.html` file using Tailwind CSS (via CDN). Include all content inline — no external files unless requested.
-2. **Screenshot** the rendered page using Puppeteer (`npx puppeteer screenshot index.html --fullpage` or equivalent). If the page has distinct sections, capture those individually too.
-3. **Compare** your screenshot against the reference image. Check for mismatches in:
-   - Spacing and padding (measure in px)
-   - Font sizes, weights, and line heights
-   - Colors (exact hex values)
-   - Alignment and positioning
-   - Border radii, shadows, and effects
-   - Responsive behavior
-   - Image/icon sizing and placement
-4. **Fix** every mismatch found. Edit the HTML/Tailwind code.
+### 1. Plan
+- Read `DESIGN-SYSTEM.md` for visual patterns, color tokens, typography, components
+- Read `TECH-STACK.md` for technical setup, JS patterns, SEO requirements
+- Read `VALIDATION-GUIDE.md` for evaluation criteria template
+- Screenshot the Savoya.com reference page (full page + key sections) using Playwright
+- Create a build plan that includes an **Evaluation Criteria** section (use the template from VALIDATION-GUIDE.md)
+
+### 2. Build
+- Copy the page template from `DESIGN-SYSTEM.md` section 7 as a starting point
+- Reuse the header and footer from `index.html`
+- Follow `TECH-STACK.md` for Tailwind config, font loading, JS patterns, image handling
+- Use components from `DESIGN-SYSTEM.md` (buttons, cards, forms, section layouts)
+- Adapt the Savoya.com content to our dark luxury theme (gold accent, dark backgrounds)
+
+### 3. Validate (screenshot-compare loop)
+- Follow `VALIDATION-GUIDE.md` Phase 2: screenshot our page, compare against reference
+- Check spacing (~3px tolerance), typography, colors, alignment, responsive layout
+- Document mismatches with specific measurements
+- Fix and re-screenshot — **minimum 2 comparison rounds**
+- Stop only when no visible differences remain
+
+### 4. Final Audit
+- Follow `VALIDATION-GUIDE.md` Phase 3: run automated checks via Playwright
+- Verify design system compliance (tokens, fonts, components)
+- Verify SEO (meta tags, structured data, sitemap entry)
+- Verify accessibility (labels, headings, contrast, skip nav)
+- Verify performance (lazy loading, image dimensions, font preconnect)
+- Compare side-by-side at 1440px desktop and 375px mobile
+
+### 5. Deploy
+- Add the page URL to `sitemap.xml`
+- Commit and push
+- After GitHub Pages deploys, run PageSpeed Insights
+- Target: Performance 90+, SEO 100, Accessibility 90+, Best Practices 100
+
+## Reference Documents
+
+| Document | Purpose |
+|----------|---------|
+| `DESIGN-SYSTEM.md` | Colors, typography, spacing, components, animations, page template |
+| `TECH-STACK.md` | Tailwind setup, JS patterns, image handling, SEO, hosting |
+| `VALIDATION-GUIDE.md` | Evaluation criteria, screenshot-compare loop, automated audits |
+
+## Workflow (from reference image)
+
+When the user provides a reference image (screenshot) instead of a URL:
+
+1. **Generate** a single `.html` file using Tailwind CSS (via CDN). Include all content inline.
+2. **Screenshot** the rendered page using Playwright.
+3. **Compare** against the reference image. Check for mismatches in spacing, fonts, colors, alignment, borders, shadows, responsive behavior, and image sizing.
+4. **Fix** every mismatch found.
 5. **Re-screenshot** and compare again.
-6. **Repeat** steps 3–5 until the result is within ~2–3px of the reference everywhere.
+6. **Repeat** steps 3-5 until within ~2-3px of the reference everywhere.
 
-Do NOT stop after one pass. Always do at least 2 comparison rounds. Only stop when the user says so or when no visible differences remain.
+Do NOT stop after one pass. Always do at least 2 comparison rounds.
 
 ## Technical Defaults
 
 - Use Tailwind CSS via CDN (`<script src="https://cdn.tailwindcss.com"></script>`)
 - Use placeholder images from `https://placehold.co/` when source images aren't provided
 - Mobile-first responsive design
-- Single `index.html` file unless the user requests otherwise
+- Single `.html` file per page
 
 ## Rules
 
-- Create a todo list before executing the tasks
-- Do not add features, sections, or content not present in the reference image
+- Create a todo list before executing tasks
+- Do not add features, sections, or content not present in the reference
 - Match the reference exactly — do not "improve" the design
 - If the user provides CSS classes or style tokens, use them verbatim
 - Keep code clean but don't over-abstract — inline Tailwind classes are fine
-- When comparing screenshots, be specific about what's wrong (e.g., "heading is 32px but reference shows 24px", "gap between cards is 16px but should be 24px")
+- When comparing screenshots, be specific (e.g., "heading is 32px but reference shows 24px")
