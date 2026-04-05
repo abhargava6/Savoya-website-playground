@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Technology - Savoya | Proprietary Chauffeur Booking Platform</title>
+  <meta name="description" content="Take control of your travel with Savoya's proprietary technology platform. Customizable notifications, online portal, GPS tracking, and mobile app for seamless ground transportation.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.savoya.com/technology">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Technology - Savoya | Proprietary Chauffeur Booking Platform">
+  <meta property="og:description" content="Dynamic tech solutions powering seamless ground transportation. Customizable notifications, GPS tracking, and more.">
+  <meta property="og:url" content="https://www.savoya.com/technology">
+  <meta property="og:image" content="https://cdn.prod.website-files.com/62faa9dc6b970a350019a1cd/633ef7f128c4c727f72cee5a_savoya-logo-gold.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="Savoya">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Technology - Savoya | Proprietary Chauffeur Booking Platform">
+  <meta name="twitter:description" content="Dynamic tech solutions powering seamless ground transportation. Customizable notifications, GPS tracking, and more.">
+  <meta name="twitter:image" content="https://cdn.prod.website-files.com/62faa9dc6b970a350019a1cd/633ef7f128c4c727f72cee5a_savoya-logo-gold.svg">
+
+  <!-- Preconnect for fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Preload critical assets -->
+  <link rel="preload" href="https://cdn.prod.website-files.com/62faa9dc6b970a350019a1cd/633ef7f128c4c727f72cee5a_savoya-logo-gold.svg" as="image">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'lux-bg': '#0a0a0a',
+            'lux-surface': '#141414',
+            'lux-elevated': '#1a1a1a',
+            'gold': '#C5A55A',
+            'gold-hover': '#D4B96A',
+          },
+          fontFamily: {
+            'display': ['"Playfair Display"', 'Georgia', 'serif'],
+            'body': ['"Inter"', 'system-ui', 'sans-serif'],
+          },
+          maxWidth: { 'page': '1170px' }
+        }
+      }
+    }
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      -webkit-font-smoothing: antialiased;
+      color: #f5f5f5;
+      background: #0a0a0a;
+    }
+    .btn-gold { background: #C5A55A !important; color: #0a0a0a !important; }
+    .btn-gold:hover { background: #D4B96A !important; }
+    .btn-gold-outline { border: 1px solid #C5A55A !important; color: #C5A55A !important; background: transparent !important; transition: all 0.3s ease; }
+    .btn-gold-outline:hover { background: #C5A55A !important; color: #0a0a0a !important; }
+    .text-gold-gradient { background: linear-gradient(135deg, #C5A55A, #E8D5A0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .glass-dark { background: rgba(255,255,255,0.03); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255,255,255,0.06); }
+    .gold-glow { box-shadow: 0 0 80px rgba(197,165,90,0.06); }
+    .ambient-orb { position: absolute; border-radius: 50%; background: radial-gradient(circle, rgba(197,165,90,0.07) 0%, transparent 70%); filter: blur(80px); pointer-events: none; }
+    .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+    .reveal.active { opacity: 1; transform: translateY(0); }
+    .stagger > .reveal:nth-child(1) { transition-delay: 0ms; }
+    .stagger > .reveal:nth-child(2) { transition-delay: 60ms; }
+    .stagger > .reveal:nth-child(3) { transition-delay: 120ms; }
+    .stagger > .reveal:nth-child(4) { transition-delay: 180ms; }
+    .card-premium { transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), border-color 0.4s ease; }
+    .card-premium:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
+    .scroll-hide { scrollbar-width: none; }
+    .scroll-hide::-webkit-scrollbar { display: none; }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal, .card-premium { transition: none !important; }
+      * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+  </style>
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Savoya Technology Platform",
+    "description": "Savoya's proprietary technology platform provides customizable notifications, an online portal, GPS tracking, and a mobile app for managing executive ground transportation.",
+    "url": "https://www.savoya.com/technology",
+    "mainEntity": {
+      "@type": "SoftwareApplication",
+      "name": "Savoya Platform",
+      "applicationCategory": "Travel & Transportation",
+      "operatingSystem": "iOS, Android, Web",
+      "description": "Proprietary ground transportation management platform with real-time GPS tracking, customizable notifications, and an online booking portal.",
+      "provider": {
+        "@type": "Organization",
+        "name": "Savoya",
+        "url": "https://www.savoya.com"
+      }
+    }
+  }
+  </script>
+</head>
+<body class="min-h-screen">
+
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:bg-gold focus:text-black focus:px-4 focus:py-2 focus:rounded-lg focus:font-semibold focus:text-sm">Skip to main content</a>
+
+  <!-- ========== HEADER ========== -->
+  <header id="site-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 border-b border-transparent">
+    <div class="max-w-page mx-auto px-6 flex items-center justify-between h-[72px]">
+      <a href="index.html"><img src="https://cdn.prod.website-files.com/62faa9dc6b970a350019a1cd/633ef7f128c4c727f72cee5a_savoya-logo-gold.svg" alt="Savoya - Home" class="h-[28px]" width="120" height="28"></a>
+            <nav class="hidden md:flex items-center gap-8 text-[15px] font-medium">
+        <a href="about.html" class="text-white/60 hover:text-white transition-colors duration-200">Company</a>
+        <a href="technology.html" class="text-white/60 hover:text-white transition-colors duration-200">Benefits</a>
+        <a href="who-we-serve.html" class="text-white/60 hover:text-white transition-colors duration-200">Who We Serve</a>
+        <a href="support.html" class="text-white/60 hover:text-white transition-colors duration-200">Resources</a>
+        <a href="index.html#booking" class="btn-gold-outline text-[13px] px-6 py-2.5 rounded-full font-semibold">Book Now</a>
+        <a href="#" class="text-white/60 hover:text-white transition-colors duration-200 flex items-center gap-1.5">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+          Sign in
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+
+  <!-- ========== HERO ========== -->
+  <section class="relative pt-[72px] overflow-hidden">
+    <div class="ambient-orb w-[600px] h-[600px] -top-40 -right-40"></div>
+    <div class="max-w-page mx-auto px-6 py-24 md:py-32 text-center relative">
+      <div class="reveal">
+        <p class="text-[11px] text-white/50 uppercase tracking-[0.2em] font-medium mb-6">Dynamic Tech Solutions</p>
+        <h1 class="font-display text-[48px] md:text-[68px] leading-[1.08] font-light tracking-[-0.02em] mb-6">Take Control<br>of Your Travel</h1>
+        <div class="w-10 h-px bg-gold mx-auto mt-5 mb-8"></div>
+        <p class="text-[17px] text-white/60 leading-relaxed max-w-2xl mx-auto">With Savoya's proprietary platform, we provide you with the tools to manage and customize your travel from departure to arrival. Technology is at the core of our service, and we're committed to evolving to serve your needs because your peace of mind is our standard for success.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FEATURE 1: CUSTOMIZABLE NOTIFICATIONS ========== -->
+  <section class="py-20 px-6 bg-lux-surface border-t border-b border-white/6">
+    <div class="max-w-page mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div class="reveal">
+          <p class="text-[11px] text-gold uppercase tracking-[0.2em] font-medium mb-4">Stay Informed</p>
+          <h2 class="font-display text-[40px] leading-tight font-light mb-6">Customizable Notifications</h2>
+          <div class="w-10 h-px bg-gold mb-8"></div>
+          <p class="text-[16px] text-white/60 leading-relaxed mb-6">Up-to-the-minute trip status updates via text, email, or flight integration keep you informed at every stage of the journey.</p>
+          <ul class="space-y-4">
+            <li class="flex items-start gap-3">
+              <div class="w-6 h-6 rounded-full bg-gold/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <svg class="w-3.5 h-3.5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              </div>
+              <p class="text-[15px] text-white/50 leading-relaxed">Advanced driver and vehicle details shared ahead of time for added security</p>
+            </li>
+            <li class="flex items-start gap-3">
+              <div class="w-6 h-6 rounded-full bg-gold/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <svg class="w-3.5 h-3.5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              </div>
+              <p class="text-[15px] text-white/50 leading-relaxed">Customized text and email alerts tailored for each recipient</p>
+            </li>
+            <li class="flex items-start gap-3">
+              <div class="w-6 h-6 rounded-full bg-gold/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <svg class="w-3.5 h-3.5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              </div>
+              <p class="text-[15px] text-white/50 leading-relaxed">Control notification delivery at key milestones: On Location, On Board, Arrival, and Trip Complete</p>
+            </li>
+          </ul>
+        </div>
+        <div class="reveal" style="transition-delay:100ms">
+          <div class="rounded-2xl overflow-hidden border border-white/6">
+            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop" alt="Savoya notification dashboard showing real-time trip status updates" class="w-full h-auto" loading="lazy" decoding="async" width="600" height="400">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FEATURE 2: ONLINE PORTAL ========== -->
+  <section class="py-20 px-6">
+    <div class="max-w-page mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div class="reveal order-2 lg:order-1">
+          <div class="rounded-2xl overflow-hidden border border-white/6">
+            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop" alt="Savoya online portal with searchable booking dashboard" class="w-full h-auto" loading="lazy" decoding="async" width="600" height="400">
+          </div>
+        </div>
+        <div class="reveal order-1 lg:order-2" style="transition-delay:100ms">
+          <p class="text-[11px] text-gold uppercase tracking-[0.2em] font-medium mb-4">Streamlined Management</p>
+          <h2 class="font-display text-[40px] leading-tight font-light mb-6">Online Portal</h2>
+          <div class="w-10 h-px bg-gold mb-8"></div>
+          <p class="text-[16px] text-white/60 leading-relaxed mb-6">Manage your travel in a user-friendly, single, searchable dashboard designed for efficiency and control.</p>
+          <ul class="space-y-4">
+            <li class="flex items-start gap-3">
+              <div class="w-6 h-6 rounded-full bg-gold/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <svg class="w-3.5 h-3.5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              </div>
+              <p class="text-[15px] text-white/50 leading-relaxed">Custom traveler profiles with saved preferences for a personalized experience</p>
+            </li>
+            <li class="flex items-start gap-3">
+              <div class="w-6 h-6 rounded-full bg-gold/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <svg class="w-3.5 h-3.5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              </div>
+              <p class="text-[15px] text-white/50 leading-relaxed">Address auto-fills, saved locations, and single-click re-booking</p>
+            </li>
+            <li class="flex items-start gap-3">
+              <div class="w-6 h-6 rounded-full bg-gold/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <svg class="w-3.5 h-3.5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              </div>
+              <p class="text-[15px] text-white/50 leading-relaxed">Reporting tools for reconciling charges and tracking usage across your organization</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FEATURE 3: GPS TRACKING ========== -->
+  <section class="py-20 px-6 bg-lux-surface border-t border-b border-white/6">
+    <div class="max-w-page mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div class="reveal">
+          <p class="text-[11px] text-gold uppercase tracking-[0.2em] font-medium mb-4">Real-Time Visibility</p>
+          <h2 class="font-display text-[40px] leading-tight font-light mb-6">GPS Tracking</h2>
+          <div class="w-10 h-px bg-gold mb-8"></div>
+          <p class="text-[16px] text-white/60 leading-relaxed mb-6">Best-in-class real-time tracking gives you complete visibility into every trip, from pickup to destination.</p>
+          <ul class="space-y-4">
+            <li class="flex items-start gap-3">
+              <div class="w-6 h-6 rounded-full bg-gold/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <svg class="w-3.5 h-3.5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              </div>
+              <p class="text-[15px] text-white/50 leading-relaxed">View chauffeur location on COREview and the mobile app in real time</p>
+            </li>
+            <li class="flex items-start gap-3">
+              <div class="w-6 h-6 rounded-full bg-gold/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <svg class="w-3.5 h-3.5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              </div>
+              <p class="text-[15px] text-white/50 leading-relaxed">Dynamic ETA updates based on live traffic conditions</p>
+            </li>
+            <li class="flex items-start gap-3">
+              <div class="w-6 h-6 rounded-full bg-gold/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <svg class="w-3.5 h-3.5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              </div>
+              <p class="text-[15px] text-white/50 leading-relaxed">Multi-person access for seamless team coordination and oversight</p>
+            </li>
+          </ul>
+        </div>
+        <div class="reveal" style="transition-delay:100ms">
+          <div class="rounded-2xl overflow-hidden border border-white/6">
+            <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?w=600&h=400&fit=crop" alt="GPS tracking map showing real-time chauffeur location" class="w-full h-auto" loading="lazy" decoding="async" width="600" height="400">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FEATURE 4: MOBILE APP ========== -->
+  <section class="py-20 px-6">
+    <div class="max-w-page mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div class="reveal order-2 lg:order-1">
+          <div class="rounded-2xl overflow-hidden border border-white/6">
+            <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&h=400&fit=crop" alt="Savoya mobile app on smartphone showing trip management features" class="w-full h-auto" loading="lazy" decoding="async" width="600" height="400">
+          </div>
+        </div>
+        <div class="reveal order-1 lg:order-2" style="transition-delay:100ms">
+          <p class="text-[11px] text-gold uppercase tracking-[0.2em] font-medium mb-4">On-The-Go Access</p>
+          <h2 class="font-display text-[40px] leading-tight font-light mb-6">Mobile App</h2>
+          <div class="w-10 h-px bg-gold mb-8"></div>
+          <p class="text-[16px] text-white/60 leading-relaxed mb-6">Modify existing itineraries, contact your driver, and monitor real-time progress directly from your iOS or Android device.</p>
+          <ul class="space-y-4">
+            <li class="flex items-start gap-3">
+              <div class="w-6 h-6 rounded-full bg-gold/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <svg class="w-3.5 h-3.5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              </div>
+              <p class="text-[15px] text-white/50 leading-relaxed">Available on both iOS and Android for maximum flexibility</p>
+            </li>
+            <li class="flex items-start gap-3">
+              <div class="w-6 h-6 rounded-full bg-gold/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <svg class="w-3.5 h-3.5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              </div>
+              <p class="text-[15px] text-white/50 leading-relaxed">Obscured communications protect private contact information</p>
+            </li>
+            <li class="flex items-start gap-3">
+              <div class="w-6 h-6 rounded-full bg-gold/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <svg class="w-3.5 h-3.5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              </div>
+              <p class="text-[15px] text-white/50 leading-relaxed">Book, manage, and track trips from anywhere with full portal functionality</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== CTA ========== -->
+  <section class="py-24 px-6 relative overflow-hidden bg-lux-surface border-t border-white/6">
+    <div class="ambient-orb w-[500px] h-[500px] -bottom-40 -left-40"></div>
+    <div class="max-w-3xl mx-auto text-center relative reveal">
+      <h2 class="font-display text-[40px] leading-tight font-light mb-4">Let's Ride</h2>
+      <p class="text-white/50 text-[16px] mt-4 mb-8">Discover how Savoya's technology platform can transform your ground transportation experience. Schedule a demo or book your first ride today.</p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="index.html#booking" class="btn-gold font-semibold text-[15px] px-8 py-3.5 rounded-full hover:scale-[1.02] transition-transform duration-200">Book a Ride</a>
+        <a href="index.html#contact" class="btn-gold-outline text-[13px] px-8 py-3 rounded-full font-semibold">Schedule a Demo</a>
+      </div>
+    </div>
+  </section>
+
+  </main>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="bg-[#050505] border-t border-gold/10">
+    <div class="pt-14 pb-10 px-6">
+      <div class="max-w-page mx-auto">
+        <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-12 pb-10 border-b border-white/6">
+          <div class="flex items-center gap-8">
+            <a href="index.html"><img src="https://cdn.prod.website-files.com/62faa9dc6b970a350019a1cd/633ef7f128c4c727f72cee5a_savoya-logo-gold.svg" alt="Savoya - Home" class="h-[26px]" width="110" height="26"></a>
+            <div class="flex gap-2.5">
+              <img src="https://cdn.prod.website-files.com/62faa9dc6b970a350019a1cd/63335b97a4691b6fe0cab2f2_ios.svg" alt="App Store" class="h-[32px] opacity-40 hover:opacity-80 transition-opacity" width="96" height="32">
+              <img src="https://cdn.prod.website-files.com/62faa9dc6b970a350019a1cd/63335bd59758df0c5790c7ad_play.svg" alt="Google Play" class="h-[32px] opacity-40 hover:opacity-80 transition-opacity" width="96" height="32">
+            </div>
+          </div>
+          <a href="#" class="flex items-center gap-2 text-[13px] text-white/40 hover:text-gold transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Help &amp; Support
+          </a>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 text-[13px]">
+        <div><h4 class="text-[11px] uppercase tracking-[0.15em] text-white/40 mb-3 font-medium">Company</h4><ul class="space-y-2.5 text-white/50"><li><a href="about.html" class="hover:text-white transition-colors">About Us</a></li><li><a href="join.html" class="hover:text-white transition-colors">Careers</a></li><li><a href="share.html" class="hover:text-white transition-colors">Share Savoya</a></li><li><a href="drive.html" class="hover:text-white transition-colors">Drive With Us</a></li></ul></div>
+        <div><h4 class="text-[11px] uppercase tracking-[0.15em] text-white/40 mb-3 font-medium">Benefits</h4><ul class="space-y-2.5 text-white/50"><li><a href="technology.html" class="hover:text-white transition-colors">Technology</a></li><li><a href="safety.html" class="hover:text-white transition-colors">Safety</a></li><li><a href="service.html" class="hover:text-white transition-colors">Service</a></li><li><a href="passenger-experience.html" class="hover:text-white transition-colors">Passenger Experience</a></li></ul></div>
+        <div><h4 class="text-[11px] uppercase tracking-[0.15em] text-white/40 mb-3 font-medium">Who We Serve</h4><ul class="space-y-2.5 text-white/50"><li><a href="executive-assistant.html" class="hover:text-white transition-colors">Executive Assistants</a></li><li><a href="who-we-serve.html" class="hover:text-white transition-colors">Flight Departments</a></li><li><a href="who-we-serve.html" class="hover:text-white transition-colors">Security Teams</a></li><li><a href="who-we-serve.html" class="hover:text-white transition-colors">Meeting Planners</a></li></ul></div>
+        <div><h4 class="text-[11px] uppercase tracking-[0.15em] text-white/40 mb-3 font-medium">Resources</h4><ul class="space-y-2.5 text-white/50"><li><a href="support.html" class="hover:text-white transition-colors">Support</a></li><li><a href="index.html#contact" class="hover:text-white transition-colors">Contact</a></li><li><a href="index.html#faq" class="hover:text-white transition-colors">FAQ</a></li></ul></div>
+        <div><h4 class="text-[11px] uppercase tracking-[0.15em] text-white/40 mb-3 font-medium">Top Cities</h4><ul class="space-y-2.5 text-white/50"><li><a href="#" class="hover:text-white transition-colors">New York</a></li><li><a href="#" class="hover:text-white transition-colors">Los Angeles</a></li><li><a href="#" class="hover:text-white transition-colors">San Francisco</a></li><li><a href="#" class="hover:text-white transition-colors">Miami</a></li><li><a href="#" class="hover:text-white transition-colors">London</a></li></ul></div>
+</div>
+      </div>
+    </div>
+    <div class="border-t border-white/6 py-4 px-6">
+      <div class="max-w-page mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-[11px] text-white/40">
+        <div class="flex flex-wrap items-center gap-4"><span>&copy; 2026 Savoya</span><a href="#" class="hover:text-white/50 transition-colors">Privacy Policy</a><a href="#" class="hover:text-white/50 transition-colors">Terms</a><a href="#" class="hover:text-white/50 transition-colors">Accessibility</a></div>
+        <div class="flex items-center gap-4">
+          <a href="#" aria-label="LinkedIn" class="hover:text-gold transition-colors"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+          <a href="#" aria-label="Instagram" class="hover:text-gold transition-colors"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
+          <a href="#" aria-label="X (Twitter)" class="hover:text-gold transition-colors"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========== SCRIPTS ========== -->
+  <script>
+    // Reveal on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('active');
+      });
+    }, { threshold: 0.2 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Header glass on scroll
+    window.addEventListener('scroll', () => {
+      const header = document.getElementById('site-header');
+      if (window.scrollY > 50) {
+        header.style.background = 'rgba(10,10,10,0.85)';
+        header.style.backdropFilter = 'blur(20px)';
+        header.style.webkitBackdropFilter = 'blur(20px)';
+        header.style.borderColor = 'rgba(255,255,255,0.06)';
+      } else {
+        header.style.background = 'transparent';
+        header.style.backdropFilter = 'none';
+        header.style.webkitBackdropFilter = 'none';
+        header.style.borderColor = 'transparent';
+      }
+    });
+  </script>
+
+</body>
+</html>

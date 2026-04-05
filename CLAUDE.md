@@ -71,7 +71,7 @@ Do NOT stop after one pass. Always do at least 2 comparison rounds.
 
 - Create a todo list before executing tasks
 - Do not add features, sections, or content not present in the reference
-- Match the reference exactly — do not "improve" the design
+- Match the reference exactly — do not "improve" the design (unless user asks)
 - If the user provides CSS classes or style tokens, use them verbatim
 - Keep code clean but don't over-abstract — inline Tailwind classes are fine
 - When comparing screenshots, be specific (e.g., "heading is 32px but reference shows 24px")

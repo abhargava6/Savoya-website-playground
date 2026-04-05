@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us - Savoya | The Global Chauffeur Service</title>
+  <meta name="description" content="Learn about Savoya's mission to deliver exceptional chauffeur experiences. Over 2 decades of innovation in luxury ground transportation across 300+ markets.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.savoya.com/about">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="About Us - Savoya | The Global Chauffeur Service">
+  <meta property="og:description" content="Over 2 decades of innovation in luxury ground transportation across 300+ markets worldwide.">
+  <meta property="og:url" content="https://www.savoya.com/about">
+  <meta property="og:image" content="https://cdn.prod.website-files.com/62faa9dc6b970a350019a1cd/633ef7f128c4c727f72cee5a_savoya-logo-gold.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="Savoya">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="About Us - Savoya | The Global Chauffeur Service">
+  <meta name="twitter:description" content="Over 2 decades of innovation in luxury ground transportation across 300+ markets worldwide.">
+  <meta name="twitter:image" content="https://cdn.prod.website-files.com/62faa9dc6b970a350019a1cd/633ef7f128c4c727f72cee5a_savoya-logo-gold.svg">
+
+  <!-- Preconnect for fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Preload critical assets -->
+  <link rel="preload" href="https://cdn.prod.website-files.com/62faa9dc6b970a350019a1cd/633ef7f128c4c727f72cee5a_savoya-logo-gold.svg" as="image">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'lux-bg': '#0a0a0a',
+            'lux-surface': '#141414',
+            'lux-elevated': '#1a1a1a',
+            'gold': '#C5A55A',
+            'gold-hover': '#D4B96A',
+          },
+          fontFamily: {
+            'display': ['"Playfair Display"', 'Georgia', 'serif'],
+            'body': ['"Inter"', 'system-ui', 'sans-serif'],
+          },
+          maxWidth: { 'page': '1170px' }
+        }
+      }
+    }
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      -webkit-font-smoothing: antialiased;
+      color: #f5f5f5;
+      background: #0a0a0a;
+    }
+    .btn-gold { background: #C5A55A !important; color: #0a0a0a !important; }
+    .btn-gold:hover { background: #D4B96A !important; }
+    .btn-gold-outline { border: 1px solid #C5A55A !important; color: #C5A55A !important; background: transparent !important; transition: all 0.3s ease; }
+    .btn-gold-outline:hover { background: #C5A55A !important; color: #0a0a0a !important; }
+    .text-gold-gradient { background: linear-gradient(135deg, #C5A55A, #E8D5A0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .glass-dark { background: rgba(255,255,255,0.03); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255,255,255,0.06); }
+    .gold-glow { box-shadow: 0 0 80px rgba(197,165,90,0.06); }
+    .ambient-orb { position: absolute; border-radius: 50%; background: radial-gradient(circle, rgba(197,165,90,0.07) 0%, transparent 70%); filter: blur(80px); pointer-events: none; }
+    .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+    .reveal.active { opacity: 1; transform: translateY(0); }
+    .stagger > .reveal:nth-child(1) { transition-delay: 0ms; }
+    .stagger > .reveal:nth-child(2) { transition-delay: 60ms; }
+    .stagger > .reveal:nth-child(3) { transition-delay: 120ms; }
+    .stagger > .reveal:nth-child(4) { transition-delay: 180ms; }
+    .card-premium { transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), border-color 0.4s ease; }
+    .card-premium:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
+    .scroll-hide { scrollbar-width: none; }
+    .scroll-hide::-webkit-scrollbar { display: none; }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal, .card-premium { transition: none !important; }
+      * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+  </style>
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "name": "About Savoya",
+    "description": "Learn about Savoya's mission to deliver exceptional chauffeur experiences worldwide.",
+    "url": "https://www.savoya.com/about",
+    "mainEntity": {
+      "@type": "Organization",
+      "name": "Savoya",
+      "url": "https://www.savoya.com",
+      "logo": "https://cdn.prod.website-files.com/62faa9dc6b970a350019a1cd/633ef7f128c4c727f72cee5a_savoya-logo-gold.svg",
+      "description": "The global chauffeur service connecting travelers to vetted, professional chauffeurs across 300+ markets on 6 continents.",
+      "founder": {
+        "@type": "Person",
+        "name": "Robert Dobrient",
+        "jobTitle": "Founder & CEO"
+      },
+      "foundingDate": "2004"
+    }
+  }
+  </script>
+</head>
+<body class="min-h-screen">
+
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:bg-gold focus:text-black focus:px-4 focus:py-2 focus:rounded-lg focus:font-semibold focus:text-sm">Skip to main content</a>
+
+  <!-- ========== HEADER ========== -->
+  <header id="site-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 border-b border-transparent">
+    <div class="max-w-page mx-auto px-6 flex items-center justify-between h-[72px]">
+      <a href="index.html"><img src="https://cdn.prod.website-files.com/62faa9dc6b970a350019a1cd/633ef7f128c4c727f72cee5a_savoya-logo-gold.svg" alt="Savoya - Home" class="h-[28px]" width="120" height="28"></a>
+            <nav class="hidden md:flex items-center gap-8 text-[15px] font-medium">
+        <a href="about.html" class="text-white/60 hover:text-white transition-colors duration-200">Company</a>
+        <a href="technology.html" class="text-white/60 hover:text-white transition-colors duration-200">Benefits</a>
+        <a href="who-we-serve.html" class="text-white/60 hover:text-white transition-colors duration-200">Who We Serve</a>
+        <a href="support.html" class="text-white/60 hover:text-white transition-colors duration-200">Resources</a>
+        <a href="index.html#booking" class="btn-gold-outline text-[13px] px-6 py-2.5 rounded-full font-semibold">Book Now</a>
+        <a href="#" class="text-white/60 hover:text-white transition-colors duration-200 flex items-center gap-1.5">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+          Sign in
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+
+  <!-- ========== HERO ========== -->
+  <section class="relative pt-[72px] overflow-hidden">
+    <div class="ambient-orb w-[600px] h-[600px] -top-40 -right-40"></div>
+    <div class="max-w-page mx-auto px-6 py-24 md:py-32 text-center relative">
+      <div class="reveal">
+        <p class="text-[11px] text-white/50 uppercase tracking-[0.2em] font-medium mb-6">About Savoya</p>
+        <h1 class="font-display text-[48px] md:text-[68px] leading-[1.08] font-light tracking-[-0.02em] mb-6">Raising the Bar<br>for Travel</h1>
+        <div class="w-10 h-px bg-gold mx-auto mt-5"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== OUR STORY ========== -->
+  <section class="py-20 px-6">
+    <div class="max-w-3xl mx-auto">
+      <div class="text-center mb-14 reveal">
+        <h2 class="font-display text-[44px] leading-tight font-light">Our Story</h2>
+        <div class="w-10 h-px bg-gold mx-auto mt-5"></div>
+      </div>
+      <div class="reveal" style="transition-delay:100ms">
+        <p class="text-[17px] text-white/60 leading-relaxed">
+          The Savoya team's commitment to delivering exceptional service originated with our founder and CEO, Robert Dobrient. His personal experiences with poor chauffeur services inspired him to imagine a better solution, one that consistently delivered a high-quality customer experience.
+        </p>
+        <p class="text-[17px] text-white/60 leading-relaxed mt-6">
+          Leveraging his logistics background, Robert launched Savoya, a technology platform that pairs best-in-class drivers with discerning travelers who need more than just a car and driver. For over 2 decades, this unique technology, coupled with our obsession with delivering a client experience that is effortless and enjoyable, has driven our pursuit of innovation and our goal to challenge and change industry standards.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== OUR PROMISE ========== -->
+  <section class="py-20 px-6 bg-lux-surface border-t border-b border-white/6">
+    <div class="max-w-3xl mx-auto text-center">
+      <div class="reveal">
+        <h2 class="font-display text-[44px] leading-tight font-light mb-8">Our Promise</h2>
+        <div class="w-10 h-px bg-gold mx-auto mb-10"></div>
+        <p class="font-display text-[24px] md:text-[30px] leading-relaxed text-white/90">
+          Savoya's seamless experience is a product of our pursuit of excellence. We aim to support and empower travelers with impeccable service, helping them to surge ahead with confidence.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== VALUES ========== -->
+  <section class="py-20 px-6">
+    <div class="max-w-page mx-auto">
+      <div class="text-center mb-14 reveal">
+        <h2 class="font-display text-[44px] leading-tight font-light">What Drives Us</h2>
+        <div class="w-10 h-px bg-gold mx-auto mt-5"></div>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 stagger">
+        <div class="reveal">
+          <div class="bg-lux-surface rounded-2xl p-8 border border-white/6 card-premium hover:border-white/15 h-full">
+            <div class="w-12 h-12 rounded-xl bg-gold/10 flex items-center justify-center mb-5">
+              <svg class="w-6 h-6 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            </div>
+            <h3 class="font-display text-[22px] text-white mb-3">Safety First</h3>
+            <p class="text-[15px] text-white/50 leading-relaxed">Every chauffeur undergoes rigorous vetting with background checks, driving record reviews, and signed confidentiality agreements.</p>
+          </div>
+        </div>
+        <div class="reveal">
+          <div class="bg-lux-surface rounded-2xl p-8 border border-white/6 card-premium hover:border-white/15 h-full">
+            <div class="w-12 h-12 rounded-xl bg-gold/10 flex items-center justify-center mb-5">
+              <svg class="w-6 h-6 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            </div>
+            <h3 class="font-display text-[22px] text-white mb-3">Innovation</h3>
+            <p class="text-[15px] text-white/50 leading-relaxed">Our proprietary technology platform powers real-time tracking, automated flight monitoring, and seamless booking across 300+ markets.</p>
+          </div>
+        </div>
+        <div class="reveal">
+          <div class="bg-lux-surface rounded-2xl p-8 border border-white/6 card-premium hover:border-white/15 h-full">
+            <div class="w-12 h-12 rounded-xl bg-gold/10 flex items-center justify-center mb-5">
+              <svg class="w-6 h-6 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+            </div>
+            <h3 class="font-display text-[22px] text-white mb-3">Service Excellence</h3>
+            <p class="text-[15px] text-white/50 leading-relaxed">An obsessive focus on delivering a client experience that is effortless and enjoyable, from booking to destination.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== TEAM TESTIMONIALS ========== -->
+  <section class="py-20 px-6 bg-lux-surface border-t border-b border-white/6">
+    <div class="max-w-page mx-auto">
+      <div class="text-center mb-14 reveal">
+        <h2 class="font-display text-[44px] leading-tight font-light">What Clients Are Saying<br>About Our Team</h2>
+        <div class="w-10 h-px bg-gold mx-auto mt-5"></div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 stagger">
+
+        <!-- Testimonial 1 -->
+        <div class="reveal">
+          <div class="bg-lux-bg rounded-2xl p-8 border border-white/6 card-premium hover:border-white/15 h-full flex flex-col">
+            <div class="font-display text-[48px] leading-none text-gold/20 mb-2">&ldquo;</div>
+            <p class="text-[15px] text-white/60 leading-relaxed flex-1 -mt-4">With our dynamic schedule and frequent changes, Rebecca jumps to every challenge we have presented and secures safe, reliable 5-star service. Having such a valuable relationship with those at Savoya puts us at ease.</p>
+            <div class="flex items-center gap-4 mt-6 pt-6 border-t border-white/6">
+              <img src="https://cdn.prod.website-files.com/62faa9ec1b44f7f869535226/64f75a717cf7083cc8e4f85a_Rebecca%20Grant%202.webp" alt="Rebecca Grant" class="w-14 h-14 rounded-full object-cover border border-white/10" loading="lazy" decoding="async" width="56" height="56">
+              <div>
+                <p class="font-medium text-[14px] text-white">Rebecca Grant</p>
+                <p class="text-[13px] text-white/50 mt-0.5">Customer Success Manager</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Testimonial 2 -->
+        <div class="reveal">
+          <div class="bg-lux-bg rounded-2xl p-8 border border-white/6 card-premium hover:border-white/15 h-full flex flex-col">
+            <div class="font-display text-[48px] leading-none text-gold/20 mb-2">&ldquo;</div>
+            <p class="text-[15px] text-white/60 leading-relaxed flex-1 -mt-4">John was amazing. It was my first time using Savoya, and he was so friendly and patient while explaining what to expect for my executive during his pickup!</p>
+            <div class="flex items-center gap-4 mt-6 pt-6 border-t border-white/6">
+              <img src="https://cdn.prod.website-files.com/62faa9ec1b44f7f869535226/64f73ae11ac4f272230b03af_John%20Carr%201.jpg" alt="John Carr Jr." class="w-14 h-14 rounded-full object-cover border border-white/10" loading="lazy" decoding="async" width="56" height="56">
+              <div>
+                <p class="font-medium text-[14px] text-white">John Carr Jr.</p>
+                <p class="text-[13px] text-white/50 mt-0.5">Client Care Member</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Testimonial 3 -->
+        <div class="reveal">
+          <div class="bg-lux-bg rounded-2xl p-8 border border-white/6 card-premium hover:border-white/15 h-full flex flex-col">
+            <div class="font-display text-[48px] leading-none text-gold/20 mb-2">&ldquo;</div>
+            <p class="text-[15px] text-white/60 leading-relaxed flex-1 -mt-4">The customer service is outstanding! Our main contact at Savoya, Jonah, is always willing to help and checks in to make sure the service we are receiving is on point and up to standard. He goes above and beyond.</p>
+            <div class="flex items-center gap-4 mt-6 pt-6 border-t border-white/6">
+              <img src="https://cdn.prod.website-files.com/62faa9ec1b44f7f869535226/65aff7f3054e7a663fe4a017_Yonah%20Strommer%202.webp" alt="Jonah Stromer" class="w-14 h-14 rounded-full object-cover border border-white/10" loading="lazy" decoding="async" width="56" height="56">
+              <div>
+                <p class="font-medium text-[14px] text-white">Jonah Stromer</p>
+                <p class="text-[13px] text-white/50 mt-0.5">Director of Sales</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== CTA ========== -->
+  <section class="py-24 px-6 relative overflow-hidden">
+    <div class="ambient-orb w-[500px] h-[500px] -bottom-40 -left-40"></div>
+    <div class="max-w-3xl mx-auto text-center relative reveal">
+      <h2 class="font-display text-[40px] leading-tight font-light mb-4">Experience the Savoya Difference</h2>
+      <p class="text-white/50 text-[16px] mt-4 mb-8">Join the Fortune 100 companies and discerning travelers who trust Savoya for their ground transportation worldwide.</p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="index.html#booking" class="btn-gold font-semibold text-[15px] px-8 py-3.5 rounded-full hover:scale-[1.02] transition-transform duration-200">Book a Ride</a>
+        <a href="index.html#contact" class="btn-gold-outline text-[13px] px-8 py-3 rounded-full font-semibold">Contact Us</a>
+      </div>
+    </div>
+  </section>
+
+  </main>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="bg-[#050505] border-t border-gold/10">
+    <div class="pt-14 pb-10 px-6">
+      <div class="max-w-page mx-auto">
+        <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-12 pb-10 border-b border-white/6">
+          <div class="flex items-center gap-8">
+            <a href="index.html"><img src="https://cdn.prod.website-files.com/62faa9dc6b970a350019a1cd/633ef7f128c4c727f72cee5a_savoya-logo-gold.svg" alt="Savoya - Home" class="h-[26px]" width="110" height="26"></a>
+            <div class="flex gap-2.5">
+              <img src="https://cdn.prod.website-files.com/62faa9dc6b970a350019a1cd/63335b97a4691b6fe0cab2f2_ios.svg" alt="App Store" class="h-[32px] opacity-40 hover:opacity-80 transition-opacity" width="96" height="32">
+              <img src="https://cdn.prod.website-files.com/62faa9dc6b970a350019a1cd/63335bd59758df0c5790c7ad_play.svg" alt="Google Play" class="h-[32px] opacity-40 hover:opacity-80 transition-opacity" width="96" height="32">
+            </div>
+          </div>
+          <a href="#" class="flex items-center gap-2 text-[13px] text-white/40 hover:text-gold transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Help &amp; Support
+          </a>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 text-[13px]">
+        <div><h4 class="text-[11px] uppercase tracking-[0.15em] text-white/40 mb-3 font-medium">Company</h4><ul class="space-y-2.5 text-white/50"><li><a href="about.html" class="hover:text-white transition-colors">About Us</a></li><li><a href="join.html" class="hover:text-white transition-colors">Careers</a></li><li><a href="share.html" class="hover:text-white transition-colors">Share Savoya</a></li><li><a href="drive.html" class="hover:text-white transition-colors">Drive With Us</a></li></ul></div>
+        <div><h4 class="text-[11px] uppercase tracking-[0.15em] text-white/40 mb-3 font-medium">Benefits</h4><ul class="space-y-2.5 text-white/50"><li><a href="technology.html" class="hover:text-white transition-colors">Technology</a></li><li><a href="safety.html" class="hover:text-white transition-colors">Safety</a></li><li><a href="service.html" class="hover:text-white transition-colors">Service</a></li><li><a href="passenger-experience.html" class="hover:text-white transition-colors">Passenger Experience</a></li></ul></div>
+        <div><h4 class="text-[11px] uppercase tracking-[0.15em] text-white/40 mb-3 font-medium">Who We Serve</h4><ul class="space-y-2.5 text-white/50"><li><a href="executive-assistant.html" class="hover:text-white transition-colors">Executive Assistants</a></li><li><a href="who-we-serve.html" class="hover:text-white transition-colors">Flight Departments</a></li><li><a href="who-we-serve.html" class="hover:text-white transition-colors">Security Teams</a></li><li><a href="who-we-serve.html" class="hover:text-white transition-colors">Meeting Planners</a></li></ul></div>
+        <div><h4 class="text-[11px] uppercase tracking-[0.15em] text-white/40 mb-3 font-medium">Resources</h4><ul class="space-y-2.5 text-white/50"><li><a href="support.html" class="hover:text-white transition-colors">Support</a></li><li><a href="index.html#contact" class="hover:text-white transition-colors">Contact</a></li><li><a href="index.html#faq" class="hover:text-white transition-colors">FAQ</a></li></ul></div>
+        <div><h4 class="text-[11px] uppercase tracking-[0.15em] text-white/40 mb-3 font-medium">Top Cities</h4><ul class="space-y-2.5 text-white/50"><li><a href="#" class="hover:text-white transition-colors">New York</a></li><li><a href="#" class="hover:text-white transition-colors">Los Angeles</a></li><li><a href="#" class="hover:text-white transition-colors">San Francisco</a></li><li><a href="#" class="hover:text-white transition-colors">Miami</a></li><li><a href="#" class="hover:text-white transition-colors">London</a></li></ul></div>
+</div>
+      </div>
+    </div>
+    <div class="border-t border-white/6 py-4 px-6">
+      <div class="max-w-page mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-[11px] text-white/40">
+        <div class="flex flex-wrap items-center gap-4"><span>&copy; 2026 Savoya</span><a href="#" class="hover:text-white/50 transition-colors">Privacy Policy</a><a href="#" class="hover:text-white/50 transition-colors">Terms</a><a href="#" class="hover:text-white/50 transition-colors">Accessibility</a></div>
+        <div class="flex items-center gap-4">
+          <a href="#" aria-label="LinkedIn" class="hover:text-gold transition-colors"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+          <a href="#" aria-label="Instagram" class="hover:text-gold transition-colors"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
+          <a href="#" aria-label="X (Twitter)" class="hover:text-gold transition-colors"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========== SCRIPTS ========== -->
+  <script>
+    // Reveal on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('active');
+      });
+    }, { threshold: 0.2 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Header glass on scroll
+    window.addEventListener('scroll', () => {
+      const header = document.getElementById('site-header');
+      if (window.scrollY > 50) {
+        header.style.background = 'rgba(10,10,10,0.85)';
+        header.style.backdropFilter = 'blur(20px)';
+        header.style.webkitBackdropFilter = 'blur(20px)';
+        header.style.borderColor = 'rgba(255,255,255,0.06)';
+      } else {
+        header.style.background = 'transparent';
+        header.style.backdropFilter = 'none';
+        header.style.webkitBackdropFilter = 'none';
+        header.style.borderColor = 'transparent';
+      }
+    });
+  </script>
+
+</body>
+</html>
