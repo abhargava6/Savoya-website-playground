@@ -145,6 +145,18 @@
     input[type="date"], input[type="time"] { -webkit-appearance: none; font-family: 'Inter', system-ui, sans-serif; color-scheme: dark; }
     input[type="date"]::-webkit-calendar-picker-indicator,
     input[type="time"]::-webkit-calendar-picker-indicator { filter: invert(0.5); cursor: pointer; }
+    /* Marquee carousel */
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+    .marquee-track {
+      display: flex;
+      gap: 20px;
+      animation: marquee 40s linear infinite;
+      width: max-content;
+    }
+    .marquee-track:hover { animation-play-state: paused; }
     /* Select dropdown styling */
     select option { background: #141414; color: #f5f5f5; }
     select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.4)' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0 center; }
@@ -153,6 +165,7 @@
       .reveal, .word-reveal, .card-premium { transition: none !important; }
       .accordion-content { transition: none !important; }
       * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+      .marquee-track { animation: none !important; overflow-x: auto; }
     }
   </style>
 
@@ -578,59 +591,97 @@
     </div>
   </section>
 
-  <!-- ========== CITY CAROUSEL ========== -->
-  <section class="py-20 px-6 bg-lux-surface border-t border-b border-white/6">
-    <div class="max-w-page mx-auto">
+  <!-- ========== GLOBAL COVERAGE MARQUEE ========== -->
+  <section class="py-20 bg-lux-surface border-t border-b border-white/6">
+    <div class="max-w-page mx-auto px-6">
       <div class="text-center mb-12 reveal">
         <h2 class="font-display text-[28px] md:text-[44px] leading-tight font-light">Global Coverage</h2>
         <p class="text-white/50 text-[16px] mt-4">6 Continents. 300+ Markets. One Standard of Excellence.</p>
         <div class="w-10 h-px bg-gold mx-auto mt-5"></div>
       </div>
-      <div class="relative">
-        <div class="flex gap-5 overflow-x-auto pb-4 scroll-hide snap-x snap-mandatory" id="city-carousel">
-          <div class="min-w-[260px] md:min-w-[300px] snap-start rounded-2xl overflow-hidden relative group cursor-pointer flex-shrink-0">
-            <img src="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=600&h=400&fit=crop&q=80" alt="San Francisco" class="w-full h-[320px] object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-110" loading="lazy" decoding="async" width="600" height="400">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-            <div class="absolute bottom-0 left-0 p-6"><h3 class="font-display text-[24px] text-white">San Francisco</h3><p class="text-white/50 text-[13px] mt-1">California, USA</p></div>
-          </div>
-          <div class="min-w-[260px] md:min-w-[300px] snap-start rounded-2xl overflow-hidden relative group cursor-pointer flex-shrink-0">
-            <img src="https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=600&h=400&fit=crop&q=80" alt="New York City" class="w-full h-[320px] object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-110" loading="lazy" decoding="async" width="600" height="400">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-            <div class="absolute bottom-0 left-0 p-6"><h3 class="font-display text-[24px] text-white">New York City</h3><p class="text-white/50 text-[13px] mt-1">New York, USA</p></div>
-          </div>
-          <div class="min-w-[260px] md:min-w-[300px] snap-start rounded-2xl overflow-hidden relative group cursor-pointer flex-shrink-0">
-            <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=600&h=400&fit=crop&q=80" alt="Paris" class="w-full h-[320px] object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-110" loading="lazy" decoding="async" width="600" height="400">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-            <div class="absolute bottom-0 left-0 p-6"><h3 class="font-display text-[24px] text-white">Paris</h3><p class="text-white/50 text-[13px] mt-1">France</p></div>
-          </div>
-          <div class="min-w-[260px] md:min-w-[300px] snap-start rounded-2xl overflow-hidden relative group cursor-pointer flex-shrink-0">
-            <img src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=600&h=400&fit=crop&q=80" alt="London" class="w-full h-[320px] object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-110" loading="lazy" decoding="async" width="600" height="400">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-            <div class="absolute bottom-0 left-0 p-6"><h3 class="font-display text-[24px] text-white">London</h3><p class="text-white/50 text-[13px] mt-1">United Kingdom</p></div>
-          </div>
-          <div class="min-w-[260px] md:min-w-[300px] snap-start rounded-2xl overflow-hidden relative group cursor-pointer flex-shrink-0">
-            <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&h=400&fit=crop&q=80" alt="Dubai" class="w-full h-[320px] object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-110" loading="lazy" decoding="async" width="600" height="400">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-            <div class="absolute bottom-0 left-0 p-6"><h3 class="font-display text-[24px] text-white">Dubai</h3><p class="text-white/50 text-[13px] mt-1">United Arab Emirates</p></div>
-          </div>
-          <div class="min-w-[260px] md:min-w-[300px] snap-start rounded-2xl overflow-hidden relative group cursor-pointer flex-shrink-0">
-            <img src="https://images.unsplash.com/photo-1533106497176-45ae19e68ba2?w=600&h=400&fit=crop&q=80" alt="Miami" class="w-full h-[320px] object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-110" loading="lazy" decoding="async" width="600" height="400">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-            <div class="absolute bottom-0 left-0 p-6"><h3 class="font-display text-[24px] text-white">Miami</h3><p class="text-white/50 text-[13px] mt-1">Florida, USA</p></div>
-          </div>
-          <div class="min-w-[260px] md:min-w-[300px] snap-start rounded-2xl overflow-hidden relative group cursor-pointer flex-shrink-0">
-            <img src="https://images.unsplash.com/photo-1534190760961-74e8c1c5c3da?w=600&h=400&fit=crop&q=80" alt="Los Angeles" class="w-full h-[320px] object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-110" loading="lazy" decoding="async" width="600" height="400">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-            <div class="absolute bottom-0 left-0 p-6"><h3 class="font-display text-[24px] text-white">Los Angeles</h3><p class="text-white/50 text-[13px] mt-1">California, USA</p></div>
-          </div>
+    </div>
+    <div class="relative overflow-hidden reveal" style="transition-delay:100ms">
+      <!-- Left fade -->
+      <div class="pointer-events-none absolute top-0 left-0 z-10 h-full w-16 md:w-32 bg-gradient-to-r from-lux-surface to-transparent"></div>
+      <!-- Right fade -->
+      <div class="pointer-events-none absolute top-0 right-0 z-10 h-full w-16 md:w-32 bg-gradient-to-l from-lux-surface to-transparent"></div>
+      <!-- Marquee track (7 cities duplicated for seamless loop) -->
+      <div class="marquee-track">
+        <!-- Original set -->
+        <div class="min-w-[260px] md:min-w-[300px] rounded-2xl overflow-hidden relative group cursor-pointer flex-shrink-0">
+          <img src="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=600&h=400&fit=crop&q=80" alt="San Francisco" class="w-full h-[320px] object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105" loading="lazy" decoding="async" width="600" height="400">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 p-6"><h3 class="font-display text-[24px] text-white">San Francisco</h3><p class="text-white/50 text-[13px] mt-1">California, USA</p></div>
         </div>
-        <button aria-label="Previous cities" onclick="document.getElementById('city-carousel').scrollBy({left:-320,behavior:'smooth'})" class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 w-10 h-10 rounded-full flex items-center justify-center text-white/60 hover:text-gold border border-white/10 hover:border-gold/30 bg-lux-bg/80 backdrop-blur-sm transition-all z-10">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7"/></svg>
-        </button>
-        <button aria-label="Next cities" onclick="document.getElementById('city-carousel').scrollBy({left:320,behavior:'smooth'})" class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 w-10 h-10 rounded-full flex items-center justify-center text-white/60 hover:text-gold border border-white/10 hover:border-gold/30 bg-lux-bg/80 backdrop-blur-sm transition-all z-10">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"/></svg>
-        </button>
+        <div class="min-w-[260px] md:min-w-[300px] rounded-2xl overflow-hidden relative group cursor-pointer flex-shrink-0">
+          <img src="https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=600&h=400&fit=crop&q=80" alt="New York City" class="w-full h-[320px] object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105" loading="lazy" decoding="async" width="600" height="400">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 p-6"><h3 class="font-display text-[24px] text-white">New York City</h3><p class="text-white/50 text-[13px] mt-1">New York, USA</p></div>
+        </div>
+        <div class="min-w-[260px] md:min-w-[300px] rounded-2xl overflow-hidden relative group cursor-pointer flex-shrink-0">
+          <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=600&h=400&fit=crop&q=80" alt="Paris" class="w-full h-[320px] object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105" loading="lazy" decoding="async" width="600" height="400">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 p-6"><h3 class="font-display text-[24px] text-white">Paris</h3><p class="text-white/50 text-[13px] mt-1">France</p></div>
+        </div>
+        <div class="min-w-[260px] md:min-w-[300px] rounded-2xl overflow-hidden relative group cursor-pointer flex-shrink-0">
+          <img src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=600&h=400&fit=crop&q=80" alt="London" class="w-full h-[320px] object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105" loading="lazy" decoding="async" width="600" height="400">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 p-6"><h3 class="font-display text-[24px] text-white">London</h3><p class="text-white/50 text-[13px] mt-1">United Kingdom</p></div>
+        </div>
+        <div class="min-w-[260px] md:min-w-[300px] rounded-2xl overflow-hidden relative group cursor-pointer flex-shrink-0">
+          <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&h=400&fit=crop&q=80" alt="Dubai" class="w-full h-[320px] object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105" loading="lazy" decoding="async" width="600" height="400">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 p-6"><h3 class="font-display text-[24px] text-white">Dubai</h3><p class="text-white/50 text-[13px] mt-1">United Arab Emirates</p></div>
+        </div>
+        <div class="min-w-[260px] md:min-w-[300px] rounded-2xl overflow-hidden relative group cursor-pointer flex-shrink-0">
+          <img src="https://images.unsplash.com/photo-1533106497176-45ae19e68ba2?w=600&h=400&fit=crop&q=80" alt="Miami" class="w-full h-[320px] object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105" loading="lazy" decoding="async" width="600" height="400">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 p-6"><h3 class="font-display text-[24px] text-white">Miami</h3><p class="text-white/50 text-[13px] mt-1">Florida, USA</p></div>
+        </div>
+        <div class="min-w-[260px] md:min-w-[300px] rounded-2xl overflow-hidden relative group cursor-pointer flex-shrink-0">
+          <img src="https://images.unsplash.com/photo-1534190760961-74e8c1c5c3da?w=600&h=400&fit=crop&q=80" alt="Los Angeles" class="w-full h-[320px] object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105" loading="lazy" decoding="async" width="600" height="400">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 p-6"><h3 class="font-display text-[24px] text-white">Los Angeles</h3><p class="text-white/50 text-[13px] mt-1">California, USA</p></div>
+        </div>
+        <!-- Duplicate set for seamless loop -->
+        <div class="min-w-[260px] md:min-w-[300px] rounded-2xl overflow-hidden relative group cursor-pointer flex-shrink-0">
+          <img src="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=600&h=400&fit=crop&q=80" alt="San Francisco" class="w-full h-[320px] object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105" loading="lazy" decoding="async" width="600" height="400">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 p-6"><h3 class="font-display text-[24px] text-white">San Francisco</h3><p class="text-white/50 text-[13px] mt-1">California, USA</p></div>
+        </div>
+        <div class="min-w-[260px] md:min-w-[300px] rounded-2xl overflow-hidden relative group cursor-pointer flex-shrink-0">
+          <img src="https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=600&h=400&fit=crop&q=80" alt="New York City" class="w-full h-[320px] object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105" loading="lazy" decoding="async" width="600" height="400">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 p-6"><h3 class="font-display text-[24px] text-white">New York City</h3><p class="text-white/50 text-[13px] mt-1">New York, USA</p></div>
+        </div>
+        <div class="min-w-[260px] md:min-w-[300px] rounded-2xl overflow-hidden relative group cursor-pointer flex-shrink-0">
+          <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=600&h=400&fit=crop&q=80" alt="Paris" class="w-full h-[320px] object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105" loading="lazy" decoding="async" width="600" height="400">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 p-6"><h3 class="font-display text-[24px] text-white">Paris</h3><p class="text-white/50 text-[13px] mt-1">France</p></div>
+        </div>
+        <div class="min-w-[260px] md:min-w-[300px] rounded-2xl overflow-hidden relative group cursor-pointer flex-shrink-0">
+          <img src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=600&h=400&fit=crop&q=80" alt="London" class="w-full h-[320px] object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105" loading="lazy" decoding="async" width="600" height="400">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 p-6"><h3 class="font-display text-[24px] text-white">London</h3><p class="text-white/50 text-[13px] mt-1">United Kingdom</p></div>
+        </div>
+        <div class="min-w-[260px] md:min-w-[300px] rounded-2xl overflow-hidden relative group cursor-pointer flex-shrink-0">
+          <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&h=400&fit=crop&q=80" alt="Dubai" class="w-full h-[320px] object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105" loading="lazy" decoding="async" width="600" height="400">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 p-6"><h3 class="font-display text-[24px] text-white">Dubai</h3><p class="text-white/50 text-[13px] mt-1">United Arab Emirates</p></div>
+        </div>
+        <div class="min-w-[260px] md:min-w-[300px] rounded-2xl overflow-hidden relative group cursor-pointer flex-shrink-0">
+          <img src="https://images.unsplash.com/photo-1533106497176-45ae19e68ba2?w=600&h=400&fit=crop&q=80" alt="Miami" class="w-full h-[320px] object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105" loading="lazy" decoding="async" width="600" height="400">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 p-6"><h3 class="font-display text-[24px] text-white">Miami</h3><p class="text-white/50 text-[13px] mt-1">Florida, USA</p></div>
+        </div>
+        <div class="min-w-[260px] md:min-w-[300px] rounded-2xl overflow-hidden relative group cursor-pointer flex-shrink-0">
+          <img src="https://images.unsplash.com/photo-1534190760961-74e8c1c5c3da?w=600&h=400&fit=crop&q=80" alt="Los Angeles" class="w-full h-[320px] object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105" loading="lazy" decoding="async" width="600" height="400">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 p-6"><h3 class="font-display text-[24px] text-white">Los Angeles</h3><p class="text-white/50 text-[13px] mt-1">California, USA</p></div>
+        </div>
       </div>
+    </div>
+    <div class="max-w-page mx-auto px-6">
       <div class="text-center mt-8"><a href="#" class="text-gold text-[14px] font-medium hover:underline">View All Service Areas &rarr;</a></div>
     </div>
   </section>
