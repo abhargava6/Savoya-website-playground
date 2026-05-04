@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Team Greenlight — Weekly Update | May 5, 2026</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --color-bg: #FAFAFA;
+      --color-text: #2D2D2D;
+      --color-muted: #7A7A7A;
+      --color-light: #B8B8B8;
+      --color-border: #EBEBEB;
+      --color-surface: #F2F2F2;
+      --color-green: #3D8C6F;
+      --color-amber: #C4842D;
+      --color-red: #C45D4D;
+      --color-blue: #4A7AB5;
+      --color-purple: #7B61A8;
+      --color-slate: #6B7B8F;
+
+      --font: 'Inter', -apple-system, sans-serif;
+    }
+
+    html { font-size: 18px; }
+    body {
+      font-family: var(--font);
+      color: var(--color-text);
+      background: var(--color-bg);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    @media print {
+      .slide { page-break-after: always; break-after: page; }
+      body { overflow: visible; }
+      .slides-container { overflow: visible; scroll-snap-type: none; }
+      .slide { height: auto; min-height: 100vh; }
+    }
+
+    .slides-container {
+      width: 100vw;
+      height: 100vh;
+      overflow-y: auto;
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+    }
+
+    .slide {
+      width: 100vw;
+      height: 100vh;
+      min-height: 100vh;
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 6vh 8vw;
+      padding-top: 8vh;
+      position: relative;
+    }
+
+    .slide-content {
+      max-width: 1000px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* Logo */
+    .logo {
+      position: absolute;
+      top: 3.5vh;
+      left: 8vw;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo-text {
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      color: var(--color-text);
+    }
+
+    /* === SLIDE 1 === */
+    .slide-header { margin-bottom: 2.5rem; }
+
+    .slide-header .label {
+      font-size: 0.7rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--color-light);
+      margin-bottom: 0.5rem;
+    }
+
+    .slide-header h1 {
+      font-size: 2rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .slide-header .date {
+      font-size: 0.85rem;
+      color: var(--color-muted);
+      margin-top: 0.3rem;
+    }
+
+    .exec-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 3rem;
+    }
+
+    .exec-col h3 {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1.5px solid var(--color-border);
+    }
+
+    .exec-col.wins h3 { color: var(--color-green); border-color: var(--color-green); }
+    .exec-col.next h3 { color: var(--color-blue); border-color: var(--color-blue); }
+    .exec-col.risks h3 { color: var(--color-amber); border-color: var(--color-amber); }
+
+    .exec-col ul { list-style: none; padding: 0; }
+
+    .exec-col li {
+      font-size: 0.85rem;
+      line-height: 1.55;
+      padding: 0.4rem 0;
+      color: var(--color-text);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .exec-col li:last-child { border-bottom: none; }
+
+    .exec-col li .owner {
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--color-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .slide-note {
+      margin-top: 2rem;
+      font-size: 0.8rem;
+      color: var(--color-muted);
+      font-style: italic;
+      padding-top: 1rem;
+      border-top: 1px solid var(--color-border);
+    }
+
+    /* === SLIDE 2 === */
+    .slide-table h2 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 2rem;
+    }
+
+    .project-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .project-table th {
+      font-size: 0.65rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 0.8rem 1.2rem;
+      text-align: left;
+      color: var(--color-muted);
+      border-bottom: 1.5px solid var(--color-text);
+    }
+
+    .project-table td {
+      padding: 1rem 1.2rem;
+      border-bottom: 1px solid var(--color-border);
+      vertical-align: top;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      color: var(--color-text);
+    }
+
+    .proj-cell {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .proj-name { font-weight: 600; white-space: nowrap; }
+
+    .phase {
+      display: inline-block;
+      font-size: 0.6rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0.2rem 0.5rem;
+      border-radius: 3px;
+      width: fit-content;
+    }
+
+    .phase.dev { background: rgba(74,122,181,0.1); color: var(--color-blue); }
+    .phase.validation { background: rgba(196,132,45,0.1); color: var(--color-amber); }
+    .phase.planning { background: rgba(123,97,168,0.1); color: var(--color-purple); }
+    .phase.scoping { background: rgba(107,123,143,0.1); color: var(--color-slate); }
+    .phase.shipped { background: rgba(61,140,111,0.1); color: var(--color-green); }
+
+    .risk-text { color: var(--color-red); font-weight: 500; }
+
+    /* === SLIDE 3 === */
+    .slide-team h2 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.3rem;
+    }
+
+    .slide-team .sprint-subtext {
+      font-size: 0.8rem;
+      color: var(--color-muted);
+      margin-bottom: 1.8rem;
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 2.5rem;
+    }
+
+    .team-card h3 {
+      font-size: 0.65rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--color-muted);
+      margin-bottom: 0.8rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1.5px solid var(--color-text);
+    }
+
+    .team-card ul { list-style: none; padding: 0; }
+
+    .team-card li {
+      font-size: 0.8rem;
+      line-height: 1.6;
+      padding: 0.5rem 0;
+      color: var(--color-text);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .team-card li:last-child { border-bottom: none; }
+
+    .team-card li .goal-label {
+      font-weight: 500;
+    }
+
+    .team-card li .goal-target {
+      display: block;
+      font-size: 0.65rem;
+      font-weight: 500;
+      padding: 0.15rem 0.45rem;
+      border-radius: 3px;
+      margin-top: 0.2rem;
+      background: var(--color-surface);
+      color: var(--color-muted);
+      width: fit-content;
+    }
+
+    .board-link {
+      display: inline-block;
+      margin-top: 1.5rem;
+      font-size: 0.75rem;
+      color: var(--color-blue);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(74,122,181,0.3);
+      padding-bottom: 1px;
+    }
+
+    .board-link:hover { border-color: var(--color-blue); }
+
+    .sprint-footer {
+      margin-top: 2rem;
+      padding-top: 1.2rem;
+      border-top: 1.5px solid var(--color-border);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .sprint-footer h4 {
+      font-size: 0.65rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--color-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .sprint-footer .stats {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .sprint-footer .stat {
+      font-size: 0.75rem;
+      color: var(--color-muted);
+    }
+
+    .sprint-footer .stat strong {
+      display: block;
+      font-size: 1.1rem;
+      color: var(--color-text);
+      font-weight: 600;
+    }
+
+    .sprint-footer .pointers ul { list-style: none; padding: 0; }
+
+    .sprint-footer .pointers li {
+      font-size: 0.72rem;
+      color: var(--color-muted);
+      padding: 0.2rem 0;
+    }
+
+    .slide-footer {
+      position: absolute;
+      bottom: 3.5vh;
+      left: 8vw;
+      font-size: 0.7rem;
+      color: var(--color-light);
+    }
+  </style>
+</head>
+<body>
+  <div class="slides-container" id="slidesContainer">
+
+    <!-- SLIDE 1: Executive Summary -->
+    <section class="slide" id="slide-1">
+      <div class="logo">
+        <span class="logo-text">SAVOYA</span>
+      </div>
+      <div class="slide-content">
+        <div class="slide-header">
+          <p class="label">Team Greenlight</p>
+          <h1>Weekly Status</h1>
+          <p class="date">Week of May 4, 2026</p>
+        </div>
+
+        <div class="exec-columns">
+          <div class="exec-col wins">
+            <h3>Wins</h3>
+            <ul>
+              <li>Assignment Logic — business and eng. fully aligned</li>
+              <li>Assignment Logic — fully scoped and development started</li>
+              <li>All other leftover development work finished</li>
+            </ul>
+          </div>
+
+          <div class="exec-col next">
+            <h3>Up Next</h3>
+            <ul>
+              <li>Assignment Logic development</li>
+              <li>Flush out Ground Span dev plan in Jira</li>
+              <li>Vendor Scoring cutover to V2</li>
+              <li>Kick off Manifest Automation</li>
+              <li>Trip Sharing announcement via Appcues</li>
+            </ul>
+          </div>
+
+          <div class="exec-col risks">
+            <h3>Blockers / Risks</h3>
+            <ul>
+              <li>Vendor Scoring validation stalled by 1 week <span class="owner">— Dan</span></li>
+              <li>Vendor Scoring might need a release <span class="owner">— Plutus</span></li>
+              <li>Need core data in staging <span class="owner">— Plutus</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <p class="slide-note">Note: Picking up Ground Span to run in parallel as stretch goal.</p>
+      </div>
+      <p class="slide-footer">Ayush Bhargava</p>
+    </section>
+
+    <!-- SLIDE 2: Project Table -->
+    <section class="slide" id="slide-2">
+      <div class="logo">
+        <span class="logo-text">SAVOYA</span>
+      </div>
+      <div class="slide-content">
+        <h2>Projects</h2>
+        <table class="project-table">
+          <thead>
+            <tr>
+              <th>Project</th>
+              <th>Done</th>
+              <th>Next</th>
+              <th>Risk</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div class="proj-cell"><span class="proj-name">Assignment Logic</span><span class="phase dev">Development</span></div></td>
+              <td>Business + eng aligned. 12 epics scoped. Dev started.</td>
+              <td>Audit Trail, Beta Types, Cost Algo to QA</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td><div class="proj-cell"><span class="proj-name">Vendor Scoring</span><span class="phase validation">Validation</span></div></td>
+              <td>Engineering complete. Parallel run started Apr 24.</td>
+              <td>Sign-off → cutover</td>
+              <td class="risk-text">Vendor team validation pending</td>
+            </tr>
+            <tr>
+              <td><div class="proj-cell"><span class="proj-name">Ground Span</span><span class="phase planning">Planning</span></div></td>
+              <td>Architecture approved. Security assessed.</td>
+              <td>Dev plan with milestones in Jira</td>
+              <td class="risk-text">18 open Qs with partner</td>
+            </tr>
+            <tr>
+              <td><div class="proj-cell"><span class="proj-name">Trip Sharing</span><span class="phase shipped">Shipped</span></div></td>
+              <td>Feature-complete end to end.</td>
+              <td>Customer announcement</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td><div class="proj-cell"><span class="proj-name">Manifest Automation</span><span class="phase scoping">Scoping</span></div></td>
+              <td>Context gathered.</td>
+              <td>UI/UX design</td>
+              <td>—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="slide-footer">Ayush Bhargava</p>
+    </section>
+
+    <!-- SLIDE 3: Team Goals -->
+    <section class="slide slide-team" id="slide-3">
+      <div class="logo">
+        <span class="logo-text">SAVOYA</span>
+      </div>
+      <div class="slide-content">
+        <h2>Sprint 2 Goals</h2>
+        <p class="sprint-subtext">May 4 – May 18, 2026</p>
+        <div class="team-grid">
+          <div class="team-card">
+            <h3>Ethan</h3>
+            <ul>
+              <li><span class="goal-label">Beta Independent Vendor Type</span> <span class="goal-target">Dev Complete</span></li>
+              <li><span class="goal-label">Cost-Based Assignment Algorithm</span> <span class="goal-target">Dev Complete</span></li>
+              <li><span class="goal-label">New Feature Flags</span> <span class="goal-target">Dev Complete</span></li>
+              <li><span class="goal-label">Vendor Scoring V2</span> <span class="goal-target">Feature Flag Enabled</span></li>
+            </ul>
+          </div>
+
+          <div class="team-card">
+            <h3>Himanshu</h3>
+            <ul>
+              <li><span class="goal-label">Busy Driver (Garages)</span> <span class="goal-target">Feasibility Y/N</span></li>
+              <li><span class="goal-label">Assignment Logic Test Suite</span> <span class="goal-target">Strategy Doc Finalized</span></li>
+              <li><span class="goal-label">Ground Span</span> <span class="goal-target">Dev Plan w/ Milestones</span></li>
+              <li><span class="goal-label">Assignment Audit Trail</span> <span class="goal-target">Prod Ready</span></li>
+            </ul>
+          </div>
+
+          <div class="team-card">
+            <h3>Product + Suyog</h3>
+            <ul>
+              <li><span class="goal-label">Trip Sharing</span> <span class="goal-target">Announcement + Appcues Live</span></li>
+              <li><span class="goal-label">Assignment Logic</span> <span class="goal-target">Testing</span></li>
+              <li><span class="goal-label">Assignment Logic</span> <span class="goal-target">QA Test Catalog Ready</span></li>
+              <li><span class="goal-label">Manifest Automation</span> <span class="goal-target">Scoping & Solution Design</span></li>
+              <li><span class="goal-label">Ground Span</span> <span class="goal-target">Business Discussions</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <a class="board-link" href="https://capitaldrive.atlassian.net/jira/software/c/projects/GREEN/boards/422" target="_blank">View Greenlight Board →</a>
+
+        <div class="sprint-footer">
+          <div>
+            <h4><a href="https://capitaldrive.atlassian.net/jira/software/c/projects/GREEN/boards/422/reports/sprint-retrospective?sprint=1127" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px solid rgba(74,122,181,0.3);">Sprint 1 Velocity →</a></h4>
+            <div class="stats">
+              <div class="stat"><strong>63</strong> Story points</div>
+              <div class="stat"><strong>22/30</strong> Issues completed</div>
+              <div class="stat"><strong>6 wks</strong> Duration</div>
+            </div>
+          </div>
+          <div class="pointers">
+            <h4>Sprint 1 Highlights</h4>
+            <ul>
+              <li>Trip Sharing MVP shipped end-to-end (12+ stories)</li>
+              <li>Vendor Scoring Phase 1 foundations delivered</li>
+              <li>NCA hypercare wrapped</li>
+              <li>Assignment Logic solution design</li>
+              <li>Ground Span solution design</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <p class="slide-footer">Ayush Bhargava</p>
+    </section>
+
+  </div>
+
+  <script>
+    document.addEventListener('keydown', (e) => {
+      const container = document.getElementById('slidesContainer');
+      const h = window.innerHeight;
+      if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ') {
+        e.preventDefault(); container.scrollBy({ top: h, behavior: 'smooth' });
+      } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+        e.preventDefault(); container.scrollBy({ top: -h, behavior: 'smooth' });
+      }
+    });
+  </script>
+</body>
+</html>
