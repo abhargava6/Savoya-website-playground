@@ -178,9 +178,12 @@
       letter-spacing: 0.1em;
       padding: 0.8rem 1.2rem;
       text-align: left;
-      color: var(--color-muted);
-      border-bottom: 1.5px solid var(--color-text);
+      border-bottom: 1.5px solid var(--color-border);
     }
+
+    .project-table th.col-done { color: var(--color-green); border-bottom-color: var(--color-green); }
+    .project-table th.col-next { color: var(--color-blue); border-bottom-color: var(--color-blue); }
+    .project-table th.col-risk { color: var(--color-amber); border-bottom-color: var(--color-amber); }
 
     .project-table td {
       padding: 1rem 1.2rem;
@@ -402,10 +405,10 @@
         <table class="project-table">
           <thead>
             <tr>
-              <th>Project</th>
-              <th>Done</th>
-              <th>Next</th>
-              <th>Risk</th>
+              <th></th>
+              <th class="col-done">Done</th>
+              <th class="col-next">Next</th>
+              <th class="col-risk">Risk</th>
             </tr>
           </thead>
           <tbody>
