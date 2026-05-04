@@ -186,6 +186,7 @@
     .project-table th.col-done { color: var(--color-green); border-bottom-color: var(--color-green); }
     .project-table th.col-next { color: var(--color-blue); border-bottom-color: var(--color-blue); }
     .project-table th.col-risk { color: var(--color-amber); border-bottom-color: var(--color-amber); }
+    .project-table th.col-eta { color: var(--color-muted); border-bottom-color: var(--color-muted); }
 
     .project-table td {
       padding: 1.1rem 1.4rem;
@@ -413,6 +414,7 @@
               <th class="col-done">Done</th>
               <th class="col-next">Next</th>
               <th class="col-risk">Risk</th>
+              <th class="col-eta">ETA</th>
             </tr>
           </thead>
           <tbody>
@@ -421,33 +423,39 @@
               <td>Business + eng aligned. 12 epics scoped. Dev started.</td>
               <td>Audit Trail, Beta Types, Cost Algo to QA</td>
               <td>—</td>
+              <td>June</td>
             </tr>
             <tr>
               <td><div class="proj-cell"><span class="proj-name">Vendor Scoring</span><span class="phase validation">Validation</span></div></td>
               <td>Engineering complete. Parallel run started Apr 24.</td>
               <td>Sign-off → cutover</td>
               <td class="risk-text">Vendor team validation pending</td>
+              <td>Next week</td>
             </tr>
             <tr>
               <td><div class="proj-cell"><span class="proj-name">Ground Span</span><span class="phase planning">Planning</span></div></td>
               <td>Architecture approved. Security assessed.</td>
               <td>Dev plan with milestones in Jira</td>
               <td class="risk-text">18 open Qs with partner</td>
+              <td>TBD</td>
             </tr>
             <tr>
               <td><div class="proj-cell"><span class="proj-name">Trip Sharing</span><span class="phase shipped">Shipped</span></div></td>
               <td>Feature-complete end to end.</td>
               <td>Customer announcement</td>
               <td>—</td>
+              <td>Shipped</td>
             </tr>
             <tr>
               <td><div class="proj-cell"><span class="proj-name">Manifest Automation</span><span class="phase scoping">Scoping</span></div></td>
               <td>Context gathered.</td>
               <td>UI/UX design</td>
               <td>—</td>
+              <td>TBD</td>
             </tr>
           </tbody>
         </table>
+        <p class="slide-note">Note: Picking up Ground Span to run in parallel as stretch goal.</p>
       </div>
       <p class="slide-footer">Ayush Bhargava</p>
     </section>
