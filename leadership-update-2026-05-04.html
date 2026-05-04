@@ -57,13 +57,12 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 6vh 8vw;
-      padding-top: 8vh;
+      padding: 7vh 5vw 4vh;
       position: relative;
     }
 
     .slide-content {
-      max-width: 1000px;
+      max-width: 1400px;
       margin: 0 auto;
       width: 100%;
     }
@@ -71,22 +70,25 @@
     /* Logo */
     .logo {
       position: absolute;
-      top: 3.5vh;
-      left: 8vw;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 2.5vh 5vw;
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      z-index: 10;
     }
 
     .logo-text {
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       font-weight: 600;
       letter-spacing: 0.18em;
       color: var(--color-text);
     }
 
     /* === SLIDE 1 === */
-    .slide-header { margin-bottom: 2.5rem; }
+    .slide-header { margin-bottom: 3.5rem; }
 
     .slide-header .label {
       font-size: 0.7rem;
@@ -98,7 +100,7 @@
     }
 
     .slide-header h1 {
-      font-size: 2rem;
+      font-size: 2.4rem;
       font-weight: 600;
       letter-spacing: -0.02em;
     }
@@ -116,12 +118,12 @@
     }
 
     .exec-col h3 {
-      font-size: 0.7rem;
+      font-size: 0.8rem;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.1em;
-      margin-bottom: 1rem;
-      padding-bottom: 0.6rem;
+      margin-bottom: 1.2rem;
+      padding-bottom: 0.8rem;
       border-bottom: 1.5px solid var(--color-border);
     }
 
@@ -132,9 +134,9 @@
     .exec-col ul { list-style: none; padding: 0; }
 
     .exec-col li {
-      font-size: 0.85rem;
-      line-height: 1.55;
-      padding: 0.4rem 0;
+      font-size: 1rem;
+      line-height: 1.65;
+      padding: 0.8rem 0;
       color: var(--color-text);
       border-bottom: 1px solid var(--color-border);
     }
@@ -160,7 +162,7 @@
 
     /* === SLIDE 2 === */
     .slide-table h2 {
-      font-size: 1.4rem;
+      font-size: 1.8rem;
       font-weight: 600;
       letter-spacing: -0.01em;
       margin-bottom: 2rem;
@@ -172,7 +174,7 @@
     }
 
     .project-table th {
-      font-size: 0.65rem;
+      font-size: 0.7rem;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.1em;
@@ -186,10 +188,10 @@
     .project-table th.col-risk { color: var(--color-amber); border-bottom-color: var(--color-amber); }
 
     .project-table td {
-      padding: 1rem 1.2rem;
+      padding: 1.1rem 1.4rem;
       border-bottom: 1px solid var(--color-border);
       vertical-align: top;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       line-height: 1.5;
       color: var(--color-text);
     }
@@ -222,23 +224,25 @@
     .risk-text { color: var(--color-red); font-weight: 500; }
 
     /* === SLIDE 3 === */
+    .slide-team { justify-content: flex-start; padding-top: 8vh; }
+
     .slide-team h2 {
-      font-size: 1.4rem;
+      font-size: 1.6rem;
       font-weight: 600;
       letter-spacing: -0.01em;
       margin-bottom: 0.3rem;
     }
 
     .slide-team .sprint-subtext {
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       color: var(--color-muted);
-      margin-bottom: 1.8rem;
+      margin-bottom: 1.2rem;
     }
 
     .team-grid {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
-      gap: 2.5rem;
+      gap: 2rem;
     }
 
     .team-card h3 {
@@ -247,17 +251,17 @@
       text-transform: uppercase;
       letter-spacing: 0.1em;
       color: var(--color-muted);
-      margin-bottom: 0.8rem;
-      padding-bottom: 0.5rem;
+      margin-bottom: 0.6rem;
+      padding-bottom: 0.4rem;
       border-bottom: 1.5px solid var(--color-text);
     }
 
     .team-card ul { list-style: none; padding: 0; }
 
     .team-card li {
-      font-size: 0.8rem;
-      line-height: 1.6;
-      padding: 0.5rem 0;
+      font-size: 0.82rem;
+      line-height: 1.5;
+      padding: 0.4rem 0;
       color: var(--color-text);
       border-bottom: 1px solid var(--color-border);
     }
@@ -272,9 +276,9 @@
       display: block;
       font-size: 0.65rem;
       font-weight: 500;
-      padding: 0.15rem 0.45rem;
+      padding: 0.12rem 0.4rem;
       border-radius: 3px;
-      margin-top: 0.2rem;
+      margin-top: 0.15rem;
       background: var(--color-surface);
       color: var(--color-muted);
       width: fit-content;
@@ -282,7 +286,7 @@
 
     .board-link {
       display: inline-block;
-      margin-top: 1.5rem;
+      margin-top: 1rem;
       font-size: 0.75rem;
       color: var(--color-blue);
       text-decoration: none;
@@ -293,8 +297,8 @@
     .board-link:hover { border-color: var(--color-blue); }
 
     .sprint-footer {
-      margin-top: 2rem;
-      padding-top: 1.2rem;
+      margin-top: 1.2rem;
+      padding-top: 1rem;
       border-top: 1.5px solid var(--color-border);
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -338,7 +342,7 @@
     .slide-footer {
       position: absolute;
       bottom: 3.5vh;
-      left: 8vw;
+      left: 5vw;
       font-size: 0.7rem;
       color: var(--color-light);
     }
@@ -365,7 +369,7 @@
             <ul>
               <li>Assignment Logic — business and eng. fully aligned</li>
               <li>Assignment Logic — fully scoped and development started</li>
-              <li>All other leftover development work finished</li>
+              <li>Finished and parked NCA and Vendor Scoring</li>
             </ul>
           </div>
 
