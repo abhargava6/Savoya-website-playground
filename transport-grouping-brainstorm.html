@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transportation Grouping — Feature Brainstorm</title>
+<style>
+  :root { color-scheme: light; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #ffffff; color: #1a1a2e; line-height: 1.5; padding: 20px 24px;
+  }
+  h1 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+  .subtitle { color: #6b7280; font-size: 13px; margin-bottom: 24px; }
+
+  /* Tabs */
+  .tab-bar { display: flex; gap: 0; border-bottom: 2px solid #e5e7eb; margin-bottom: 24px; overflow-x: auto; }
+  .tab {
+    padding: 9px 16px; font-size: 13px; font-weight: 600;
+    cursor: pointer; border-bottom: 2px solid transparent;
+    margin-bottom: -2px; color: #6b7280; transition: all 0.2s;
+    background: none; border-top: none; border-left: none; border-right: none;
+    white-space: nowrap;
+  }
+  .tab:hover { color: #1a1a2e; }
+  .tab.active { color: #2563eb; border-bottom-color: #2563eb; }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* ─── FLOW TAB ─── */
+  .flow-container { display: flex; flex-direction: column; align-items: center; gap: 0; padding: 8px 0; }
+  .flow-step {
+    width: 480px; padding: 14px 18px; border-radius: 10px;
+    border: 2px solid; position: relative; cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .flow-step:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.07); }
+  .flow-step .step-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+  .flow-step .step-num { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+  .flow-step .step-title { font-size: 15px; font-weight: 700; margin-bottom: 3px; }
+  .flow-step .step-desc { font-size: 12px; opacity: 0.8; }
+  .flow-tag {
+    font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px;
+    text-transform: uppercase; letter-spacing: 0.04em;
+  }
+  .flow-step.s1 { background: #fffbeb; border-color: #fbbf24; }
+  .flow-step.s1 .step-num { color: #b45309; }
+  .flow-step.s2 { background: #eff6ff; border-color: #93c5fd; }
+  .flow-step.s2 .step-num { color: #2563eb; }
+  .flow-step.s3 { background: #f0fdf4; border-color: #86efac; }
+  .flow-step.s3 .step-num { color: #16a34a; }
+  .flow-step.s4 { background: #fefce8; border-color: #fde047; }
+  .flow-step.s4 .step-num { color: #ca8a04; }
+  .flow-step.s5 { background: #fdf4ff; border-color: #e879f9; }
+  .flow-step.s5 .step-num { color: #a21caf; }
+  .flow-step.s6 { background: #fff7ed; border-color: #fdba74; }
+  .flow-step.s6 .step-num { color: #ea580c; }
+  .flow-step.s7 { background: #f0fdfa; border-color: #5eead4; }
+  .flow-step.s7 .step-num { color: #0d9488; }
+
+  .flow-arrow { width: 2px; height: 28px; background: #cbd5e1; position: relative; }
+  .flow-arrow::after {
+    content: ''; position: absolute; bottom: -4px; left: -4px;
+    border-left: 5px solid transparent; border-right: 5px solid transparent;
+    border-top: 6px solid #cbd5e1;
+  }
+
+  /* Branch indicator */
+  .flow-branch {
+    display: flex; gap: 10px; align-items: stretch; width: 480px; margin: 0 auto;
+  }
+  .flow-branch .branch-card {
+    flex: 1; padding: 10px 8px; border-radius: 8px; border: 1px solid #e2e8f0;
+    background: #f8fafc; cursor: pointer; transition: all 0.15s; text-align: center;
+  }
+  .flow-branch .branch-card:hover { border-color: #93c5fd; background: #eff6ff; }
+  .flow-branch .branch-card.active { border-color: #2563eb; background: #dbeafe; }
+  .flow-branch .branch-card .b-title { font-size: 12px; font-weight: 700; color: #1e293b; margin-bottom: 2px; }
+  .flow-branch .branch-card .b-desc { font-size: 10px; color: #64748b; }
+
+  /* Detail panel */
+  .detail-panel {
+    margin-top: 20px; padding: 16px; background: #f8fafc;
+    border-radius: 10px; border: 1px solid #e2e8f0;
+    display: none; max-width: 520px; margin-left: auto; margin-right: auto;
+  }
+  .detail-panel.visible { display: block; }
+  .detail-panel h3 { font-size: 14px; font-weight: 700; margin-bottom: 8px; color: #1e293b; }
+  .detail-panel ul { padding-left: 18px; font-size: 12px; color: #475569; }
+  .detail-panel ul li { margin-bottom: 3px; }
+  .detail-panel .questions { margin-top: 10px; padding: 10px; background: #fefce8; border-radius: 8px; border: 1px solid #fde68a; }
+  .detail-panel .questions h4 { font-size: 12px; font-weight: 700; color: #92400e; margin-bottom: 4px; }
+  .detail-panel .questions p { font-size: 11px; color: #92400e; margin-bottom: 2px; }
+
+  /* ─── VIEWS TAB ─── */
+  .views-intro { font-size: 13px; color: #64748b; margin-bottom: 16px; text-align: center; }
+  .view-selector { display: flex; gap: 6px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap; }
+  .view-btn {
+    padding: 7px 14px; border-radius: 8px; font-size: 12px; font-weight: 600;
+    border: 2px solid #e2e8f0; background: #fff; color: #475569;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .view-btn:hover { border-color: #93c5fd; color: #2563eb; }
+  .view-btn.active { border-color: #2563eb; background: #eff6ff; color: #2563eb; }
+  .view-panel { display: none; }
+  .view-panel.active { display: block; }
+
+  /* Wireframe chrome */
+  .wireframe {
+    border: 2px solid #e2e8f0; border-radius: 12px; overflow: hidden;
+    background: #fff; max-width: 580px; margin: 0 auto 20px;
+  }
+  .wireframe-header {
+    background: #f1f5f9; padding: 8px 14px; border-bottom: 1px solid #e2e8f0;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .wireframe-header .dot { width: 7px; height: 7px; border-radius: 50%; }
+  .wireframe-header .dot.r { background: #f87171; }
+  .wireframe-header .dot.y { background: #facc15; }
+  .wireframe-header .dot.g { background: #4ade80; }
+  .wireframe-header .page-title { font-size: 11px; color: #64748b; margin-left: 6px; font-weight: 600; }
+  .wireframe-body { padding: 16px; }
+  .wireframe-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #2563eb; margin-bottom: 10px; }
+
+  /* Leg tabs inside wireframes */
+  .leg-tabs { display: flex; gap: 0; border-bottom: 2px solid #e5e7eb; margin-bottom: 14px; }
+  .leg-tab {
+    padding: 7px 14px; font-size: 11px; font-weight: 600;
+    cursor: pointer; border-bottom: 2px solid transparent;
+    margin-bottom: -2px; color: #94a3b8; background: none;
+    border-top: none; border-left: none; border-right: none; transition: all 0.15s;
+  }
+  .leg-tab:hover { color: #475569; }
+  .leg-tab.active { color: #2563eb; border-bottom-color: #2563eb; }
+  .leg-panel { display: none; }
+  .leg-panel.active { display: block; }
+
+  /* Buttons */
+  .wf-btn {
+    padding: 7px 16px; border-radius: 6px; font-size: 12px; font-weight: 600;
+    border: none; cursor: pointer;
+  }
+  .wf-btn.primary { background: #2563eb; color: #fff; }
+  .wf-btn.secondary { background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; }
+  .wf-btn-row { display: flex; gap: 6px; justify-content: flex-end; margin-top: 12px; }
+
+  /* Table */
+  .wf-table { width: 100%; border-collapse: collapse; font-size: 11px; margin: 10px 0; }
+  .wf-table th { background: #f8fafc; text-align: left; padding: 7px 8px; border-bottom: 2px solid #e2e8f0; color: #64748b; font-weight: 600; }
+  .wf-table td { padding: 7px 8px; border-bottom: 1px solid #f1f5f9; color: #334155; }
+
+  /* Group cards */
+  .wf-group-card {
+    border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 12px; margin-bottom: 8px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .wf-group-card .group-name { font-size: 12px; font-weight: 700; color: #1e293b; }
+  .wf-group-card .group-meta { font-size: 10px; color: #94a3b8; }
+  .wf-badge { padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: 600; }
+  .wf-badge.arrival { background: #dbeafe; color: #1d4ed8; }
+  .wf-badge.departure { background: #fce7f3; color: #be185d; }
+  .wf-badge.transfer { background: #fef3c7; color: #b45309; }
+  .wf-badge.vip { background: #f5f3ff; color: #7c3aed; }
+  .wf-vehicle-tag { font-size: 10px; padding: 2px 7px; background: #f0fdf4; color: #16a34a; border-radius: 4px; font-weight: 600; }
+
+  /* Drag hint */
+  .drag-hint {
+    font-size: 11px; color: #64748b; background: #f8fafc; border: 1px dashed #cbd5e1;
+    border-radius: 6px; padding: 8px 12px; margin: 10px 0; text-align: center;
+  }
+  .drag-hint strong { color: #2563eb; }
+
+  /* Quote box */
+  .quote-box {
+    background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px;
+    padding: 12px; margin-top: 12px;
+  }
+  .quote-box .quote-title { font-size: 11px; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+  .quote-row { display: flex; gap: 12px; flex-wrap: wrap; }
+  .quote-item { text-align: center; }
+  .quote-item .q-val { font-size: 18px; font-weight: 800; color: #1e293b; }
+  .quote-item .q-label { font-size: 10px; color: #94a3b8; }
+  .quote-box .quote-note { font-size: 10px; color: #64748b; margin-top: 6px; font-style: italic; }
+
+  /* Summary card */
+  .wf-summary-card {
+    background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px;
+    padding: 14px; margin: 10px 0; text-align: center;
+  }
+  .wf-summary-card .check { font-size: 20px; margin-bottom: 4px; }
+  .wf-summary-card .stat { font-size: 20px; font-weight: 800; color: #16a34a; }
+  .wf-summary-card .stat-label { font-size: 11px; color: #64748b; }
+  .wf-stats-row { display: flex; gap: 10px; margin: 10px 0; }
+  .wf-stat-box { flex: 1; background: #f8fafc; border-radius: 8px; padding: 10px; text-align: center; }
+  .wf-stat-box .num { font-size: 18px; font-weight: 800; color: #1e293b; }
+  .wf-stat-box .label { font-size: 10px; color: #94a3b8; }
+
+  /* Change history */
+  .change-callout {
+    background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px;
+    padding: 12px; margin: 12px 0; font-size: 12px; color: #92400e;
+  }
+  .change-callout strong { font-weight: 700; }
+  .change-delta { display: flex; gap: 16px; margin-top: 8px; }
+  .change-delta .delta-item { font-size: 11px; }
+  .change-delta .delta-item .delta-val { font-weight: 700; }
+  .change-delta .delta-item .delta-up { color: #dc2626; }
+  .change-delta .delta-item .delta-down { color: #16a34a; }
+
+  /* ─── GROUPING TAB ─── */
+  .grouping-section { max-width: 540px; margin: 0 auto; }
+  .grouping-section h2 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+  .grouping-section .section-desc { font-size: 13px; color: #64748b; margin-bottom: 16px; }
+  .strategy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+  .strategy-card {
+    border: 2px solid #e2e8f0; border-radius: 10px; padding: 14px;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .strategy-card:hover { border-color: #93c5fd; background: #f8fafc; }
+  .strategy-card.selected { border-color: #2563eb; background: #eff6ff; }
+  .strategy-card .s-title { font-size: 13px; font-weight: 700; color: #1e293b; margin-bottom: 2px; }
+  .strategy-card .s-desc { font-size: 11px; color: #64748b; }
+  .strategy-card .s-tag { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; padding: 2px 6px; border-radius: 4px; display: inline-block; margin-bottom: 6px; }
+  .strategy-card .s-tag.savoya { background: #dbeafe; color: #1d4ed8; }
+  .strategy-card .s-tag.tbd { background: #f1f5f9; color: #94a3b8; }
+
+  .criteria-section { margin-top: 20px; }
+  .criteria-section h3 { font-size: 14px; font-weight: 700; margin-bottom: 10px; color: #1e293b; }
+  .criteria-list { display: flex; flex-direction: column; gap: 8px; }
+  .criteria-item {
+    display: flex; align-items: center; gap: 10px; padding: 10px 12px;
+    background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0;
+  }
+  .criteria-item .c-icon { font-size: 16px; flex-shrink: 0; }
+  .criteria-item .c-text { font-size: 12px; color: #334155; }
+  .criteria-item .c-text strong { color: #1e293b; }
+  .criteria-item .c-param {
+    margin-left: auto; font-size: 11px; font-weight: 600; color: #2563eb;
+    background: #dbeafe; padding: 2px 8px; border-radius: 4px; white-space: nowrap;
+  }
+
+  /* ─── SCOPE TAB ─── */
+  .scope-section { max-width: 540px; margin: 0 auto; }
+  .scope-section h2 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+  .scope-section .section-desc { font-size: 13px; color: #64748b; margin-bottom: 16px; }
+  .scope-item {
+    display: flex; gap: 12px; align-items: flex-start; padding: 12px;
+    border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 8px;
+    background: #fff;
+  }
+  .scope-item .s-num {
+    width: 24px; height: 24px; border-radius: 50%; background: #2563eb; color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; flex-shrink: 0;
+  }
+  .scope-item .s-content { flex: 1; }
+  .scope-item .s-title { font-size: 13px; font-weight: 700; color: #1e293b; }
+  .scope-item .s-desc { font-size: 11px; color: #64748b; margin-top: 2px; }
+
+  /* ─── QUESTIONS TAB ─── */
+  .notes-section { max-width: 540px; margin: 0 auto; }
+  .notes-section h2 { font-size: 16px; font-weight: 700; margin-bottom: 10px; }
+  .note-item {
+    display: flex; gap: 8px; align-items: flex-start; padding: 8px 0;
+    border-bottom: 1px solid #f1f5f9;
+  }
+  .note-bullet { width: 6px; height: 6px; border-radius: 50%; background: #2563eb; margin-top: 6px; flex-shrink: 0; }
+  .note-text { font-size: 12px; color: #475569; }
+
+  /* AI badge */
+  .ai-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px;
+    background: #f5f3ff; color: #7c3aed; text-transform: uppercase; letter-spacing: 0.04em;
+  }
+</style>
+</head>
+<body>
+
+<h1>Transportation Grouping Feature</h1>
+<p class="subtitle">Client Manifest → AI Conversion → Review → Grouping → Views → Reservations</p>
+
+<div class="tab-bar">
+  <button class="tab active" data-tab="flow">Process Flow</button>
+  <button class="tab" data-tab="views">Views & Wireframes</button>
+  <button class="tab" data-tab="grouping">Grouping Logic</button>
+  <button class="tab" data-tab="scope">Scope</button>
+  <button class="tab" data-tab="questions">Open Questions</button>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- TAB 1: PROCESS FLOW                     -->
+<!-- ═══════════════════════════════════════ -->
+<div class="tab-content active" id="tab-flow">
+  <div class="flow-container">
+
+    <div class="flow-step s1" data-detail="manifest">
+      <div class="step-header">
+        <div class="step-num">Step 1</div>
+      </div>
+      <div class="step-title">Client Manifest</div>
+      <div class="step-desc">Client uploads their manifest in any format — CSV, Excel, PDF, or however they receive it from their aviation department. Contains flight details, traveler info, and travel legs.</div>
+    </div>
+    <div class="flow-arrow"></div>
+
+    <div class="flow-step s2" data-detail="conversion">
+      <div class="step-header">
+        <div class="step-num">Step 2</div>
+        <span class="ai-badge">AI Agent</span>
+      </div>
+      <div class="step-title">AI-Powered Conversion</div>
+      <div class="step-desc">An AI agent reads the uploaded file — regardless of format or column naming — maps the data to our schema, and converts it into a standardized manifest the system understands. This is the hardest part.</div>
+    </div>
+    <div class="flow-arrow"></div>
+
+    <div class="flow-step s3" data-detail="review">
+      <div class="step-header">
+        <div class="step-num">Step 3</div>
+      </div>
+      <div class="step-title">Review & Correct Converted Data</div>
+      <div class="step-desc">System shows the user what the AI converted. User can review, edit, and fix any data the conversion didn't catch correctly before proceeding. Three tabs: Arrivals, Departures, Transfers.</div>
+    </div>
+    <div class="flow-arrow"></div>
+
+    <div class="flow-step s4" data-detail="grouping">
+      <div class="step-header">
+        <div class="step-num">Step 4</div>
+      </div>
+      <div class="step-title">Grouping Logic</div>
+      <div class="step-desc">System groups travelers based on selected strategy. "Recommended" is a Savoya-predefined strategy for the client. Additional strategies to be defined.</div>
+    </div>
+
+    <!-- Strategy options -->
+    <div style="margin: 10px 0;">
+      <div class="flow-branch">
+        <div class="branch-card active"><div class="b-title">Recommended</div><div class="b-desc">Savoya preset</div></div>
+        <div class="branch-card"><div class="b-title">Category 2</div><div class="b-desc">TBD</div></div>
+        <div class="branch-card"><div class="b-title">Category 3</div><div class="b-desc">TBD</div></div>
+        <div class="branch-card"><div class="b-title">Custom</div><div class="b-desc">Manual rules</div></div>
+      </div>
+    </div>
+    <div class="flow-arrow"></div>
+
+    <div class="flow-step s5" data-detail="views">
+      <div class="step-header">
+        <div class="step-num">Step 5</div>
+      </div>
+      <div class="step-title">Views + Manual Adjustment + Quote</div>
+      <div class="step-desc">Three views of the grouped data — Passenger, Manifest, Trip — across all 3 legs (Arrivals, Departures, Transfers). Users can manually adjust groupings (e.g. move a traveler to a different car). Quote auto-updates as groupings change.</div>
+    </div>
+    <div class="flow-arrow"></div>
+
+    <div class="flow-step s6" data-detail="changehistory">
+      <div class="step-header">
+        <div class="step-num">Step 6</div>
+        <span class="flow-tag" style="background:#fce7f3;color:#be185d;">Conditional</span>
+      </div>
+      <div class="step-title">Change History</div>
+      <div class="step-desc">Appears when you re-upload or edit a source file after reservations exist. Shows summary of changes, cost delta, and lets admin accept or reject.</div>
+    </div>
+    <div class="flow-arrow"></div>
+
+    <div class="flow-step s7" data-detail="reservations">
+      <div class="step-header">
+        <div class="step-num">Step 7</div>
+      </div>
+      <div class="step-title">List of Reservations</div>
+      <div class="step-desc">Final confirmed reservations — all three legs (Arrivals, Departures, Transfers) with vehicle assignments, pickup times, passenger lists.</div>
+    </div>
+  </div>
+
+  <div class="detail-panel" id="detail-panel"></div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- TAB 2: VIEWS & WIREFRAMES               -->
+<!-- ═══════════════════════════════════════ -->
+<div class="tab-content" id="tab-views">
+  <p class="views-intro">Three views of the same grouped data, each across 3 legs — users can manually adjust groupings and the quote updates in real time</p>
+  <div class="view-selector">
+    <button class="view-btn active" data-view="passenger">Passenger View</button>
+    <button class="view-btn" data-view="manifest">Manifest View</button>
+    <button class="view-btn" data-view="trip">Trip View</button>
+    <button class="view-btn" data-view="review">Data Review</button>
+    <button class="view-btn" data-view="change">Change History</button>
+    <button class="view-btn" data-view="final">Reservations</button>
+  </div>
+
+  <!-- ── Passenger View ── -->
+  <div class="view-panel active" id="view-passenger">
+    <div class="wireframe">
+      <div class="wireframe-header">
+        <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+        <span class="page-title">Passenger View — per-person itinerary</span>
+      </div>
+      <div class="wireframe-body">
+        <div class="wireframe-label">Individual Traveler Lookup</div>
+        <div style="margin-bottom:12px;">
+          <div style="display:flex;align-items:center;gap:8px;padding:10px;background:#f8fafc;border-radius:8px;border:1px solid #e2e8f0;">
+            <span style="font-size:14px;">🔍</span>
+            <span style="font-size:12px;color:#94a3b8;">Search traveler name...</span>
+          </div>
+        </div>
+        <div style="padding:14px;background:#fff;border:1px solid #e2e8f0;border-radius:8px;margin-bottom:10px;">
+          <div style="font-size:14px;font-weight:700;color:#1e293b;margin-bottom:2px;">Dan Hayes</div>
+          <div style="font-size:11px;color:#94a3b8;margin-bottom:8px;">3 legs · VIP</div>
+          <table class="wf-table">
+            <thead><tr><th>Leg</th><th>Date</th><th>From</th><th>To</th><th>Vehicle</th></tr></thead>
+            <tbody>
+              <tr><td><span class="wf-badge arrival">Arrival</span></td><td>2/22</td><td>Airport (T-B)</td><td>Downtown Hotel</td><td><span class="wf-vehicle-tag">SUV</span></td></tr>
+              <tr><td><span class="wf-badge transfer">Transfer</span></td><td>2/22</td><td>Hotel</td><td>Gala Dinner</td><td><span class="wf-vehicle-tag">Sedan</span></td></tr>
+              <tr><td><span class="wf-badge departure">Departure</span></td><td>2/23</td><td>Hotel</td><td>Airport (T-D)</td><td><span class="wf-vehicle-tag">Van</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="drag-hint">
+          <strong>Manual adjustment:</strong> Click a vehicle assignment to move this traveler to a different car. Quote updates automatically.
+        </div>
+        <div class="quote-box">
+          <div class="quote-title">Quote Summary</div>
+          <div class="quote-row">
+            <div class="quote-item"><div class="q-val">$3,200</div><div class="q-label">Est. Total</div></div>
+            <div class="quote-item"><div class="q-val">14</div><div class="q-label">Vehicles</div></div>
+            <div class="quote-item"><div class="q-val">4</div><div class="q-label">SUVs</div></div>
+            <div class="quote-item"><div class="q-val">2</div><div class="q-label">Sedans</div></div>
+            <div class="quote-item"><div class="q-val">3</div><div class="q-label">Vans</div></div>
+          </div>
+          <div class="quote-note">Quote adjusts automatically when you change groupings</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Manifest View ── -->
+  <div class="view-panel" id="view-manifest">
+    <div class="wireframe">
+      <div class="wireframe-header">
+        <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+        <span class="page-title">Manifest View — grouped by leg & time</span>
+      </div>
+      <div class="wireframe-body">
+        <div class="wireframe-label">All Travelers by Leg</div>
+
+        <div class="leg-tabs" data-group="manifest-legs">
+          <button class="leg-tab active" data-leg="m-arrivals">Arrivals</button>
+          <button class="leg-tab" data-leg="m-departures">Departures</button>
+          <button class="leg-tab" data-leg="m-transfers">Transfers</button>
+        </div>
+
+        <div class="leg-panel active" id="m-arrivals">
+          <div class="wf-group-card">
+            <div>
+              <div class="group-name">1. Dan Hayes</div>
+              <div class="group-meta">2/22 · Flight AA1234 · Airport (T-B) → Downtown Hotel</div>
+            </div>
+            <div style="display:flex;gap:4px;align-items:center;">
+              <span class="wf-vehicle-tag">SUV</span>
+            </div>
+          </div>
+          <div class="wf-group-card">
+            <div>
+              <div class="group-name">2. Leslie Park</div>
+              <div class="group-meta">2/22 · Flight AA1234 · Airport (T-B) → Downtown Hotel</div>
+            </div>
+            <div style="display:flex;gap:4px;align-items:center;">
+              <span class="wf-vehicle-tag">SUV</span>
+            </div>
+          </div>
+          <div class="wf-group-card" style="opacity:0.4;">
+            <div><div class="group-name">3. ...</div><div class="group-meta">—</div></div>
+          </div>
+        </div>
+
+        <div class="leg-panel" id="m-departures">
+          <div class="wf-group-card">
+            <div>
+              <div class="group-name">1. Dan Hayes</div>
+              <div class="group-meta">2/23 · Flight UA567 · Hotel → Airport (T-D)</div>
+            </div>
+            <span class="wf-vehicle-tag">Van</span>
+          </div>
+          <div class="wf-group-card" style="opacity:0.4;">
+            <div><div class="group-name">2. ...</div><div class="group-meta">—</div></div>
+          </div>
+        </div>
+
+        <div class="leg-panel" id="m-transfers">
+          <div class="wf-group-card">
+            <div>
+              <div class="group-name">1. Dan Hayes</div>
+              <div class="group-meta">2/22 · Hotel → Gala Dinner · 7:00 PM</div>
+            </div>
+            <div style="display:flex;gap:4px;align-items:center;">
+              <span class="wf-badge transfer">Transfer</span>
+              <span class="wf-vehicle-tag">Sedan</span>
+            </div>
+          </div>
+          <div class="wf-group-card">
+            <div>
+              <div class="group-name">2. Sarah Lin + 4 others</div>
+              <div class="group-meta">2/22 · Hotel → Restaurant · 6:30 PM</div>
+            </div>
+            <div style="display:flex;gap:4px;align-items:center;">
+              <span class="wf-badge transfer">Transfer</span>
+              <span class="wf-vehicle-tag">Van</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="drag-hint"><strong>Manual adjustment:</strong> Drag travelers between groups to reassign vehicles. Quote updates live.</div>
+
+        <div class="quote-box">
+          <div class="quote-title">Quote Summary</div>
+          <div class="quote-row">
+            <div class="quote-item"><div class="q-val">$3,200</div><div class="q-label">Est. Total</div></div>
+            <div class="quote-item"><div class="q-val">14</div><div class="q-label">Vehicles</div></div>
+            <div class="quote-item"><div class="q-val">4</div><div class="q-label">SUVs</div></div>
+            <div class="quote-item"><div class="q-val">2</div><div class="q-label">Sedans</div></div>
+            <div class="quote-item"><div class="q-val">3</div><div class="q-label">Vans</div></div>
+          </div>
+          <div class="quote-note">Quote adjusts automatically when you change groupings</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Trip View ── -->
+  <div class="view-panel" id="view-trip">
+    <div class="wireframe">
+      <div class="wireframe-header">
+        <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+        <span class="page-title">Trip View — vehicle-centric with photos</span>
+      </div>
+      <div class="wireframe-body">
+        <div class="wireframe-label">Assigned Vehicles</div>
+
+        <div class="leg-tabs" data-group="trip-legs">
+          <button class="leg-tab active" data-leg="t-arrivals">Arrivals</button>
+          <button class="leg-tab" data-leg="t-departures">Departures</button>
+          <button class="leg-tab" data-leg="t-transfers">Transfers</button>
+        </div>
+
+        <div class="leg-panel active" id="t-arrivals">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div style="border:1px solid #e2e8f0;border-radius:8px;overflow:hidden;">
+              <div style="background:#f1f5f9;height:60px;display:flex;align-items:center;justify-content:center;font-size:22px;">🚙</div>
+              <div style="padding:10px;">
+                <div style="font-size:12px;font-weight:700;">Black Suburban SUV</div>
+                <div style="font-size:10px;color:#64748b;">2/22 · 2:00 PM · 3 pax</div>
+                <div style="font-size:10px;color:#64748b;">Airport → Downtown</div>
+                <div style="margin-top:4px;font-size:10px;color:#94a3b8;">Hayes, Park, Chen</div>
+              </div>
+            </div>
+            <div style="border:1px solid #e2e8f0;border-radius:8px;overflow:hidden;">
+              <div style="background:#f1f5f9;height:60px;display:flex;align-items:center;justify-content:center;font-size:22px;">🚐</div>
+              <div style="padding:10px;">
+                <div style="font-size:12px;font-weight:700;">Mercedes Sprinter</div>
+                <div style="font-size:10px;color:#64748b;">2/22 · 2:30 PM · 5 pax</div>
+                <div style="font-size:10px;color:#64748b;">Airport → Northside</div>
+                <div style="margin-top:4px;font-size:10px;color:#94a3b8;">Kim, Torres, +3</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="leg-panel" id="t-departures">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div style="border:1px solid #e2e8f0;border-radius:8px;overflow:hidden;">
+              <div style="background:#f1f5f9;height:60px;display:flex;align-items:center;justify-content:center;font-size:22px;">🚐</div>
+              <div style="padding:10px;">
+                <div style="font-size:12px;font-weight:700;">Mercedes Sprinter</div>
+                <div style="font-size:10px;color:#64748b;">2/23 · 6:00 AM · 6 pax</div>
+                <div style="font-size:10px;color:#64748b;">Hotel → Airport</div>
+              </div>
+            </div>
+            <div style="border:1px solid #e2e8f0;border-radius:8px;overflow:hidden;">
+              <div style="background:#f1f5f9;height:60px;display:flex;align-items:center;justify-content:center;font-size:22px;">🚗</div>
+              <div style="padding:10px;">
+                <div style="font-size:12px;font-weight:700;">Lincoln Town Car</div>
+                <div style="font-size:10px;color:#64748b;">2/23 · 9:00 AM · 1 pax</div>
+                <div style="font-size:10px;color:#64748b;">Hotel → Airport</div>
+                <div style="margin-top:4px;"><span class="wf-badge vip">VIP</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="leg-panel" id="t-transfers">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div style="border:1px solid #e2e8f0;border-radius:8px;overflow:hidden;">
+              <div style="background:#f1f5f9;height:60px;display:flex;align-items:center;justify-content:center;font-size:22px;">🚗</div>
+              <div style="padding:10px;">
+                <div style="font-size:12px;font-weight:700;">Sedan</div>
+                <div style="font-size:10px;color:#64748b;">2/22 · 7:00 PM · 2 pax</div>
+                <div style="font-size:10px;color:#64748b;">Hotel → Gala Dinner</div>
+              </div>
+            </div>
+            <div style="border:1px solid #e2e8f0;border-radius:8px;overflow:hidden;">
+              <div style="background:#f1f5f9;height:60px;display:flex;align-items:center;justify-content:center;font-size:22px;">🚐</div>
+              <div style="padding:10px;">
+                <div style="font-size:12px;font-weight:700;">Van</div>
+                <div style="font-size:10px;color:#64748b;">2/22 · 6:30 PM · 5 pax</div>
+                <div style="font-size:10px;color:#64748b;">Hotel → Restaurant</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="drag-hint"><strong>Manual adjustment:</strong> Drag travelers between vehicles to regroup. Quote auto-updates.</div>
+
+        <div style="margin-top:10px;text-align:right;">
+          <button class="wf-btn primary" style="font-size:11px;">Create Grouped Reservations</button>
+        </div>
+
+        <div class="quote-box">
+          <div class="quote-title">Quote Summary</div>
+          <div class="quote-row">
+            <div class="quote-item"><div class="q-val">$3,200</div><div class="q-label">Est. Total</div></div>
+            <div class="quote-item"><div class="q-val">14</div><div class="q-label">Vehicles</div></div>
+            <div class="quote-item"><div class="q-val">4</div><div class="q-label">SUVs</div></div>
+            <div class="quote-item"><div class="q-val">2</div><div class="q-label">Sedans</div></div>
+            <div class="quote-item"><div class="q-val">3</div><div class="q-label">Vans</div></div>
+          </div>
+          <div class="quote-note">Quote adjusts automatically when you change groupings</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Data Review (Step 3) ── -->
+  <div class="view-panel" id="view-review">
+    <div class="wireframe">
+      <div class="wireframe-header">
+        <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+        <span class="page-title">Review Converted Data — correct before grouping</span>
+      </div>
+      <div class="wireframe-body">
+        <div class="wireframe-label">AI-Converted Manifest — Review & Edit</div>
+
+        <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:10px;margin-bottom:12px;display:flex;align-items:center;gap:8px;">
+          <span class="ai-badge">AI</span>
+          <span style="font-size:12px;color:#16a34a;">Conversion complete — 18 travelers parsed, 2 flagged for review</span>
+        </div>
+
+        <div class="leg-tabs" data-group="review-legs">
+          <button class="leg-tab active" data-leg="r-arrivals">Arrivals (8)</button>
+          <button class="leg-tab" data-leg="r-departures">Departures (7)</button>
+          <button class="leg-tab" data-leg="r-transfers">Transfers (3)</button>
+        </div>
+
+        <div class="leg-panel active" id="r-arrivals">
+          <table class="wf-table">
+            <thead><tr><th>Name</th><th>Flight</th><th>Date/Time</th><th>From</th><th>To</th><th>VIP</th><th></th></tr></thead>
+            <tbody>
+              <tr><td>Dan Hayes</td><td>AA1234</td><td>2/22 2:00 PM</td><td>Airport (T-B)</td><td>Downtown Hotel</td><td>Yes</td><td style="color:#2563eb;font-size:10px;cursor:pointer;">Edit</td></tr>
+              <tr><td>Leslie Park</td><td>AA1234</td><td>2/22 2:15 PM</td><td>Airport (T-B)</td><td>Downtown Hotel</td><td>No</td><td style="color:#2563eb;font-size:10px;cursor:pointer;">Edit</td></tr>
+              <tr style="background:#fef2f2;">
+                <td>J. Smith</td><td style="color:#dc2626;">???</td><td>2/22</td><td>Airport</td><td style="color:#dc2626;">Missing</td><td>No</td>
+                <td style="color:#dc2626;font-size:10px;font-weight:600;cursor:pointer;">Fix</td>
+              </tr>
+            </tbody>
+          </table>
+          <div style="font-size:10px;color:#dc2626;margin-top:4px;">1 row needs attention — flight and destination could not be mapped</div>
+        </div>
+
+        <div class="leg-panel" id="r-departures">
+          <table class="wf-table">
+            <thead><tr><th>Name</th><th>Flight</th><th>Date/Time</th><th>From</th><th>To</th><th>VIP</th><th></th></tr></thead>
+            <tbody>
+              <tr><td>Dan Hayes</td><td>UA567</td><td>2/23 9:00 AM</td><td>Hotel</td><td>Airport (T-D)</td><td>Yes</td><td style="color:#2563eb;font-size:10px;cursor:pointer;">Edit</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="leg-panel" id="r-transfers">
+          <table class="wf-table">
+            <thead><tr><th>Name</th><th>Date/Time</th><th>From</th><th>To</th><th>Event/Reason</th><th></th></tr></thead>
+            <tbody>
+              <tr><td>Dan Hayes</td><td>2/22 7:00 PM</td><td>Hotel</td><td>Gala Dinner</td><td>Company Event</td><td style="color:#2563eb;font-size:10px;cursor:pointer;">Edit</td></tr>
+              <tr><td>Sarah Lin +4</td><td>2/22 6:30 PM</td><td>Hotel</td><td>Restaurant</td><td>Team Dinner</td><td style="color:#2563eb;font-size:10px;cursor:pointer;">Edit</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="wf-btn-row" style="margin-top:14px;">
+          <button class="wf-btn secondary">Re-upload File</button>
+          <button class="wf-btn secondary">Add Row Manually</button>
+          <button class="wf-btn primary">Approve & Continue to Grouping</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Change History ── -->
+  <div class="view-panel" id="view-change">
+    <div class="wireframe">
+      <div class="wireframe-header">
+        <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+        <span class="page-title">Change History — re-upload / edit delta</span>
+      </div>
+      <div class="wireframe-body">
+        <div class="wireframe-label">Change Summary</div>
+        <div class="change-callout">
+          <strong>Source file was re-uploaded or edited.</strong> Showing differences from the previous version across all legs.
+        </div>
+        <div class="wf-stats-row">
+          <div class="wf-stat-box"><div class="num" style="color:#dc2626;">+3</div><div class="label">Travelers Added</div></div>
+          <div class="wf-stat-box"><div class="num" style="color:#ea580c;">-1</div><div class="label">Removed</div></div>
+          <div class="wf-stat-box"><div class="num" style="color:#2563eb;">2</div><div class="label">Groups Changed</div></div>
+          <div class="wf-stat-box"><div class="num" style="color:#b45309;">1</div><div class="label">New Transfer</div></div>
+        </div>
+        <div class="quote-box">
+          <div class="quote-title">Cost Delta</div>
+          <div class="change-delta">
+            <div class="delta-item">Previous: <span class="delta-val">$3,200</span></div>
+            <div class="delta-item">New: <span class="delta-val">$3,650</span></div>
+            <div class="delta-item">Change: <span class="delta-val delta-up">+$450</span></div>
+          </div>
+        </div>
+        <table class="wf-table" style="margin-top:12px;">
+          <thead><tr><th>Change</th><th>Leg</th><th>Detail</th><th>Impact</th></tr></thead>
+          <tbody>
+            <tr><td style="color:#16a34a;">+ Added</td><td><span class="wf-badge arrival">Arr</span></td><td>Jane Doe — 2/22</td><td>Group A: SUV → Van</td></tr>
+            <tr><td style="color:#16a34a;">+ Added</td><td><span class="wf-badge transfer">Trf</span></td><td>Team dinner — 2/22</td><td>New group created</td></tr>
+            <tr><td style="color:#dc2626;">− Removed</td><td><span class="wf-badge departure">Dep</span></td><td>Sam Torres — 2/23</td><td>Group D: Van → SUV</td></tr>
+          </tbody>
+        </table>
+        <div class="wf-btn-row">
+          <button class="wf-btn secondary">Reject Changes</button>
+          <button class="wf-btn primary">Accept & Update Reservations</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Final Reservations ── -->
+  <div class="view-panel" id="view-final">
+    <div class="wireframe">
+      <div class="wireframe-header">
+        <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+        <span class="page-title">List of Reservations — final output</span>
+      </div>
+      <div class="wireframe-body">
+        <div class="wireframe-label">Confirmed Reservations</div>
+        <div class="wf-summary-card">
+          <div class="check">✓</div>
+          <div class="stat">12 Reservations</div>
+          <div class="stat-label">18 travelers · 5 arrivals · 4 departures · 3 transfers</div>
+        </div>
+
+        <div class="leg-tabs" data-group="res-legs">
+          <button class="leg-tab active" data-leg="res-all">All</button>
+          <button class="leg-tab" data-leg="res-arrivals">Arrivals</button>
+          <button class="leg-tab" data-leg="res-departures">Departures</button>
+          <button class="leg-tab" data-leg="res-transfers">Transfers</button>
+        </div>
+
+        <div class="leg-panel active" id="res-all">
+          <table class="wf-table">
+            <thead><tr><th>Res #</th><th>Leg</th><th>Vehicle</th><th>Pickup</th><th>Pax</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>R-001</td><td><span class="wf-badge arrival">Arr</span></td><td>SUV</td><td>2/22 2:00 PM</td><td>3</td><td style="color:#16a34a;font-weight:600;">Confirmed</td></tr>
+              <tr><td>R-002</td><td><span class="wf-badge arrival">Arr</span></td><td>Van</td><td>2/22 2:30 PM</td><td>5</td><td style="color:#16a34a;font-weight:600;">Confirmed</td></tr>
+              <tr><td>R-005</td><td><span class="wf-badge transfer">Trf</span></td><td>Sedan</td><td>2/22 7:00 PM</td><td>2</td><td style="color:#16a34a;font-weight:600;">Confirmed</td></tr>
+              <tr><td>R-006</td><td><span class="wf-badge transfer">Trf</span></td><td>Van</td><td>2/22 6:30 PM</td><td>5</td><td style="color:#16a34a;font-weight:600;">Confirmed</td></tr>
+              <tr><td>R-008</td><td><span class="wf-badge departure">Dep</span></td><td>Sprinter</td><td>2/23 6:00 AM</td><td>6</td><td style="color:#ca8a04;font-weight:600;">Pending</td></tr>
+              <tr><td>R-009</td><td><span class="wf-badge departure">Dep</span></td><td>Town Car</td><td>2/23 9:00 AM</td><td>1</td><td style="color:#16a34a;font-weight:600;">Confirmed</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="leg-panel" id="res-arrivals"><div style="font-size:12px;color:#94a3b8;padding:16px;text-align:center;">Filtered to arrivals only</div></div>
+        <div class="leg-panel" id="res-departures"><div style="font-size:12px;color:#94a3b8;padding:16px;text-align:center;">Filtered to departures only</div></div>
+        <div class="leg-panel" id="res-transfers"><div style="font-size:12px;color:#94a3b8;padding:16px;text-align:center;">Filtered to transfers only</div></div>
+
+        <div class="wf-btn-row">
+          <button class="wf-btn secondary">Export CSV</button>
+          <button class="wf-btn secondary">Notify Travelers</button>
+          <button class="wf-btn primary">Confirm All</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- TAB 3: GROUPING LOGIC                   -->
+<!-- ═══════════════════════════════════════ -->
+<div class="tab-content" id="tab-grouping">
+  <div class="grouping-section">
+    <h2>Grouping Strategy Options</h2>
+    <p class="section-desc">"Recommended" is a Savoya-predefined strategy configured per client. Additional categories to be defined.</p>
+
+    <div class="strategy-grid">
+      <div class="strategy-card selected">
+        <span class="s-tag savoya">Savoya Preset</span>
+        <div class="s-title">Recommended</div>
+        <div class="s-desc">Savoya predefines the optimal grouping strategy for each client based on their preferences, typical group sizes, and budget profile.</div>
+      </div>
+      <div class="strategy-card">
+        <span class="s-tag tbd">TBD</span>
+        <div class="s-title">Category 2</div>
+        <div class="s-desc">Additional grouping strategy to be defined — could be pricing-optimized, comfort-focused, or something else.</div>
+      </div>
+      <div class="strategy-card">
+        <span class="s-tag tbd">TBD</span>
+        <div class="s-title">Category 3</div>
+        <div class="s-desc">Additional grouping strategy to be defined.</div>
+      </div>
+      <div class="strategy-card">
+        <div class="s-title">Custom</div>
+        <div class="s-desc">Define your own rules — set time window, max pax per vehicle, destination radius, and VIP handling manually.</div>
+      </div>
+    </div>
+
+    <div class="criteria-section">
+      <h3>Arrival Grouping Criteria</h3>
+      <div class="criteria-list">
+        <div class="criteria-item">
+          <span class="c-icon">✈️</span>
+          <span class="c-text"><strong>Same Flights</strong> — group travelers on same or nearby flights</span>
+          <span class="c-param">± x mins</span>
+        </div>
+        <div class="criteria-item">
+          <span class="c-icon">📍</span>
+          <span class="c-text"><strong>Destination Proximity</strong> — travelers heading to nearby locations</span>
+          <span class="c-param">± y miles</span>
+        </div>
+        <div class="criteria-item">
+          <span class="c-icon">👥</span>
+          <span class="c-text"><strong>Number of Pax in a Car</strong> — max passengers per vehicle type</span>
+          <span class="c-param">configurable</span>
+        </div>
+        <div class="criteria-item">
+          <span class="c-icon">⭐</span>
+          <span class="c-text"><strong>VIP / Non-VIP</strong> — separate VIPs into dedicated vehicles</span>
+          <span class="c-param">flag</span>
+        </div>
+        <div class="criteria-item" style="border-style:dashed;opacity:0.6;">
+          <span class="c-icon">❓</span>
+          <span class="c-text"><strong>TBD</strong> — additional criteria to be defined</span>
+          <span class="c-param">—</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="criteria-section">
+      <h3>Departure Grouping Criteria</h3>
+      <p style="font-size:12px;color:#64748b;margin-bottom:10px;">Same criteria as arrivals? Or different logic? To be confirmed.</p>
+      <div class="criteria-list">
+        <div class="criteria-item" style="border-style:dashed;opacity:0.6;">
+          <span class="c-icon">❓</span>
+          <span class="c-text"><strong>TBD</strong> — define departure-specific grouping rules</span>
+          <span class="c-param">—</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="criteria-section">
+      <h3>Transfer Grouping Criteria</h3>
+      <p style="font-size:12px;color:#64748b;margin-bottom:10px;">In-city travel — events, restaurants, meetings. Different grouping considerations.</p>
+      <div class="criteria-list">
+        <div class="criteria-item">
+          <span class="c-icon">🎉</span>
+          <span class="c-text"><strong>Same Event / Destination</strong> — group travelers going to the same place</span>
+          <span class="c-param">exact match</span>
+        </div>
+        <div class="criteria-item">
+          <span class="c-icon">🕐</span>
+          <span class="c-text"><strong>Same Time Window</strong> — travelers leaving around the same time</span>
+          <span class="c-param">± x mins</span>
+        </div>
+        <div class="criteria-item" style="border-style:dashed;opacity:0.6;">
+          <span class="c-icon">❓</span>
+          <span class="c-text"><strong>TBD</strong> — additional transfer criteria</span>
+          <span class="c-param">—</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- TAB 4: SCOPE                            -->
+<!-- ═══════════════════════════════════════ -->
+<div class="tab-content" id="tab-scope">
+  <div class="scope-section">
+    <h2>Scope</h2>
+    <p class="section-desc">Key deliverables for the transportation grouping feature.</p>
+
+    <div class="scope-item">
+      <div class="s-num">1</div>
+      <div class="s-content">
+        <div class="s-title">Conversion Tool (AI Agent)</div>
+        <div class="s-desc">AI-powered ingestion that accepts any file format (CSV, Excel, PDF) from client aviation departments. Maps arbitrary column layouts to our schema. The hardest part of the project.</div>
+      </div>
+    </div>
+    <div class="scope-item">
+      <div class="s-num">2</div>
+      <div class="s-content">
+        <div class="s-title">Grouping Logic → Template</div>
+        <div class="s-desc">Implement the grouping algorithm with "Recommended" (Savoya preset) plus additional strategy categories (TBD). Define the generic data structure.</div>
+      </div>
+    </div>
+    <div class="scope-item">
+      <div class="s-num">3</div>
+      <div class="s-content">
+        <div class="s-title">Data Schema & Data Models</div>
+        <div class="s-desc">Database schema for manifests, traveler records (3 leg types), groups, vehicles, reservations, change history.</div>
+      </div>
+    </div>
+    <div class="scope-item">
+      <div class="s-num">4</div>
+      <div class="s-content">
+        <div class="s-title">Microservices</div>
+        <div class="s-desc">Backend services — AI conversion service, grouping engine, reservation service, notification service.</div>
+      </div>
+    </div>
+    <div class="scope-item">
+      <div class="s-num">5</div>
+      <div class="s-content">
+        <div class="s-title">Views, Delta & Components</div>
+        <div class="s-desc">Build the three views (Passenger, Manifest, Trip) across all 3 legs, manual adjustment (drag to regroup), live quote component, and the data review/correction screen.</div>
+      </div>
+    </div>
+    <div class="scope-item">
+      <div class="s-num">6</div>
+      <div class="s-content">
+        <div class="s-title">Change History</div>
+        <div class="s-desc">Track re-uploads and edits — show what changed across all legs, cost delta, accept/reject workflow.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- TAB 5: OPEN QUESTIONS                   -->
+<!-- ═══════════════════════════════════════ -->
+<div class="tab-content" id="tab-questions">
+  <div class="notes-section">
+    <h2>Open Questions & Decision Points</h2>
+    <div class="note-item">
+      <div class="note-bullet"></div>
+      <div class="note-text"><strong>AI conversion accuracy:</strong> What's the fallback if the AI agent can't map a column? Show it as "unmapped" and let the user assign it manually?</div>
+    </div>
+    <div class="note-item">
+      <div class="note-bullet"></div>
+      <div class="note-text"><strong>Manifest tab structure:</strong> Arrivals and departures come as separate tabs in client files. Transfers are a third tab the client adds. What if there's no transfer tab — do we prompt for it?</div>
+    </div>
+    <div class="note-item">
+      <div class="note-bullet"></div>
+      <div class="note-text"><strong>Grouping time window (± x mins):</strong> What's the default for the "Recommended" strategy? Is it per-client configurable?</div>
+    </div>
+    <div class="note-item">
+      <div class="note-bullet"></div>
+      <div class="note-text"><strong>Destination proximity (± y miles):</strong> Radius-based, zone-based, or exact match? Different per leg type?</div>
+    </div>
+    <div class="note-item">
+      <div class="note-bullet"></div>
+      <div class="note-text"><strong>Additional grouping categories:</strong> What are categories 2 and 3 beyond "Recommended" and "Custom"? Pricing-focused? Comfort-focused?</div>
+    </div>
+    <div class="note-item">
+      <div class="note-bullet"></div>
+      <div class="note-text"><strong>Manual adjustment UX:</strong> How does drag-to-regroup work? Drag a traveler card into a different vehicle group? What constraints prevent bad groupings?</div>
+    </div>
+    <div class="note-item">
+      <div class="note-bullet"></div>
+      <div class="note-text"><strong>VIP handling:</strong> Always separate vehicles? Or just priority seating? How is VIP flagged — in the CSV or configured per client?</div>
+    </div>
+    <div class="note-item">
+      <div class="note-bullet"></div>
+      <div class="note-text"><strong>Quote calculation source:</strong> Where do vehicle prices come from? Static rate card, vendor API, or admin-configured per client?</div>
+    </div>
+    <div class="note-item">
+      <div class="note-bullet"></div>
+      <div class="note-text"><strong>Transfer leg grouping:</strong> Do transfers use the same criteria as arrivals/departures? Or grouped primarily by event/destination?</div>
+    </div>
+    <div class="note-item">
+      <div class="note-bullet"></div>
+      <div class="note-text"><strong>Re-upload behavior:</strong> When re-uploading after reservations exist, auto-update or require admin review of the change delta?</div>
+    </div>
+    <div class="note-item">
+      <div class="note-bullet"></div>
+      <div class="note-text"><strong>Departure grouping:</strong> Same rules as arrivals or different logic? Departures may have less flexibility on timing.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Tab switching
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+    });
+  });
+
+  // View switching
+  document.querySelectorAll('.view-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('view-' + btn.dataset.view).classList.add('active');
+    });
+  });
+
+  // Leg tab switching (works for all leg-tab groups)
+  document.querySelectorAll('.leg-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const group = tab.closest('.leg-tabs').dataset.group;
+      const parent = tab.closest('.wireframe-body') || tab.closest('.wireframe');
+      parent.querySelectorAll('.leg-tabs[data-group="'+group+'"] .leg-tab').forEach(t => t.classList.remove('active'));
+      parent.querySelectorAll('.leg-panel').forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById(tab.dataset.leg).classList.add('active');
+    });
+  });
+
+  // Strategy card selection
+  document.querySelectorAll('.strategy-card').forEach(card => {
+    card.addEventListener('click', () => {
+      document.querySelectorAll('.strategy-card').forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+    });
+  });
+
+  // Branch card toggle
+  document.querySelectorAll('.branch-card').forEach(card => {
+    card.addEventListener('click', () => {
+      document.querySelectorAll('.branch-card').forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+    });
+  });
+
+  // Flow step detail data
+  const details = {
+    manifest: {
+      title: 'Client Manifest',
+      points: [
+        'Client uploads their manifest in whatever format they have — CSV, Excel, PDF, etc.',
+        'Typically received from their aviation department with flight details',
+        'Usually has arrivals and departures in separate tabs',
+        'Client may add a third tab for in-city transfers (events, dinners, meetings)',
+        'Column names and formats vary widely between clients',
+        'Savoya provides a template but most clients use their own format',
+      ],
+      questions: ['Do we need to support multi-sheet Excel files with separate arrival/departure/transfer tabs?', 'What if the client sends a PDF itinerary instead of a spreadsheet?']
+    },
+    conversion: {
+      title: 'AI-Powered Conversion',
+      points: [
+        'The hardest part of the project — mapping arbitrary file formats to our schema',
+        'AI agent reads the uploaded file regardless of format',
+        'Intelligently maps columns (even with non-standard naming) to our data model',
+        'Handles separate tabs for arrivals, departures, and transfers',
+        'Must support edge cases: merged cells, inconsistent date formats, missing headers',
+        'Output: standardized manifest data stored in our system',
+      ],
+      questions: ['What AI model/service powers the conversion?', 'How do we handle confidence scores — flag low-confidence mappings for user review?']
+    },
+    review: {
+      title: 'Review & Correct Converted Data',
+      points: [
+        'Shows the user exactly what the AI converted — all 3 legs in separate tabs',
+        'User can edit any cell inline to fix conversion errors',
+        'Flagged rows (where AI wasn\'t confident) highlighted in red',
+        'User can add rows manually or re-upload the source file',
+        'Must approve the data before proceeding to grouping',
+        'This is the human-in-the-loop step that catches AI mistakes',
+      ],
+      questions: ['Should the review step be skippable for trusted/repeat uploads?', 'Do we save correction patterns to improve future AI conversions for the same client?']
+    },
+    grouping: {
+      title: 'Grouping Logic',
+      points: [
+        '"Recommended" = Savoya predefined strategy configured per client',
+        'Additional categories yet to be defined (placeholders for now)',
+        '"Custom" allows manual rule definition',
+        'Grouping runs across all 3 legs: arrivals, departures, transfers',
+        'Arrival criteria: same flights ± x mins, destination ± y miles, pax count, VIP/non-VIP',
+        'Transfer criteria: same event/destination, same time window',
+      ],
+      questions: ['How does the "Recommended" preset get configured per client?', 'Are grouping parameters stored as templates for repeat use?']
+    },
+    views: {
+      title: 'Views + Manual Adjustment + Quote',
+      points: [
+        'Three views: Passenger (per-person), Manifest (by leg/time), Trip (vehicle-centric)',
+        'Each view shows all 3 legs: Arrivals, Departures, Transfers',
+        'Users can manually adjust groupings — move a traveler to a different vehicle',
+        'Quote updates automatically as groupings change',
+        'Quote shows: total cost, # vehicles, breakdown by vehicle type',
+        'Manual adjustment is essentially a "manual grouping" mode',
+      ],
+      questions: ['Which view is the default landing page after grouping?', 'Should there be an "undo" for manual adjustments?']
+    },
+    changehistory: {
+      title: 'Change History',
+      points: [
+        'Only appears when re-uploading or editing after reservations already exist',
+        'Shows: summary of reservations, estimated quote, changes, cost delta',
+        'Highlights added/removed travelers across all 3 legs',
+        'Shows impact on existing groups (e.g. SUV → Van due to added traveler)',
+        'Admin can accept or reject changes before updating reservations',
+      ],
+      questions: ['Should changes auto-apply or always require admin approval?', 'Full audit trail of all versions?']
+    },
+    reservations: {
+      title: 'List of Reservations',
+      points: [
+        'Final output — confirmed reservations across all 3 legs',
+        'Each reservation: ID, leg type, vehicle, pickup time, passengers, status',
+        'Filterable by leg: arrivals, departures, transfers',
+        'Export to CSV or PDF',
+        'Option to notify travelers with ride details',
+      ],
+      questions: ['What reservation/dispatch system does this integrate with?', 'Can individual reservations be edited after confirmation?']
+    },
+  };
+
+  document.querySelectorAll('.flow-step').forEach(step => {
+    step.addEventListener('click', () => {
+      const key = step.dataset.detail;
+      if (!key || !details[key]) return;
+      const data = details[key];
+      const panel = document.getElementById('detail-panel');
+      let html = '<h3>' + data.title + '</h3><ul>';
+      data.points.forEach(p => html += '<li>' + p + '</li>');
+      html += '</ul>';
+      if (data.questions && data.questions.length) {
+        html += '<div class="questions"><h4>Open Questions</h4>';
+        data.questions.forEach(q => html += '<p>→ ' + q + '</p>');
+        html += '</div>';
+      }
+      panel.innerHTML = html;
+      panel.classList.add('visible');
+    });
+  });
+</script>
+</body>
+</html>
