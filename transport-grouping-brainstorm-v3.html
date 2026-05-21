@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transportation Grouping — Feature Brainstorm v3</title>
+<style>
+  :root { color-scheme: light; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #ffffff; color: #1a1a2e; line-height: 1.5; padding: 20px 24px;
+  }
+  h1 { font-size: 20px; font-weight: 700; margin-bottom: 3px; }
+  .subtitle { color: #6b7280; font-size: 12px; margin-bottom: 20px; }
+
+  /* Tabs */
+  .tab-bar { display: flex; gap: 0; border-bottom: 2px solid #e5e7eb; margin-bottom: 20px; overflow-x: auto; }
+  .tab {
+    padding: 8px 14px; font-size: 12px; font-weight: 600;
+    cursor: pointer; border-bottom: 2px solid transparent;
+    margin-bottom: -2px; color: #6b7280; transition: all 0.2s;
+    background: none; border-top: none; border-left: none; border-right: none;
+    white-space: nowrap;
+  }
+  .tab:hover { color: #1a1a2e; }
+  .tab.active { color: #2563eb; border-bottom-color: #2563eb; }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* ─── FLOW ─── */
+  .flow-container { display: flex; flex-direction: column; align-items: center; gap: 0; padding: 4px 0; }
+  .flow-step {
+    width: 500px; padding: 12px 16px; border-radius: 10px;
+    border: 2px solid; position: relative; cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .flow-step:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.07); }
+  .flow-step .step-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px; }
+  .flow-step .step-num { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+  .flow-step .step-title { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+  .flow-step .step-desc { font-size: 11px; opacity: 0.8; }
+  .flow-tag {
+    font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 10px;
+    text-transform: uppercase; letter-spacing: 0.04em;
+  }
+  .ai-badge { display: inline-flex; align-items: center; gap: 3px; font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 10px; background: #f5f3ff; color: #7c3aed; text-transform: uppercase; letter-spacing: 0.04em; }
+
+  .flow-step.intake { background: #fffbeb; border-color: #fbbf24; }
+  .flow-step.intake .step-num { color: #b45309; }
+  .flow-step.ai { background: #f5f3ff; border-color: #c4b5fd; }
+  .flow-step.ai .step-num { color: #7c3aed; }
+  .flow-step.review { background: #f0fdf4; border-color: #86efac; }
+  .flow-step.review .step-num { color: #16a34a; }
+  .flow-step.group { background: #fefce8; border-color: #fde047; }
+  .flow-step.group .step-num { color: #ca8a04; }
+  .flow-step.views { background: #eff6ff; border-color: #93c5fd; }
+  .flow-step.views .step-num { color: #2563eb; }
+  .flow-step.discount { background: #fdf4ff; border-color: #e879f9; }
+  .flow-step.discount .step-num { color: #a21caf; }
+  .flow-step.tier { background: #fff7ed; border-color: #fdba74; }
+  .flow-step.tier .step-num { color: #ea580c; }
+  .flow-step.vendor { background: #fef2f2; border-color: #fca5a5; }
+  .flow-step.vendor .step-num { color: #dc2626; }
+  .flow-step.change { background: #f8fafc; border-color: #cbd5e1; }
+  .flow-step.change .step-num { color: #64748b; }
+  .flow-step.final { background: #f0fdfa; border-color: #5eead4; }
+  .flow-step.final .step-num { color: #0d9488; }
+
+  .flow-arrow { width: 2px; height: 22px; background: #cbd5e1; position: relative; }
+  .flow-arrow::after {
+    content: ''; position: absolute; bottom: -4px; left: -4px;
+    border-left: 5px solid transparent; border-right: 5px solid transparent;
+    border-top: 6px solid #cbd5e1;
+  }
+
+  /* Split paths */
+  .flow-split {
+    display: flex; gap: 12px; width: 500px; margin: 0 auto;
+  }
+  .flow-split .split-card {
+    flex: 1; padding: 12px; border-radius: 8px; border: 2px solid; cursor: pointer;
+    transition: all 0.15s;
+  }
+  .flow-split .split-card:hover { transform: translateY(-1px); box-shadow: 0 3px 8px rgba(0,0,0,0.06); }
+  .split-card .sp-tag { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px; display: inline-block; padding: 1px 6px; border-radius: 4px; }
+  .split-card .sp-title { font-size: 13px; font-weight: 700; color: #1e293b; margin-bottom: 2px; }
+  .split-card .sp-desc { font-size: 10px; color: #64748b; }
+  .split-a { background: #fffbeb; border-color: #fbbf24; }
+  .split-a .sp-tag { background: #fef3c7; color: #b45309; }
+  .split-b { background: #f5f3ff; border-color: #c4b5fd; }
+  .split-b .sp-tag { background: #ede9fe; color: #7c3aed; }
+
+  /* Merge indicator */
+  .flow-merge {
+    font-size: 10px; font-weight: 600; color: #64748b; text-align: center;
+    padding: 4px 12px; background: #f1f5f9; border-radius: 6px;
+    border: 1px dashed #cbd5e1; width: 200px;
+  }
+
+  /* Tier split */
+  .tier-split { display: flex; gap: 10px; width: 500px; margin: 0 auto; }
+  .tier-card {
+    flex: 1; padding: 10px; border-radius: 8px; text-align: center;
+    border: 1px solid #e2e8f0; font-size: 11px;
+  }
+  .tier-card .t-level { font-weight: 800; font-size: 14px; margin-bottom: 2px; }
+  .tier-card .t-range { font-size: 10px; color: #64748b; }
+  .tier-card .t-action { font-size: 10px; font-weight: 600; margin-top: 4px; }
+  .tier-l1 { background: #fef2f2; }
+  .tier-l1 .t-level { color: #dc2626; }
+  .tier-l1 .t-action { color: #dc2626; }
+  .tier-l2 { background: #fefce8; }
+  .tier-l2 .t-level { color: #ca8a04; }
+  .tier-l2 .t-action { color: #ca8a04; }
+  .tier-l3 { background: #f0fdf4; }
+  .tier-l3 .t-level { color: #16a34a; }
+  .tier-l3 .t-action { color: #16a34a; }
+  .tier-l4 { background: #eff6ff; }
+  .tier-l4 .t-level { color: #2563eb; }
+  .tier-l4 .t-action { color: #2563eb; }
+
+  /* Branch labels */
+  .flow-branch-label {
+    display: flex; gap: 10px; width: 500px; margin: 4px auto 0; justify-content: center;
+  }
+  .branch-path {
+    font-size: 10px; font-weight: 600; padding: 3px 10px; border-radius: 4px;
+  }
+  .branch-path.instant { background: #dcfce7; color: #16a34a; }
+  .branch-path.negotiate { background: #fef2f2; color: #dc2626; }
+
+  /* Strategy options */
+  .flow-branch { display: flex; gap: 8px; align-items: stretch; width: 500px; margin: 0 auto; }
+  .flow-branch .branch-card {
+    flex: 1; padding: 8px; border-radius: 8px; border: 1px solid #e2e8f0;
+    background: #f8fafc; cursor: pointer; transition: all 0.15s; text-align: center;
+  }
+  .flow-branch .branch-card:hover { border-color: #93c5fd; background: #eff6ff; }
+  .flow-branch .branch-card.active { border-color: #2563eb; background: #dbeafe; }
+  .flow-branch .branch-card .b-title { font-size: 11px; font-weight: 700; color: #1e293b; }
+  .flow-branch .branch-card .b-desc { font-size: 9px; color: #64748b; }
+
+  /* Detail panel */
+  .detail-panel {
+    margin-top: 16px; padding: 14px; background: #f8fafc;
+    border-radius: 10px; border: 1px solid #e2e8f0;
+    display: none; max-width: 540px; margin-left: auto; margin-right: auto;
+  }
+  .detail-panel.visible { display: block; }
+  .detail-panel h3 { font-size: 13px; font-weight: 700; margin-bottom: 6px; color: #1e293b; }
+  .detail-panel ul { padding-left: 16px; font-size: 11px; color: #475569; }
+  .detail-panel ul li { margin-bottom: 2px; }
+  .detail-panel .questions { margin-top: 8px; padding: 8px; background: #fefce8; border-radius: 6px; border: 1px solid #fde68a; }
+  .detail-panel .questions h4 { font-size: 11px; font-weight: 700; color: #92400e; margin-bottom: 3px; }
+  .detail-panel .questions p { font-size: 10px; color: #92400e; margin-bottom: 1px; }
+
+  /* ─── VIEWS TAB ─── */
+  .views-intro { font-size: 12px; color: #64748b; margin-bottom: 14px; text-align: center; }
+  .view-selector { display: flex; gap: 5px; justify-content: center; margin-bottom: 16px; flex-wrap: wrap; }
+  .view-btn {
+    padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: 600;
+    border: 2px solid #e2e8f0; background: #fff; color: #475569;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .view-btn:hover { border-color: #93c5fd; color: #2563eb; }
+  .view-btn.active { border-color: #2563eb; background: #eff6ff; color: #2563eb; }
+  .view-panel { display: none; }
+  .view-panel.active { display: block; }
+
+  /* Wireframe */
+  .wireframe {
+    border: 2px solid #e2e8f0; border-radius: 10px; overflow: hidden;
+    background: #fff; max-width: 580px; margin: 0 auto 16px;
+  }
+  .wireframe-header {
+    background: #f1f5f9; padding: 7px 12px; border-bottom: 1px solid #e2e8f0;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .wireframe-header .dot { width: 6px; height: 6px; border-radius: 50%; }
+  .wireframe-header .dot.r { background: #f87171; }
+  .wireframe-header .dot.y { background: #facc15; }
+  .wireframe-header .dot.g { background: #4ade80; }
+  .wireframe-header .page-title { font-size: 10px; color: #64748b; margin-left: 5px; font-weight: 600; }
+  .wireframe-body { padding: 14px; }
+  .wireframe-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #2563eb; margin-bottom: 8px; }
+
+  /* Leg tabs */
+  .leg-tabs { display: flex; gap: 0; border-bottom: 2px solid #e5e7eb; margin-bottom: 12px; }
+  .leg-tab {
+    padding: 6px 12px; font-size: 10px; font-weight: 600;
+    cursor: pointer; border-bottom: 2px solid transparent;
+    margin-bottom: -2px; color: #94a3b8; background: none;
+    border-top: none; border-left: none; border-right: none;
+  }
+  .leg-tab.active { color: #2563eb; border-bottom-color: #2563eb; }
+  .leg-panel { display: none; }
+  .leg-panel.active { display: block; }
+
+  /* Buttons */
+  .wf-btn { padding: 6px 14px; border-radius: 5px; font-size: 11px; font-weight: 600; border: none; cursor: pointer; }
+  .wf-btn.primary { background: #2563eb; color: #fff; }
+  .wf-btn.secondary { background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; }
+  .wf-btn-row { display: flex; gap: 5px; justify-content: flex-end; margin-top: 10px; }
+
+  /* Table */
+  .wf-table { width: 100%; border-collapse: collapse; font-size: 10px; margin: 8px 0; }
+  .wf-table th { background: #f8fafc; text-align: left; padding: 6px 7px; border-bottom: 2px solid #e2e8f0; color: #64748b; font-weight: 600; }
+  .wf-table td { padding: 6px 7px; border-bottom: 1px solid #f1f5f9; color: #334155; }
+
+  /* Badges */
+  .wf-badge { padding: 1px 7px; border-radius: 10px; font-size: 9px; font-weight: 600; }
+  .wf-badge.arrival { background: #dbeafe; color: #1d4ed8; }
+  .wf-badge.departure { background: #fce7f3; color: #be185d; }
+  .wf-badge.transfer { background: #fef3c7; color: #b45309; }
+  .wf-badge.vip { background: #f5f3ff; color: #7c3aed; }
+  .wf-vehicle-tag { font-size: 9px; padding: 1px 6px; background: #f0fdf4; color: #16a34a; border-radius: 4px; font-weight: 600; }
+
+  .drag-hint { font-size: 10px; color: #64748b; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 5px; padding: 6px 10px; margin: 8px 0; text-align: center; }
+  .drag-hint strong { color: #2563eb; }
+
+  /* Quote box */
+  .quote-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 7px; padding: 10px; margin-top: 10px; }
+  .quote-box .quote-title { font-size: 10px; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 5px; }
+  .quote-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .quote-item { text-align: center; }
+  .quote-item .q-val { font-size: 16px; font-weight: 800; color: #1e293b; }
+  .quote-item .q-label { font-size: 9px; color: #94a3b8; }
+  .quote-box .quote-note { font-size: 9px; color: #64748b; margin-top: 5px; font-style: italic; }
+
+  /* Discount row */
+  .discount-row { display: flex; align-items: center; gap: 8px; padding: 8px 10px; background: #fdf4ff; border: 1px solid #e879f9; border-radius: 6px; margin-top: 8px; }
+  .discount-row .d-label { font-size: 10px; font-weight: 600; color: #a21caf; }
+  .discount-row .d-input { width: 50px; padding: 3px 6px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 10px; text-align: center; }
+  .discount-row .d-result { font-size: 10px; color: #64748b; margin-left: auto; }
+
+  /* Chat wireframe */
+  .chat-container { max-width: 400px; margin: 0 auto; }
+  .chat-bubble { padding: 8px 12px; border-radius: 10px; margin-bottom: 6px; font-size: 11px; max-width: 85%; }
+  .chat-bubble.system { background: #f1f5f9; color: #334155; border-bottom-left-radius: 3px; }
+  .chat-bubble.user { background: #2563eb; color: #fff; margin-left: auto; border-bottom-right-radius: 3px; }
+  .chat-bubble .source-label { font-size: 9px; font-weight: 600; color: #94a3b8; margin-bottom: 2px; }
+  .chat-input-bar { display: flex; gap: 6px; margin-top: 8px; padding: 8px; border: 1px solid #e2e8f0; border-radius: 8px; }
+  .chat-input-bar input { flex: 1; border: none; outline: none; font-size: 11px; }
+  .chat-input-bar button { padding: 4px 12px; background: #2563eb; color: #fff; border: none; border-radius: 5px; font-size: 10px; font-weight: 600; cursor: pointer; }
+
+  /* Summary card */
+  .wf-summary-card { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 7px; padding: 12px; margin: 8px 0; text-align: center; }
+  .wf-summary-card .check { font-size: 18px; margin-bottom: 3px; }
+  .wf-summary-card .stat { font-size: 18px; font-weight: 800; color: #16a34a; }
+  .wf-summary-card .stat-label { font-size: 10px; color: #64748b; }
+  .wf-stats-row { display: flex; gap: 8px; margin: 8px 0; }
+  .wf-stat-box { flex: 1; background: #f8fafc; border-radius: 7px; padding: 8px; text-align: center; }
+  .wf-stat-box .num { font-size: 16px; font-weight: 800; color: #1e293b; }
+  .wf-stat-box .label { font-size: 9px; color: #94a3b8; }
+
+  /* Vendor brief */
+  .vendor-brief { background: #fef2f2; border: 1px solid #fca5a5; border-radius: 7px; padding: 12px; margin: 8px 0; }
+  .vendor-brief .vb-title { font-size: 11px; font-weight: 700; color: #dc2626; margin-bottom: 6px; }
+  .vendor-brief .vb-item { font-size: 10px; color: #7f1d1d; margin-bottom: 3px; padding-left: 12px; position: relative; }
+  .vendor-brief .vb-item::before { content: '•'; position: absolute; left: 0; }
+
+  /* Change history */
+  .change-callout { background: #fffbeb; border: 1px solid #fde68a; border-radius: 7px; padding: 10px; margin: 10px 0; font-size: 11px; color: #92400e; }
+
+  /* ─── GROUPING TAB ─── */
+  .grouping-section { max-width: 540px; margin: 0 auto; }
+  .grouping-section h2 { font-size: 15px; font-weight: 700; margin-bottom: 3px; }
+  .grouping-section .section-desc { font-size: 12px; color: #64748b; margin-bottom: 14px; }
+  .strategy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+  .strategy-card { border: 2px solid #e2e8f0; border-radius: 8px; padding: 12px; cursor: pointer; transition: all 0.15s; }
+  .strategy-card:hover { border-color: #93c5fd; background: #f8fafc; }
+  .strategy-card.selected { border-color: #2563eb; background: #eff6ff; }
+  .strategy-card .s-title { font-size: 12px; font-weight: 700; color: #1e293b; margin-bottom: 2px; }
+  .strategy-card .s-desc { font-size: 10px; color: #64748b; }
+  .strategy-card .s-tag { font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; padding: 1px 5px; border-radius: 3px; display: inline-block; margin-bottom: 4px; }
+  .strategy-card .s-tag.savoya { background: #dbeafe; color: #1d4ed8; }
+  .strategy-card .s-tag.tbd { background: #f1f5f9; color: #94a3b8; }
+
+  .criteria-section { margin-top: 16px; }
+  .criteria-section h3 { font-size: 13px; font-weight: 700; margin-bottom: 8px; color: #1e293b; }
+  .criteria-list { display: flex; flex-direction: column; gap: 6px; }
+  .criteria-item {
+    display: flex; align-items: center; gap: 8px; padding: 8px 10px;
+    background: #f8fafc; border-radius: 7px; border: 1px solid #e2e8f0;
+  }
+  .criteria-item .c-icon { font-size: 14px; flex-shrink: 0; }
+  .criteria-item .c-text { font-size: 11px; color: #334155; }
+  .criteria-item .c-text strong { color: #1e293b; }
+  .criteria-item .c-param { margin-left: auto; font-size: 10px; font-weight: 600; color: #2563eb; background: #dbeafe; padding: 1px 7px; border-radius: 4px; white-space: nowrap; }
+
+  /* ─── SCOPE ─── */
+  .scope-section { max-width: 540px; margin: 0 auto; }
+  .scope-section h2 { font-size: 15px; font-weight: 700; margin-bottom: 3px; }
+  .scope-section .section-desc { font-size: 12px; color: #64748b; margin-bottom: 14px; }
+  .scope-item { display: flex; gap: 10px; align-items: flex-start; padding: 10px; border: 1px solid #e2e8f0; border-radius: 7px; margin-bottom: 6px; background: #fff; }
+  .scope-item .s-num { width: 22px; height: 22px; border-radius: 50%; background: #2563eb; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+  .scope-item .s-title { font-size: 12px; font-weight: 700; color: #1e293b; }
+  .scope-item .s-desc { font-size: 10px; color: #64748b; margin-top: 1px; }
+
+  /* ─── QUESTIONS ─── */
+  .notes-section { max-width: 540px; margin: 0 auto; }
+  .notes-section h2 { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+  .note-item { display: flex; gap: 7px; align-items: flex-start; padding: 6px 0; border-bottom: 1px solid #f1f5f9; }
+  .note-bullet { width: 5px; height: 5px; border-radius: 50%; background: #2563eb; margin-top: 5px; flex-shrink: 0; }
+  .note-text { font-size: 11px; color: #475569; }
+
+  /* Group card */
+  .wf-group-card { border: 1px solid #e2e8f0; border-radius: 7px; padding: 8px 10px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
+  .wf-group-card .group-name { font-size: 11px; font-weight: 700; color: #1e293b; }
+  .wf-group-card .group-meta { font-size: 9px; color: #94a3b8; }
+</style>
+</head>
+<body>
+
+<h1>Transportation Grouping — Quote-to-Reservation Pipeline</h1>
+<p class="subtitle">Dual intake (Manifest + Unstructured) → AI Conversion → Grouping → Quote → Group Discount → Tier → Vendor Negotiation → Reservation</p>
+
+<div class="tab-bar">
+  <button class="tab active" data-tab="flow">Process Flow</button>
+  <button class="tab" data-tab="views">Views & Wireframes</button>
+  <button class="tab" data-tab="grouping">Grouping Logic</button>
+  <button class="tab" data-tab="tiers">Tier & Vendor</button>
+  <button class="tab" data-tab="scope">Scope</button>
+  <button class="tab" data-tab="questions">Open Questions</button>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- TAB 1: PROCESS FLOW                     -->
+<!-- ═══════════════════════════════════════ -->
+<div class="tab-content active" id="tab-flow">
+  <div class="flow-container">
+
+    <!-- STEP 1: Dual Intake -->
+    <div class="flow-step intake" data-detail="intake" style="text-align:center;">
+      <div class="step-num">Step 1 — Intake</div>
+      <div class="step-title">Two Intake Paths</div>
+      <div class="step-desc">Client provides trip details — either as a structured manifest or as unstructured text/email/screenshot/PDF</div>
+    </div>
+    <div class="flow-arrow"></div>
+
+    <div class="flow-split">
+      <div class="split-card split-a" data-detail="path-a">
+        <span class="sp-tag">Path A — Structured</span>
+        <div class="sp-title">Client Manifest</div>
+        <div class="sp-desc">CSV, Excel, PDF — received from aviation dept. Arrivals, departures, transfers in separate tabs.</div>
+      </div>
+      <div class="split-card split-b" data-detail="path-b">
+        <span class="sp-tag">Path B — Unstructured</span>
+        <div class="sp-title">Freeform Request</div>
+        <div class="sp-desc">Email text, screenshot, phone notes, partial info. "I need 3 SUVs in Dallas Jan 2." Team pastes into internal tool.</div>
+      </div>
+    </div>
+    <div class="flow-arrow"></div>
+
+    <!-- STEP 2: AI Processing -->
+    <div class="flow-step ai" data-detail="ai-processing">
+      <div class="step-header">
+        <div class="step-num">Step 2 — AI Processing</div>
+        <span class="ai-badge">AI Agent</span>
+      </div>
+      <div class="step-title">AI Conversion + Clarification</div>
+      <div class="step-desc"><strong>Path A:</strong> AI reads file in any format, maps columns to our schema.<br><strong>Path B:</strong> AI extracts trip specs from text, asks clarifying questions for gaps, uses placeholder data for names. Conversational interface (like a chat).</div>
+    </div>
+    <div class="flow-arrow"></div>
+
+    <div class="flow-merge">Both paths merge here ↓</div>
+    <div class="flow-arrow"></div>
+
+    <!-- STEP 3: Review -->
+    <div class="flow-step review" data-detail="review">
+      <div class="step-num">Step 3 — Review & Correct</div>
+      <div class="step-title">Review Converted Data</div>
+      <div class="step-desc">System shows what AI converted. User edits any errors. Three tabs: Arrivals, Departures, Transfers. Path B shows original text alongside extracted data.</div>
+    </div>
+    <div class="flow-arrow"></div>
+
+    <!-- STEP 4: Grouping -->
+    <div class="flow-step group" data-detail="grouping">
+      <div class="step-num">Step 4 — Grouping</div>
+      <div class="step-title">Grouping Logic</div>
+      <div class="step-desc">Select strategy: "Recommended" (Savoya preset) or other categories (TBD). System groups travelers across all 3 legs.</div>
+    </div>
+    <div style="margin: 6px 0;">
+      <div class="flow-branch">
+        <div class="branch-card active"><div class="b-title">Recommended</div><div class="b-desc">Savoya preset</div></div>
+        <div class="branch-card"><div class="b-title">TBD</div><div class="b-desc">Category 2</div></div>
+        <div class="branch-card"><div class="b-title">TBD</div><div class="b-desc">Category 3</div></div>
+        <div class="branch-card"><div class="b-title">Custom</div><div class="b-desc">Manual rules</div></div>
+      </div>
+    </div>
+    <div class="flow-arrow"></div>
+
+    <!-- STEP 5: Views + Manual Adjust -->
+    <div class="flow-step views" data-detail="views">
+      <div class="step-num">Step 5 — Views + Adjust</div>
+      <div class="step-title">Views + Manual Adjustment + Live Quote</div>
+      <div class="step-desc">Three views (Passenger, Manifest, Trip) × 3 legs. Users drag travelers between vehicles to regroup manually. Quote auto-updates in real time.</div>
+    </div>
+    <div class="flow-arrow"></div>
+
+    <!-- STEP 6: Discount -->
+    <div class="flow-step discount" data-detail="discount">
+      <div class="step-num">Step 6 — Discount</div>
+      <div class="step-title">Apply Group Discount</div>
+      <div class="step-desc">Team reviews quote summary and applies a single percentage-based discount across the entire group. Total quote recalculates.</div>
+    </div>
+    <div class="flow-arrow"></div>
+
+    <!-- STEP 7: Tier Classification -->
+    <div class="flow-step tier" data-detail="tier">
+      <div class="step-num">Step 7 — Tier Classification</div>
+      <div class="step-title">Auto-Flag Trip Count Tier</div>
+      <div class="step-desc">System auto-classifies the event by total trip count into L1–L4. Thresholds are configurable by the team.</div>
+    </div>
+    <div style="margin: 6px 0;">
+      <div class="tier-split">
+        <div class="tier-card tier-l1"><div class="t-level">L1</div><div class="t-range">1–15 trips</div><div class="t-action">No negotiation</div></div>
+        <div class="tier-card tier-l2"><div class="t-level">L2</div><div class="t-range">16–35 trips</div><div class="t-action">Potential</div></div>
+        <div class="tier-card tier-l3"><div class="t-level">L3</div><div class="t-range">36–75 trips</div><div class="t-action">Negotiate</div></div>
+        <div class="tier-card tier-l4"><div class="t-level">L4</div><div class="t-range">75+ trips</div><div class="t-action">Full negotiate</div></div>
+      </div>
+    </div>
+    <div class="flow-arrow"></div>
+
+    <!-- STEP 8: Tier-based split -->
+    <div class="flow-branch-label">
+      <span class="branch-path instant">L1 / L2 → Quote to client immediately</span>
+      <span class="branch-path negotiate">L3 / L4 → Vendor negotiation first</span>
+    </div>
+    <div class="flow-arrow"></div>
+
+    <!-- STEP 8: Vendor Negotiation (L3/L4) -->
+    <div class="flow-step vendor" data-detail="vendor">
+      <div class="step-header">
+        <div class="step-num">Step 8 — L3/L4 Only</div>
+        <span class="flow-tag" style="background:#fef2f2;color:#dc2626;">Conditional</span>
+      </div>
+      <div class="step-title">Vendor Negotiation Notification</div>
+      <div class="step-desc">System notifies vendor team with a negotiation brief: trip details, market gaps (missing vehicle types, missing vendors, missing pricing), potential out-of-market vendors. Details TBD — confirming with team today.</div>
+    </div>
+    <div class="flow-arrow"></div>
+
+    <!-- STEP 9: Quote to Client -->
+    <div class="flow-step views" data-detail="quote-out">
+      <div class="step-num">Step 9</div>
+      <div class="step-title">Quote to Client</div>
+      <div class="step-desc">L1/L2: instant quote with discounts applied. L3/L4: final quote after vendor negotiations complete and adjustments are made.</div>
+    </div>
+    <div class="flow-arrow"></div>
+
+    <!-- STEP 10: Change History -->
+    <div class="flow-step change" data-detail="changehistory">
+      <div class="step-header">
+        <div class="step-num">Step 10</div>
+        <span class="flow-tag" style="background:#f1f5f9;color:#64748b;">Conditional</span>
+      </div>
+      <div class="step-title">Change History</div>
+      <div class="step-desc">Appears on re-upload or edit. Shows delta in travelers, groups, cost. Accept/reject workflow.</div>
+    </div>
+    <div class="flow-arrow"></div>
+
+    <!-- STEP 11: Reservations -->
+    <div class="flow-step final" data-detail="reservations">
+      <div class="step-num">Step 11</div>
+      <div class="step-title">List of Reservations</div>
+      <div class="step-desc">Final confirmed reservations — all 3 legs with vehicle assignments, pickup times, passenger lists, discounts applied.</div>
+    </div>
+  </div>
+
+  <div class="detail-panel" id="detail-panel"></div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- TAB 2: VIEWS & WIREFRAMES               -->
+<!-- ═══════════════════════════════════════ -->
+<div class="tab-content" id="tab-views">
+  <p class="views-intro">Wireframes for key screens — click to switch between views</p>
+  <div class="view-selector">
+    <button class="view-btn active" data-view="chat">AI Chat (Path B)</button>
+    <button class="view-btn" data-view="review">Data Review</button>
+    <button class="view-btn" data-view="manifest">Manifest View</button>
+    <button class="view-btn" data-view="trip">Trip View</button>
+    <button class="view-btn" data-view="discount">Group Discount + Quote</button>
+    <button class="view-btn" data-view="vendor">Vendor Brief</button>
+    <button class="view-btn" data-view="final">Reservations</button>
+  </div>
+
+  <!-- ── AI Chat (Path B) ── -->
+  <div class="view-panel active" id="view-chat">
+    <div class="wireframe">
+      <div class="wireframe-header">
+        <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+        <span class="page-title">Internal AI Assistant — Unstructured Intake</span>
+      </div>
+      <div class="wireframe-body">
+        <div class="wireframe-label">Conversational Trip Extraction</div>
+        <div class="chat-container">
+          <div class="chat-bubble system"><div class="source-label">Team member pastes client email:</div></div>
+          <div class="chat-bubble user" style="white-space:pre-line;font-size:10px;">Offsite Ground
+Tuesday, September 16
+~120 people
+Pick Up: Hyatt Regency Boston Harbor at 5:45pm
+Drop Off: Classic Harbor Line, 60 Rowes Wharf
+Pick Up 2: Classic Harbor Line at 8pm
+Drop Off 2: Hyatt Regency Boston Harbor</div>
+          <div class="chat-bubble system">
+            I extracted <strong>2 transfer legs</strong> for <strong>~120 people</strong> on Sep 16:
+            <br>• 5:45 PM: Hyatt Regency → Classic Harbor Line
+            <br>• 8:00 PM: Classic Harbor Line → Hyatt Regency
+            <br><br>A few questions to complete the quote:
+            <br>1. What vehicle types? (Sprinters, shuttles, mix?)
+            <br>2. Any VIP travelers needing separate vehicles?
+            <br>3. Is this a one-way or round-trip per leg?
+          </div>
+          <div class="chat-bubble user">Use a mix of sprinters and mini buses. No VIPs. Round trip.</div>
+          <div class="chat-bubble system">
+            Got it. I've built the trip list with placeholder names. Ready to generate the quote.
+            <br><br><button class="wf-btn primary" style="font-size:10px;margin-top:4px;">→ Proceed to Review Screen</button>
+          </div>
+        </div>
+        <div style="margin-top:12px;font-size:10px;color:#64748b;text-align:center;font-style:italic;">Chat uses placeholder/dummy data for names — focuses on getting trip specs needed for quoting</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Data Review ── -->
+  <div class="view-panel" id="view-review">
+    <div class="wireframe">
+      <div class="wireframe-header">
+        <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+        <span class="page-title">Review Converted Data — correct before grouping</span>
+      </div>
+      <div class="wireframe-body">
+        <div class="wireframe-label">AI-Converted Data — Review & Edit</div>
+        <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:6px;padding:8px;margin-bottom:10px;display:flex;align-items:center;gap:6px;">
+          <span class="ai-badge">AI</span>
+          <span style="font-size:11px;color:#16a34a;">18 trips parsed, 2 flagged for review</span>
+        </div>
+        <div class="leg-tabs" data-group="review-legs">
+          <button class="leg-tab active" data-leg="r-arrivals">Arrivals (8)</button>
+          <button class="leg-tab" data-leg="r-departures">Departures (7)</button>
+          <button class="leg-tab" data-leg="r-transfers">Transfers (3)</button>
+        </div>
+        <div class="leg-panel active" id="r-arrivals">
+          <table class="wf-table">
+            <thead><tr><th>Name</th><th>Flight</th><th>Date/Time</th><th>From</th><th>To</th><th>VIP</th><th></th></tr></thead>
+            <tbody>
+              <tr><td>Dan Hayes</td><td>AA1234</td><td>2/22 2:00 PM</td><td>Airport</td><td>Downtown Hotel</td><td>Yes</td><td style="color:#2563eb;font-size:9px;cursor:pointer;">Edit</td></tr>
+              <tr><td>Leslie Park</td><td>AA1234</td><td>2/22 2:15 PM</td><td>Airport</td><td>Downtown Hotel</td><td>No</td><td style="color:#2563eb;font-size:9px;cursor:pointer;">Edit</td></tr>
+              <tr style="background:#fef2f2;"><td>J. Smith</td><td style="color:#dc2626;">???</td><td>2/22</td><td>Airport</td><td style="color:#dc2626;">Missing</td><td>No</td><td style="color:#dc2626;font-size:9px;font-weight:600;cursor:pointer;">Fix</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="leg-panel" id="r-departures"><div style="text-align:center;padding:12px;font-size:10px;color:#94a3b8;">7 departure records</div></div>
+        <div class="leg-panel" id="r-transfers"><div style="text-align:center;padding:12px;font-size:10px;color:#94a3b8;">3 transfer records</div></div>
+        <div class="wf-btn-row">
+          <button class="wf-btn secondary">Re-upload</button>
+          <button class="wf-btn secondary">Add Row</button>
+          <button class="wf-btn primary">Approve & Group</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Manifest View ── -->
+  <div class="view-panel" id="view-manifest">
+    <div class="wireframe">
+      <div class="wireframe-header">
+        <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+        <span class="page-title">Manifest View — grouped by leg & time</span>
+      </div>
+      <div class="wireframe-body">
+        <div class="wireframe-label">All Travelers by Leg</div>
+        <div class="leg-tabs" data-group="manifest-legs">
+          <button class="leg-tab active" data-leg="m-arrivals">Arrivals</button>
+          <button class="leg-tab" data-leg="m-departures">Departures</button>
+          <button class="leg-tab" data-leg="m-transfers">Transfers</button>
+        </div>
+        <div class="leg-panel active" id="m-arrivals">
+          <div class="wf-group-card"><div><div class="group-name">1. Dan Hayes</div><div class="group-meta">2/22 · AA1234 · Airport → Hotel</div></div><span class="wf-vehicle-tag">SUV</span></div>
+          <div class="wf-group-card"><div><div class="group-name">2. Leslie Park</div><div class="group-meta">2/22 · AA1234 · Airport → Hotel</div></div><span class="wf-vehicle-tag">SUV</span></div>
+        </div>
+        <div class="leg-panel" id="m-departures"><div style="text-align:center;padding:12px;font-size:10px;color:#94a3b8;">Departure records</div></div>
+        <div class="leg-panel" id="m-transfers">
+          <div class="wf-group-card"><div><div class="group-name">1. Dan Hayes +1</div><div class="group-meta">2/22 7PM · Hotel → Gala Dinner</div></div><div style="display:flex;gap:3px;"><span class="wf-badge transfer">Trf</span><span class="wf-vehicle-tag">Sedan</span></div></div>
+          <div class="wf-group-card"><div><div class="group-name">2. Sarah Lin +4</div><div class="group-meta">2/22 6:30PM · Hotel → Restaurant</div></div><div style="display:flex;gap:3px;"><span class="wf-badge transfer">Trf</span><span class="wf-vehicle-tag">Van</span></div></div>
+        </div>
+        <div class="drag-hint"><strong>Manual adjustment:</strong> Drag travelers between groups. Quote updates live.</div>
+        <div class="quote-box">
+          <div class="quote-title">Live Quote</div>
+          <div class="quote-row">
+            <div class="quote-item"><div class="q-val">$3,200</div><div class="q-label">Before Discount</div></div>
+            <div class="quote-item"><div class="q-val">14</div><div class="q-label">Vehicles</div></div>
+            <div class="quote-item"><div class="q-val">42</div><div class="q-label">Total Trips</div></div>
+          </div>
+          <div class="quote-note">Quote adjusts automatically when you change groupings</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Trip View ── -->
+  <div class="view-panel" id="view-trip">
+    <div class="wireframe">
+      <div class="wireframe-header">
+        <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+        <span class="page-title">Trip View — vehicle-centric</span>
+      </div>
+      <div class="wireframe-body">
+        <div class="wireframe-label">Assigned Vehicles</div>
+        <div class="leg-tabs" data-group="trip-legs">
+          <button class="leg-tab active" data-leg="t-arrivals">Arrivals</button>
+          <button class="leg-tab" data-leg="t-departures">Departures</button>
+          <button class="leg-tab" data-leg="t-transfers">Transfers</button>
+        </div>
+        <div class="leg-panel active" id="t-arrivals">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <div style="border:1px solid #e2e8f0;border-radius:7px;overflow:hidden;">
+              <div style="background:#f1f5f9;height:50px;display:flex;align-items:center;justify-content:center;font-size:20px;">🚙</div>
+              <div style="padding:8px;"><div style="font-size:11px;font-weight:700;">SUV</div><div style="font-size:9px;color:#64748b;">2/22 2PM · 3 pax · Airport→Hotel</div></div>
+            </div>
+            <div style="border:1px solid #e2e8f0;border-radius:7px;overflow:hidden;">
+              <div style="background:#f1f5f9;height:50px;display:flex;align-items:center;justify-content:center;font-size:20px;">🚐</div>
+              <div style="padding:8px;"><div style="font-size:11px;font-weight:700;">Sprinter</div><div style="font-size:9px;color:#64748b;">2/22 2:30PM · 5 pax · Airport→North</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="leg-panel" id="t-departures"><div style="text-align:center;padding:12px;font-size:10px;color:#94a3b8;">Departure vehicles</div></div>
+        <div class="leg-panel" id="t-transfers"><div style="text-align:center;padding:12px;font-size:10px;color:#94a3b8;">Transfer vehicles</div></div>
+        <div class="drag-hint"><strong>Manual adjustment:</strong> Drag travelers between vehicles. Quote auto-updates.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Group Discount + Quote ── -->
+  <div class="view-panel" id="view-discount">
+    <div class="wireframe">
+      <div class="wireframe-header">
+        <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+        <span class="page-title">Quote Summary & Group Discount</span>
+      </div>
+      <div class="wireframe-body">
+        <div class="wireframe-label">Quote Summary — Review & Apply Discount</div>
+
+        <!-- Trip breakdown table (read-only, no per-trip discount) -->
+        <table class="wf-table">
+          <thead><tr><th>Trip</th><th>Leg</th><th>Vehicle</th><th>Pax</th><th>Base Price</th></tr></thead>
+          <tbody>
+            <tr><td>Airport → Hotel</td><td><span class="wf-badge arrival">Arr</span></td><td>SUV</td><td>3</td><td>$180</td></tr>
+            <tr><td>Airport → North</td><td><span class="wf-badge arrival">Arr</span></td><td>Sprinter</td><td>5</td><td>$320</td></tr>
+            <tr><td>Hotel → Gala</td><td><span class="wf-badge transfer">Trf</span></td><td>Sedan</td><td>2</td><td>$95</td></tr>
+            <tr><td>Hotel → Airport</td><td><span class="wf-badge departure">Dep</span></td><td>Van</td><td>6</td><td>$250</td></tr>
+            <tr style="font-weight:700;background:#f8fafc;"><td colspan="4" style="text-align:right;">Total (42 trips)</td><td>$3,200</td></tr>
+          </tbody>
+        </table>
+
+        <!-- Group-level discount -->
+        <div class="discount-row" style="margin-top:12px;">
+          <div class="d-label">Group Discount</div>
+          <input class="d-input" value="12" style="width:50px;">
+          <span style="font-size:11px;color:#a21caf;font-weight:600;">%</span>
+          <div class="d-result">Applied to all trips in this group</div>
+        </div>
+
+        <div class="quote-box" style="margin-top:10px;">
+          <div class="quote-title">Quote Summary (After Group Discount)</div>
+          <div class="quote-row">
+            <div class="quote-item"><div class="q-val" style="text-decoration:line-through;color:#94a3b8;font-size:13px;">$3,200</div><div class="q-label">Before</div></div>
+            <div class="quote-item"><div class="q-val" style="color:#16a34a;">$2,816</div><div class="q-label">After 12% Discount</div></div>
+            <div class="quote-item"><div class="q-val">$384</div><div class="q-label">Total Saved</div></div>
+            <div class="quote-item"><div class="q-val">42</div><div class="q-label">Trips</div></div>
+          </div>
+          <div class="quote-note">One discount percentage applies equally to every trip in the group</div>
+        </div>
+        <div style="margin-top:8px;padding:8px;background:#fff7ed;border:1px solid #fdba74;border-radius:6px;font-size:10px;color:#ea580c;text-align:center;">
+          <strong>Auto-classified: Level 3</strong> (42 trips) — Vendor negotiation required before sending quote to client
+        </div>
+        <div class="wf-btn-row">
+          <button class="wf-btn secondary">Export Quote</button>
+          <button class="wf-btn primary">Notify Vendor Team</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Vendor Brief ── -->
+  <div class="view-panel" id="view-vendor">
+    <div class="wireframe">
+      <div class="wireframe-header">
+        <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+        <span class="page-title">Vendor Negotiation Brief — L3/L4</span>
+      </div>
+      <div class="wireframe-body">
+        <div class="wireframe-label">Notification to Vendor Team</div>
+        <div style="background:#fef2f2;border:1px solid #fca5a5;border-radius:7px;padding:10px;margin-bottom:10px;">
+          <div style="font-size:12px;font-weight:700;color:#dc2626;margin-bottom:4px;">Level 3 Event — 42 Trips — Vendor Negotiation Required</div>
+          <div style="font-size:10px;color:#7f1d1d;">Boston · Sep 16–18 · Client: Acme Corp</div>
+        </div>
+        <div class="vendor-brief">
+          <div class="vb-title">Details for Negotiation (TBD — confirming with team)</div>
+          <div class="vb-item">Trip breakdown: 8 arrivals, 7 departures, 3 transfers</div>
+          <div class="vb-item">Vehicle types needed: 4 SUVs, 3 Sprinters, 2 Sedans, 1 Mini Bus</div>
+          <div class="vb-item">Markets: Boston, MA</div>
+          <div class="vb-item" style="color:#dc2626;font-weight:600;">Missing: Mini Bus availability in Boston market</div>
+          <div class="vb-item" style="color:#dc2626;font-weight:600;">Missing: Sprinter pricing for Sep 16 (surge?)</div>
+          <div class="vb-item">Potential out-of-market vendors: [TBD]</div>
+          <div class="vb-item">Current quote (pre-negotiation, after 12% group discount): $2,816</div>
+        </div>
+        <div style="font-size:10px;color:#64748b;font-style:italic;margin:8px 0;">Vendor team needs and negotiation details to be confirmed — meeting today.</div>
+        <div class="wf-btn-row">
+          <button class="wf-btn secondary">View Full Trip List</button>
+          <button class="wf-btn primary">Start Negotiation</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Final Reservations ── -->
+  <div class="view-panel" id="view-final">
+    <div class="wireframe">
+      <div class="wireframe-header">
+        <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+        <span class="page-title">List of Reservations</span>
+      </div>
+      <div class="wireframe-body">
+        <div class="wireframe-label">Confirmed Reservations</div>
+        <div class="wf-summary-card">
+          <div class="check">✓</div>
+          <div class="stat">12 Reservations</div>
+          <div class="stat-label">18 travelers · Arrivals / Departures / Transfers</div>
+        </div>
+        <table class="wf-table">
+          <thead><tr><th>Res #</th><th>Leg</th><th>Vehicle</th><th>Pickup</th><th>Pax</th><th>Price</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>R-001</td><td><span class="wf-badge arrival">Arr</span></td><td>SUV</td><td>2/22 2PM</td><td>3</td><td>$158</td><td style="color:#16a34a;font-weight:600;">Confirmed</td></tr>
+            <tr><td>R-002</td><td><span class="wf-badge transfer">Trf</span></td><td>Sedan</td><td>2/22 7PM</td><td>2</td><td>$84</td><td style="color:#16a34a;font-weight:600;">Confirmed</td></tr>
+            <tr><td>R-003</td><td><span class="wf-badge departure">Dep</span></td><td>Van</td><td>2/23 6AM</td><td>6</td><td>$220</td><td style="color:#ca8a04;font-weight:600;">Pending</td></tr>
+          </tbody>
+          <tfoot><tr><td colspan="7" style="font-size:9px;color:#64748b;text-align:right;padding-top:4px;">Group discount of 12% applied to all trips</td></tr></tfoot>
+        </table>
+        <div class="wf-btn-row">
+          <button class="wf-btn secondary">Export</button>
+          <button class="wf-btn secondary">Notify Travelers</button>
+          <button class="wf-btn primary">Confirm All</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- TAB 3: GROUPING LOGIC                   -->
+<!-- ═══════════════════════════════════════ -->
+<div class="tab-content" id="tab-grouping">
+  <div class="grouping-section">
+    <h2>Grouping Strategy Options</h2>
+    <p class="section-desc">"Recommended" is a Savoya-predefined strategy per client. Additional categories TBD.</p>
+    <div class="strategy-grid">
+      <div class="strategy-card selected">
+        <span class="s-tag savoya">Savoya Preset</span>
+        <div class="s-title">Recommended</div>
+        <div class="s-desc">Savoya predefines optimal grouping per client based on preferences, group sizes, budget.</div>
+      </div>
+      <div class="strategy-card"><span class="s-tag tbd">TBD</span><div class="s-title">Category 2</div><div class="s-desc">To be defined.</div></div>
+      <div class="strategy-card"><span class="s-tag tbd">TBD</span><div class="s-title">Category 3</div><div class="s-desc">To be defined.</div></div>
+      <div class="strategy-card"><div class="s-title">Custom</div><div class="s-desc">Manual rules — time window, pax limits, radius, VIP handling.</div></div>
+    </div>
+    <div class="criteria-section">
+      <h3>Arrival Criteria</h3>
+      <div class="criteria-list">
+        <div class="criteria-item"><span class="c-icon">✈️</span><span class="c-text"><strong>Same Flights</strong> ± x mins</span><span class="c-param">configurable</span></div>
+        <div class="criteria-item"><span class="c-icon">📍</span><span class="c-text"><strong>Destination Proximity</strong> ± y miles</span><span class="c-param">configurable</span></div>
+        <div class="criteria-item"><span class="c-icon">👥</span><span class="c-text"><strong>Pax per Car</strong> — max per vehicle type</span><span class="c-param">configurable</span></div>
+        <div class="criteria-item"><span class="c-icon">⭐</span><span class="c-text"><strong>VIP / Non-VIP</strong> — separate vehicles</span><span class="c-param">flag</span></div>
+        <div class="criteria-item" style="border-style:dashed;opacity:0.6;"><span class="c-icon">❓</span><span class="c-text"><strong>TBD</strong></span><span class="c-param">—</span></div>
+      </div>
+    </div>
+    <div class="criteria-section">
+      <h3>Departure Criteria</h3>
+      <div class="criteria-list"><div class="criteria-item" style="border-style:dashed;opacity:0.6;"><span class="c-icon">❓</span><span class="c-text"><strong>TBD</strong> — same as arrivals or different?</span><span class="c-param">—</span></div></div>
+    </div>
+    <div class="criteria-section">
+      <h3>Transfer Criteria</h3>
+      <div class="criteria-list">
+        <div class="criteria-item"><span class="c-icon">🎉</span><span class="c-text"><strong>Same Event / Destination</strong></span><span class="c-param">exact match</span></div>
+        <div class="criteria-item"><span class="c-icon">🕐</span><span class="c-text"><strong>Same Time Window</strong></span><span class="c-param">± x mins</span></div>
+        <div class="criteria-item" style="border-style:dashed;opacity:0.6;"><span class="c-icon">❓</span><span class="c-text"><strong>TBD</strong></span><span class="c-param">—</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- TAB 4: TIER & VENDOR                    -->
+<!-- ═══════════════════════════════════════ -->
+<div class="tab-content" id="tab-tiers">
+  <div class="grouping-section">
+    <h2>Trip Count Tiers & Vendor Negotiation</h2>
+    <p class="section-desc">System auto-classifies events by trip count. Thresholds are configurable. L3/L4 trigger vendor negotiations before the client sees a quote.</p>
+
+    <div style="margin-bottom:20px;">
+      <h3 style="font-size:13px;font-weight:700;margin-bottom:8px;">Tier Thresholds (Configurable)</h3>
+      <div class="tier-split">
+        <div class="tier-card tier-l1"><div class="t-level">Level 1</div><div class="t-range">1–15 trips</div><div class="t-action">No negotiation</div><div style="font-size:9px;color:#94a3b8;margin-top:4px;">Instant quote to client</div></div>
+        <div class="tier-card tier-l2"><div class="t-level">Level 2</div><div class="t-range">16–35 trips</div><div class="t-action">Potential negotiation</div><div style="font-size:9px;color:#94a3b8;margin-top:4px;">Instant quote to client</div></div>
+        <div class="tier-card tier-l3"><div class="t-level">Level 3</div><div class="t-range">36–75 trips</div><div class="t-action">Negotiate first</div><div style="font-size:9px;color:#94a3b8;margin-top:4px;">~40% discount target</div></div>
+        <div class="tier-card tier-l4"><div class="t-level">Level 4</div><div class="t-range">75+ trips</div><div class="t-action">Full negotiation</div><div style="font-size:9px;color:#94a3b8;margin-top:4px;">~55% discount target</div></div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:20px;">
+      <h3 style="font-size:13px;font-weight:700;margin-bottom:8px;">Vendor Negotiation Brief (L3/L4)</h3>
+      <p style="font-size:11px;color:#64748b;margin-bottom:8px;">When L3/L4 is triggered, the system sends a negotiation brief to the vendor team. The brief includes:</p>
+      <div class="vendor-brief">
+        <div class="vb-title">Information Sent to Vendor Team</div>
+        <div class="vb-item">Trip count and tier classification</div>
+        <div class="vb-item">Full trip breakdown by leg (arrivals, departures, transfers)</div>
+        <div class="vb-item">Vehicle types needed and quantities</div>
+        <div class="vb-item">Markets/cities involved</div>
+        <div class="vb-item" style="font-weight:600;">Missing vehicle types in a market</div>
+        <div class="vb-item" style="font-weight:600;">Missing vendor coverage</div>
+        <div class="vb-item" style="font-weight:600;">Missing or outdated pricing</div>
+        <div class="vb-item" style="font-weight:600;">Potential out-of-market vendors to approach</div>
+        <div class="vb-item">Current quote (pre-negotiation, after group discount)</div>
+      </div>
+      <div style="font-size:10px;color:#ca8a04;background:#fefce8;border:1px solid #fde68a;border-radius:6px;padding:8px;margin-top:8px;">
+        ⏳ <strong>Pending confirmation:</strong> Exact vendor team needs to be confirmed in today's meeting. The list above is preliminary.
+      </div>
+    </div>
+
+    <div>
+      <h3 style="font-size:13px;font-weight:700;margin-bottom:8px;">Current Vendor Negotiation Flow (Reference)</h3>
+      <p style="font-size:11px;color:#64748b;margin-bottom:8px;">From the existing flowchart — L3/L4 triggers: Appoint POCs (Vendor Relations Manager + Client Care Specialist) → Preliminary Meeting → Negotiate → Evaluate Vendor Qualifications (garage size, garage score, trip volume = discount size, qualitative metrics) → Extended cancellation policy → Appoint CCS/VRM/CSM → Billing → Deal Complete.</p>
+      <div style="font-size:10px;color:#64748b;font-style:italic;">Phase 1: notification + brief only. Full workflow integration is a future phase.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- TAB 5: SCOPE                            -->
+<!-- ═══════════════════════════════════════ -->
+<div class="tab-content" id="tab-scope">
+  <div class="scope-section">
+    <h2>Scope</h2>
+    <p class="section-desc">Key deliverables for the transportation grouping / quote-to-reservation pipeline.</p>
+    <div class="scope-item"><div class="s-num">1</div><div class="s-content"><div class="s-title">Dual Intake System</div><div class="s-desc">Path A: file upload (any format). Path B: internal conversational AI tool for unstructured requests (email, text, screenshots). Later: expose Path B to clients.</div></div></div>
+    <div class="scope-item"><div class="s-num">2</div><div class="s-content"><div class="s-title">AI Conversion Agent</div><div class="s-desc">AI-powered ingestion — maps arbitrary formats/columns to our schema. Conversational clarification for gaps. Hardest part of the project.</div></div></div>
+    <div class="scope-item"><div class="s-num">3</div><div class="s-content"><div class="s-title">Data Review & Correction Screen</div><div class="s-desc">Show AI output with inline editing. Flag low-confidence rows. 3 leg tabs. Path B shows original text alongside extraction.</div></div></div>
+    <div class="scope-item"><div class="s-num">4</div><div class="s-content"><div class="s-title">Grouping Engine</div><div class="s-desc">Recommended (Savoya preset) + TBD categories + Custom. Configurable criteria per leg type.</div></div></div>
+    <div class="scope-item"><div class="s-num">5</div><div class="s-content"><div class="s-title">Views, Manual Adjustment & Live Quote</div><div class="s-desc">3 views × 3 legs. Drag-to-regroup. Quote auto-updates. Group-level % discount applied during quote summary review.</div></div></div>
+    <div class="scope-item"><div class="s-num">6</div><div class="s-content"><div class="s-title">Tier Classification & Vendor Notification</div><div class="s-desc">Auto-flag L1–L4 by trip count (configurable). L3/L4: send negotiation brief to vendor team with market gaps and trip details.</div></div></div>
+    <div class="scope-item"><div class="s-num">7</div><div class="s-content"><div class="s-title">Data Schema & Microservices</div><div class="s-desc">Schema for manifests, trips (3 legs), groups, vehicles, quotes, discounts, tiers, change history. Backend services.</div></div></div>
+    <div class="scope-item"><div class="s-num">8</div><div class="s-content"><div class="s-title">Change History</div><div class="s-desc">Track re-uploads/edits across all legs. Show delta, cost change. Accept/reject workflow.</div></div></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- TAB 6: OPEN QUESTIONS                   -->
+<!-- ═══════════════════════════════════════ -->
+<div class="tab-content" id="tab-questions">
+  <div class="notes-section">
+    <h2>Open Questions & Decision Points</h2>
+    <div class="note-item"><div class="note-bullet"></div><div class="note-text"><strong>AI model for conversion:</strong> What powers the AI agent? How do we handle confidence scores — flag low-confidence mappings for user review?</div></div>
+    <div class="note-item"><div class="note-bullet"></div><div class="note-text"><strong>Unstructured intake — minimum fields:</strong> What's the absolute minimum info needed to generate a quote? (Date, city, pax count, vehicle type?)</div></div>
+    <div class="note-item"><div class="note-bullet"></div><div class="note-text"><strong>Path B → Path A transition:</strong> When a quote-only request (Path B) converts into a real booking, how do real names/details get attached later?</div></div>
+    <div class="note-item"><div class="note-bullet"></div><div class="note-text"><strong>Multi-city events:</strong> The Super Bowl example spans multiple cities over weeks. How do we handle multi-market events in the UI and grouping?</div></div>
+    <div class="note-item"><div class="note-bullet"></div><div class="note-text"><strong>Tier thresholds:</strong> Are the L1–L4 ranges (1–15, 16–35, 36–75, 75+) confirmed? How does the team update them?</div></div>
+    <div class="note-item"><div class="note-bullet"></div><div class="note-text"><strong>Vendor team needs:</strong> Exact details for the negotiation brief — confirming today. Missing vehicles, missing vendors, pricing gaps, out-of-market options.</div></div>
+    <div class="note-item"><div class="note-bullet"></div><div class="note-text"><strong>Discount structure:</strong> Group-level % confirmed — one discount applied to the entire group during quote summary review. Can the discount be adjusted after vendor negotiation for L3/L4?</div></div>
+    <div class="note-item"><div class="note-bullet"></div><div class="note-text"><strong>L2 "potential negotiation":</strong> What triggers an L2 to actually go through negotiation vs. getting an instant quote?</div></div>
+    <div class="note-item"><div class="note-bullet"></div><div class="note-text"><strong>Quote delivery:</strong> How does the final quote get to the client? Email? PDF? Portal link? All of the above?</div></div>
+    <div class="note-item"><div class="note-bullet"></div><div class="note-text"><strong>Transfer leg in manifests:</strong> If client doesn't include a transfers tab, do we prompt for it? Or is it optional?</div></div>
+    <div class="note-item"><div class="note-bullet"></div><div class="note-text"><strong>Grouping for Path B:</strong> When there are no traveler names (quote-only), does grouping still apply? Or is it just vehicle sizing based on pax counts?</div></div>
+    <div class="note-item"><div class="note-bullet"></div><div class="note-text"><strong>Vendor negotiation timeline:</strong> How long do L3/L4 negotiations typically take? Does the system track status?</div></div>
+  </div>
+</div>
+
+<script>
+  // Tab switching
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+    });
+  });
+  // View switching
+  document.querySelectorAll('.view-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('view-' + btn.dataset.view).classList.add('active');
+    });
+  });
+  // Leg tabs
+  document.querySelectorAll('.leg-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const parent = tab.closest('.wireframe-body');
+      const group = tab.closest('.leg-tabs').dataset.group;
+      parent.querySelectorAll('.leg-tabs[data-group="'+group+'"] .leg-tab').forEach(t => t.classList.remove('active'));
+      parent.querySelectorAll('.leg-panel').forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById(tab.dataset.leg).classList.add('active');
+    });
+  });
+  // Strategy cards
+  document.querySelectorAll('.strategy-card').forEach(card => {
+    card.addEventListener('click', () => {
+      document.querySelectorAll('.strategy-card').forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+    });
+  });
+  // Branch cards
+  document.querySelectorAll('.branch-card').forEach(card => {
+    card.addEventListener('click', () => {
+      document.querySelectorAll('.branch-card').forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+    });
+  });
+  // Split cards
+  document.querySelectorAll('.split-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const key = card.dataset.detail;
+      if (!key || !details[key]) return;
+      const data = details[key];
+      const panel = document.getElementById('detail-panel');
+      let html = '<h3>' + data.title + '</h3><ul>';
+      data.points.forEach(p => html += '<li>' + p + '</li>');
+      html += '</ul>';
+      if (data.questions && data.questions.length) {
+        html += '<div class="questions"><h4>Open Questions</h4>';
+        data.questions.forEach(q => html += '<p>→ ' + q + '</p>');
+        html += '</div>';
+      }
+      panel.innerHTML = html;
+      panel.classList.add('visible');
+    });
+  });
+
+  // Flow step details
+  const details = {
+    intake: { title: 'Dual Intake', points: ['Two ways to start: upload a manifest file (any format) or paste unstructured text/email', 'Internal tool for now — team pastes client comms', 'Later: expose as client-facing portal/chat', 'System handles everything from "3 cars in Dallas" to 50+ line multi-city itineraries'], questions: ['How do we prioritize intake requests?', 'Should there be a queue for incoming requests?'] },
+    'path-a': { title: 'Path A — Structured Manifest', points: ['Client sends manifest from aviation department', 'Any file format: CSV, Excel, PDF', 'Usually has arrivals + departures in separate tabs', 'Client may add a 3rd tab for in-city transfers', 'Savoya provides a template but most clients use their own format', 'Contains real traveler names + flight details'], questions: ['Support multi-file uploads?', 'Auto-detect tab structure?'] },
+    'path-b': { title: 'Path B — Unstructured Request', points: ['Client sends freeform text: email, screenshot, phone notes, PDF', 'May be partial info: "3 SUVs in Dallas Jan 2, what\'s the quote?"', 'May be highly detailed: multi-city tour with 50+ line items', 'AI extracts trip specs, uses placeholder data for names', 'Conversational interface asks clarifying questions for gaps', 'Focus: get to a quotable trip list as fast as possible', 'Names get attached later when it becomes a real booking'], questions: ['What\'s the minimum info needed for a quote?', 'How do placeholder names convert to real names later?'] },
+    'ai-processing': { title: 'AI Conversion + Clarification', points: ['The hardest part of the project', 'Path A: AI reads any file format, maps arbitrary columns to our schema', 'Path B: AI extracts trip specs from freeform text, asks clarifying questions', 'Handles: merged cells, inconsistent dates, different languages, messy formatting', 'Conversational flow adapts — simple requests get more questions, detailed ones get auto-extracted', 'Same AI agent handles both paths'], questions: ['What AI model powers this?', 'Can we learn from corrections to improve future conversions for the same client?'] },
+    review: { title: 'Review & Correct', points: ['Shows what AI converted — 3 leg tabs', 'Inline editing for any cell', 'Flagged rows (low AI confidence) highlighted in red', 'Path B: shows original text alongside extracted data', 'Add rows manually or re-upload', 'Must approve before proceeding to grouping'], questions: ['Skippable for trusted/repeat clients?', 'Save correction patterns per client?'] },
+    grouping: { title: 'Grouping Logic', points: ['"Recommended" = Savoya preset per client', 'Additional categories TBD', '"Custom" = manual rule definition', 'Runs across all 3 legs', 'Arrival criteria: flights ± x mins, destination ± y mi, pax/car, VIP'], questions: ['How is Recommended configured per client?', 'Are grouping templates reusable?'] },
+    views: { title: 'Views + Manual Adjust + Quote', points: ['3 views × 3 legs — Passenger, Manifest, Trip', 'Users can drag travelers between vehicles to manually regroup', 'Quote auto-updates as groupings change', 'This is the "manual grouping" mode — system suggests, user refines'], questions: ['Which view is default?', 'Undo support for manual adjustments?'] },
+    discount: { title: 'Group Discount', points: ['Team reviews quote summary and applies a single % discount for the entire group', 'Same discount percentage applies to every trip in the group', 'Total quote recalculates with discount applied', 'Discount applied BEFORE vendor negotiation and client communication', 'Applied during the quote summary review step'], questions: ['Discount approval workflow?', 'Can the discount be adjusted after vendor negotiation?'] },
+    tier: { title: 'Tier Classification', points: ['Auto-classified by total trip count', 'L1 (1-15): no negotiation, instant quote', 'L2 (16-35): potential negotiation, instant quote', 'L3 (36-75): negotiate before client sees quote (~40% target)', 'L4 (75+): full negotiation (~55% target)', 'Thresholds configurable by the team'], questions: ['What triggers L2 to actually negotiate?', 'Are discount targets per-tier accurate?'] },
+    vendor: { title: 'Vendor Negotiation (L3/L4)', points: ['System sends notification to vendor team with negotiation brief', 'Brief includes: trip details, market gaps, missing vehicles/vendors/pricing', 'Potential out-of-market vendors to approach', 'Phase 1: notification only. Full workflow integration later.', 'Vendor team needs — confirming today'], questions: ['How long do negotiations typically take?', 'Does system track negotiation status?'] },
+    'quote-out': { title: 'Quote to Client', points: ['L1/L2: instant quote with discounts applied', 'L3/L4: final quote after vendor negotiations', 'Quote includes all 3 legs with per-trip pricing and discounts'], questions: ['How is the quote delivered? Email, PDF, portal?', 'Can client request revisions?'] },
+    changehistory: { title: 'Change History', points: ['Appears on re-upload or edit after quotes/reservations exist', 'Shows delta across all legs', 'Cost delta with discount impact', 'Accept/reject workflow'], questions: ['Does a change trigger re-classification of tier?'] },
+    reservations: { title: 'List of Reservations', points: ['Final output — all 3 legs', 'Includes discount applied per trip', 'Export, notify travelers, confirm all'], questions: ['Integration with dispatch system?'] },
+  };
+
+  document.querySelectorAll('.flow-step, .split-card').forEach(el => {
+    el.addEventListener('click', () => {
+      const key = el.dataset.detail;
+      if (!key || !details[key]) return;
+      const data = details[key];
+      const panel = document.getElementById('detail-panel');
+      let html = '<h3>' + data.title + '</h3><ul>';
+      data.points.forEach(p => html += '<li>' + p + '</li>');
+      html += '</ul>';
+      if (data.questions && data.questions.length) {
+        html += '<div class="questions"><h4>Open Questions</h4>';
+        data.questions.forEach(q => html += '<p>→ ' + q + '</p>');
+        html += '</div>';
+      }
+      panel.innerHTML = html;
+      panel.classList.add('visible');
+    });
+  });
+</script>
+</body>
+</html>
