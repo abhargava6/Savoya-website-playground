@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product & Engineering Update — Week of June 1, 2026</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --color-primary: #0F1B2D;
+      --color-secondary: #1A2942;
+      --color-accent: #3B82F6;
+      --color-accent-dim: rgba(59, 130, 246, 0.15);
+      --color-bg: #FFFFFF;
+      --color-bg-dark: #0F1B2D;
+      --color-text: #1E293B;
+      --color-text-light: #F1F5F9;
+      --color-text-muted: #64748B;
+      --color-surface: #F8FAFC;
+      --color-border: #E2E8F0;
+      --color-green: #10B981;
+      --color-amber: #F59E0B;
+      --color-red: #EF4444;
+      --color-green-bg: rgba(16, 185, 129, 0.1);
+      --color-amber-bg: rgba(245, 158, 11, 0.1);
+      --color-red-bg: rgba(239, 68, 68, 0.1);
+
+      --font-heading: 'Space Grotesk', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+
+      --text-hero: clamp(2.5rem, 5vw, 4rem);
+      --text-title: clamp(1.8rem, 3.5vw, 2.8rem);
+      --text-subtitle: clamp(1.2rem, 2vw, 1.6rem);
+      --text-body: clamp(0.95rem, 1.3vw, 1.15rem);
+      --text-small: clamp(0.8rem, 1vw, 0.95rem);
+      --text-caption: clamp(0.7rem, 0.85vw, 0.8rem);
+
+      --space-xs: 0.5rem;
+      --space-sm: 1rem;
+      --space-md: 2rem;
+      --space-lg: 3.5rem;
+      --space-xl: 5rem;
+      --slide-padding: 5vh 6vw;
+
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+      --duration-fast: 0.3s;
+      --duration-normal: 0.6s;
+
+      --slide-max-width: 1100px;
+      --border-radius-sm: 8px;
+      --border-radius-md: 12px;
+      --border-radius-lg: 20px;
+    }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      color: var(--color-text);
+      background: var(--color-bg);
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .slides-container {
+      width: 100vw; height: 100vh;
+      overflow-y: auto;
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+    }
+
+    .slide {
+      width: 100vw; height: 100vh; min-height: 100vh;
+      scroll-snap-align: start;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: var(--slide-padding);
+      position: relative; overflow: hidden;
+    }
+
+    .slide-content {
+      max-width: var(--slide-max-width);
+      margin: 0 auto; width: 100%;
+      position: relative; z-index: 2;
+    }
+
+    .progress-bar {
+      position: fixed; top: 0; left: 0; height: 3px;
+      background: var(--color-accent);
+      transition: width var(--duration-fast) var(--ease-out-expo);
+      z-index: 100;
+    }
+
+    .slide-counter {
+      position: fixed; bottom: 2rem; right: 2rem;
+      font-family: var(--font-body);
+      font-size: var(--text-caption);
+      color: var(--color-text-muted);
+      z-index: 100; opacity: 0.7;
+    }
+
+    /* === Title Slide === */
+    .slide-hero { background: var(--color-bg-dark); color: var(--color-text-light); }
+    .slide-hero::before {
+      content: ''; position: absolute; top: -20%; right: -10%;
+      width: 60vw; height: 60vw; border-radius: 50%;
+      background: radial-gradient(circle, rgba(59,130,246,0.06) 0%, transparent 60%);
+    }
+    .hero-eyebrow {
+      font-size: var(--text-small); font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--color-accent); margin-bottom: var(--space-sm);
+    }
+    .hero-title {
+      font-family: var(--font-heading); font-size: var(--text-hero);
+      font-weight: 700; line-height: 1.15; margin-bottom: var(--space-sm);
+    }
+    .hero-meta {
+      font-size: var(--text-body); color: var(--color-text-muted);
+      margin-top: var(--space-md);
+    }
+    .hero-meta span { color: var(--color-text-light); font-weight: 500; }
+
+    /* === Executive Summary === */
+    .summary-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: var(--space-md); margin-top: var(--space-md);
+    }
+    .summary-card {
+      background: var(--color-surface); border: 1px solid var(--color-border);
+      border-radius: var(--border-radius-md); padding: var(--space-sm) var(--space-md);
+    }
+    .summary-card h4 {
+      font-family: var(--font-heading); font-size: var(--text-small);
+      font-weight: 700; color: var(--color-text-muted);
+      text-transform: uppercase; letter-spacing: 0.04em;
+      margin-bottom: var(--space-xs);
+    }
+    .summary-card ul {
+      list-style: none; padding: 0; margin: 0;
+    }
+    .summary-card li {
+      padding: 0.3rem 0; font-size: var(--text-body); line-height: 1.5;
+      padding-left: 0.9rem; position: relative;
+    }
+    .summary-card li::before {
+      content: ''; position: absolute; left: 0; top: 0.7rem;
+      width: 4px; height: 4px; border-radius: 50%;
+      background: var(--color-accent);
+    }
+    .summary-card .discuss-item::before {
+      background: var(--color-amber);
+    }
+
+    .health-row {
+      display: flex; gap: var(--space-md);
+      margin-top: var(--space-md); flex-wrap: wrap;
+    }
+    .health-item {
+      display: flex; align-items: center; gap: 0.6rem;
+      font-size: var(--text-body); font-weight: 500;
+    }
+    .health-dot {
+      width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+    }
+    .dot-green { background: var(--color-green); }
+    .dot-amber { background: var(--color-amber); }
+    .dot-red { background: var(--color-red); }
+
+    /* === Project Slides === */
+    .slide-title {
+      font-family: var(--font-heading); font-size: var(--text-title);
+      font-weight: 700; color: var(--color-primary);
+      margin-bottom: var(--space-xs);
+    }
+    .slide-phase {
+      font-size: var(--text-small); color: var(--color-text-muted);
+      margin-bottom: var(--space-md);
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .phase-badge {
+      display: inline-block; padding: 0.2em 0.7em;
+      border-radius: 100px; font-size: var(--text-caption);
+      font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em;
+    }
+    .phase-shipped { background: var(--color-green-bg); color: var(--color-green); }
+    .phase-dev { background: var(--color-accent-dim); color: var(--color-accent); }
+    .phase-scoping { background: var(--color-amber-bg); color: var(--color-amber); }
+
+    .project-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md);
+    }
+    .project-section h4 {
+      font-family: var(--font-heading); font-size: var(--text-small);
+      font-weight: 700; color: var(--color-text-muted);
+      text-transform: uppercase; letter-spacing: 0.04em;
+      margin-bottom: var(--space-xs); padding-bottom: 0.4rem;
+      border-bottom: 2px solid var(--color-border);
+    }
+    .project-section ul { list-style: none; padding: 0; }
+    .project-section li {
+      font-size: var(--text-body); line-height: 1.6;
+      padding: 0.3rem 0; padding-left: 1rem; position: relative;
+    }
+    .project-section li::before {
+      content: ''; position: absolute; left: 0; top: 0.75rem;
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--color-accent);
+    }
+    .blocker-item::before { background: var(--color-amber) !important; }
+
+    /* === Milestones Table === */
+    .milestone-table {
+      width: 100%; border-collapse: collapse;
+      margin-top: var(--space-md); font-size: var(--text-body);
+    }
+    .milestone-table th {
+      font-family: var(--font-heading); font-size: var(--text-caption);
+      font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
+      color: var(--color-text-muted); text-align: left;
+      padding: 0.6rem 1rem; border-bottom: 2px solid var(--color-border);
+    }
+    .milestone-table td {
+      padding: 0.7rem 1rem; border-bottom: 1px solid var(--color-border);
+      vertical-align: top;
+    }
+    .milestone-table tr:last-child td { border-bottom: none; }
+    .milestone-table .date-cell {
+      font-family: var(--font-heading); font-weight: 500; white-space: nowrap;
+    }
+
+    /* === Animations === */
+    @media (prefers-reduced-motion: no-preference) {
+      .slide.active .animate-in {
+        animation: slideUp var(--duration-normal) var(--ease-out-expo) both;
+      }
+      .slide.active .animate-in:nth-child(2) { animation-delay: 0.08s; }
+      .slide.active .animate-in:nth-child(3) { animation-delay: 0.16s; }
+      .slide.active .animate-in:nth-child(4) { animation-delay: 0.24s; }
+      .slide.active .animate-in:nth-child(5) { animation-delay: 0.32s; }
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* === Responsive === */
+    @media (max-width: 768px) {
+      :root { --slide-padding: 5vw 5vw; }
+      .summary-grid, .project-grid { grid-template-columns: 1fr; }
+      .health-row { flex-direction: column; gap: var(--space-xs); }
+    }
+
+    @media print {
+      .slides-container { overflow: visible; scroll-snap-type: none; }
+      .slide { page-break-after: always; height: auto; min-height: 100vh; }
+      .slide-counter, .progress-bar { display: none; }
+      * { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="progress-bar" style="width: 0%"></div>
+  <div class="slide-counter">1 / 7</div>
+
+  <div class="slides-container">
+
+    <!-- SLIDE 1: Title -->
+    <section class="slide slide-hero" id="slide-1">
+      <div class="slide-content">
+        <p class="hero-eyebrow animate-in">Savoya Product & Engineering</p>
+        <h1 class="hero-title animate-in">Weekly Update</h1>
+        <p class="hero-meta animate-in">Week ending <span>June 1, 2026</span> · Prepared by <span>Ayush Bhargava</span></p>
+      </div>
+    </section>
+
+    <!-- SLIDE 2: Executive Summary -->
+    <section class="slide" id="slide-2">
+      <div class="slide-content">
+        <h2 class="slide-title animate-in">Executive Summary</h2>
+
+        <div class="health-row animate-in">
+          <div class="health-item"><span class="health-dot dot-green"></span> Vendor Assignment Logic</div>
+          <div class="health-item"><span class="health-dot dot-green"></span> GroundSpan Integration</div>
+          <div class="health-item"><span class="health-dot dot-green"></span> Quoting & Manifest</div>
+          <div class="health-item"><span class="health-dot dot-green"></span> FNE & Bugs</div>
+        </div>
+
+        <div class="summary-grid animate-in">
+          <div class="summary-card">
+            <h4>Highlights</h4>
+            <ul>
+              <li>Assignment Logic — development and QA complete, targeting June 15 go-live</li>
+              <li>GroundSpan — pricing, booking, and cancellation happy path functional in testing environment</li>
+              <li>Manifest Automation — solution reviewed with sales, CSM, and vendor teams; final proposal ready for decision</li>
+              <li>FNE & Bugs — 4 items expected to go live this week</li>
+            </ul>
+          </div>
+          <div class="summary-card">
+            <h4>Discussion Needed</h4>
+            <ul>
+              <li class="discuss-item">Assignment Logic — busy garage feature has performance concerns; recommending deferral to after June 15 rollout</li>
+              <li class="discuss-item">Manifest Automation — need to review proposal together and align on direction</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 3: Vendor Assignment Logic -->
+    <section class="slide" id="slide-3">
+      <div class="slide-content">
+        <h2 class="slide-title animate-in">Vendor Assignment Logic <span class="health-dot dot-green" style="display:inline-block; margin-left:0.5rem;"></span></h2>
+        <div class="slide-phase animate-in"><span class="phase-badge phase-dev">UAT / Bug Fixes</span> · Target Go-Live: <strong>June 15</strong></div>
+
+        <div class="project-grid animate-in">
+          <div class="project-section">
+            <h4>Progress This Week</h4>
+            <ul>
+              <li>Development and first round of testing wrapped up</li>
+              <li>QA regression testing in progress</li>
+            </ul>
+          </div>
+          <div class="project-section">
+            <h4>Next Week</h4>
+            <ul>
+              <li>Business testing with Dan, Kelsey, and Amber</li>
+              <li>Bug fixes and release alignment</li>
+            </ul>
+
+            <h4 style="margin-top: var(--space-sm);">Blockers / Risks</h4>
+            <ul>
+              <li class="blocker-item">Production data needed for business team testing — dependent on Plutus team</li>
+              <li class="blocker-item">Busy garage feature has performance issues — recommending deferral to after go-live unless we disagree</li>
+              <li class="blocker-item">Largest code change since NCP — will need Dan, Kelsey, and Amber actively involved in business testing</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 4: Ground Span -->
+    <section class="slide" id="slide-4">
+      <div class="slide-content">
+        <h2 class="slide-title animate-in">GroundSpan Integration <span class="health-dot dot-green" style="display:inline-block; margin-left:0.5rem;"></span></h2>
+        <div class="slide-phase animate-in"><span class="phase-badge phase-dev">Development / QA</span> · Target: <strong>Forward Flow Mid-June</strong></div>
+
+        <div class="project-grid animate-in">
+          <div class="project-section">
+            <h4>Progress This Week</h4>
+            <ul>
+              <li>Pricing, booking, and cancellation deployed to testing environment</li>
+              <li>All 3 endpoints' happy path functional in GroundSpan sandbox</li>
+              <li>Obtained access to GroundSpan testing environment</li>
+            </ul>
+          </div>
+          <div class="project-section">
+            <h4>Next Week</h4>
+            <ul>
+              <li>Handle edge cases — expect 2-3 rounds over next couple of weeks</li>
+              <li>Continue making forward flow production-ready</li>
+            </ul>
+
+            <h4 style="margin-top: var(--space-sm);">Blockers / Risks</h4>
+            <ul>
+              <li class="blocker-item">Complex integration — multiple iterations needed before production-ready</li>
+              <li class="blocker-item">Open questions for both Savoya and GroundSpan will surface throughout the project</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 5: Quoting & Manifest Automation -->
+    <section class="slide" id="slide-5">
+      <div class="slide-content">
+        <h2 class="slide-title animate-in">Quoting & Manifest Automation <span class="health-dot dot-green" style="display:inline-block; margin-left:0.5rem;"></span></h2>
+        <div class="slide-phase animate-in"><span class="phase-badge phase-scoping">Scoping & Design</span> · Target: <strong>TBD</strong></div>
+
+        <div class="project-grid animate-in">
+          <div class="project-section">
+            <h4>Progress This Week</h4>
+            <ul>
+              <li>Solution reviewed with sales, CSM, and vendor teams</li>
+              <li>Studied current Convey automation end-to-end with Julia</li>
+              <li>Final proposal ready — breaks the solution into two streams: quoting and manifest processing</li>
+            </ul>
+          </div>
+          <div class="project-section">
+            <h4>Next Week</h4>
+            <ul>
+              <li>Alignment meeting on the proposal</li>
+              <li>Effort estimation based on chosen approach</li>
+              <li>Start mapping input and output expectations with sales on quoting</li>
+            </ul>
+
+            <h4 style="margin-top: var(--space-sm);">Blockers / Risks</h4>
+            <ul>
+              <li class="blocker-item">Multiple possible routes — need to choose an approach before building</li>
+              <li class="blocker-item">Effort varies significantly depending on the path we take</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 6: FNE & Bugs -->
+    <section class="slide" id="slide-6">
+      <div class="slide-content">
+        <h2 class="slide-title animate-in">FNE & Bugs <span class="health-dot dot-green" style="display:inline-block; margin-left:0.5rem;"></span></h2>
+        <div class="slide-phase animate-in"><span class="phase-badge phase-dev">Development / QA</span> · Target: <strong>Wednesday, June 4</strong></div>
+
+        <div class="project-grid animate-in">
+          <div class="project-section">
+            <h4>Progress This Week</h4>
+            <ul>
+              <li>Calendar invite enhancement — dev complete</li>
+              <li>Fraud prevention controls — dev complete</li>
+              <li>Push notification flooding — interim fix identified; full fix needs vendor app team</li>
+              <li>Case note visibility bug — picked up, solution in place</li>
+            </ul>
+          </div>
+          <div class="project-section">
+            <h4>Next Week</h4>
+            <ul>
+              <li>Finish all 4 items and release by Wednesday</li>
+            </ul>
+
+            <h4 style="margin-top: var(--space-sm);">Blockers / Risks</h4>
+            <ul>
+              <li class="blocker-item">Push notification implementation on vendor app doesn't look right — shipping an interim fix for the ops issue</li>
+              <li class="blocker-item">Ethan off Thursday/Friday — release window is Wednesday only</li>
+              <li class="blocker-item">Will need Plutus team support to release</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 7: Upcoming Milestones -->
+    <section class="slide" id="slide-7">
+      <div class="slide-content">
+        <h2 class="slide-title animate-in">Upcoming Milestones</h2>
+        <p class="slide-phase animate-in">2-week lookahead</p>
+
+        <table class="milestone-table animate-in">
+          <thead>
+            <tr>
+              <th>Project</th>
+              <th>Milestone</th>
+              <th>Target</th>
+              <th>Owner</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Assignment Logic</td>
+              <td>Phase 1 Go-Live</td>
+              <td class="date-cell">June 15</td>
+              <td>Ayush</td>
+            </tr>
+            <tr>
+              <td>GroundSpan</td>
+              <td>Forward Flow Production-Ready</td>
+              <td class="date-cell">Mid-June</td>
+              <td>Ayush</td>
+            </tr>
+            <tr>
+              <td>Quoting & Manifest</td>
+              <td>Solution Alignment & I/O Mapping</td>
+              <td class="date-cell">June 8</td>
+              <td>Ayush</td>
+            </tr>
+            <tr>
+              <td>FNE & Bugs</td>
+              <td>4 Items Released</td>
+              <td class="date-cell">June 4</td>
+              <td>Ayush</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    const counter = document.querySelector('.slide-counter');
+    const progressBar = document.querySelector('.progress-bar');
+    const container = document.querySelector('.slides-container');
+    let currentSlide = 0;
+
+    function updateUI() {
+      counter.textContent = `${currentSlide + 1} / ${slides.length}`;
+      const progress = ((currentSlide + 1) / slides.length) * 100;
+      progressBar.style.width = progress + '%';
+      slides.forEach((s, i) => { s.classList.toggle('active', i === currentSlide); });
+    }
+
+    function goToSlide(n) {
+      if (n < 0 || n >= slides.length) return;
+      currentSlide = n;
+      slides[n].scrollIntoView({ behavior: 'smooth' });
+      updateUI();
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ') {
+        e.preventDefault(); goToSlide(currentSlide + 1);
+      } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+        e.preventDefault(); goToSlide(currentSlide - 1);
+      }
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const idx = Array.from(slides).indexOf(entry.target);
+          if (idx !== -1) { currentSlide = idx; updateUI(); }
+        }
+      });
+    }, { root: container, threshold: 0.6 });
+
+    slides.forEach(s => observer.observe(s));
+    updateUI();
+  </script>
+</body>
+</html>
