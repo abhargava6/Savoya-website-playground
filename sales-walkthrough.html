@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Savoya Quoting Assistant — Sales Preview</title>
+<style>
+  :root{
+    --ink:#1a1a2e; --muted:#6b7280; --line:#e5e7eb;
+    --copper:#b06a3c; --copper-d:#8a4f2a; --copper-bg:#fdf6f0;
+    --gold:#b8943f; --gold-d:#8f6f28;
+    --blue:#2563eb; --blue-bg:#eff6ff;
+    --green:#16a34a; --green-bg:#f0fdf4;
+    --amber:#ca8a04; --amber-bg:#fffbeb;
+    --purple:#7c3aed; --purple-bg:#f5f3ff;
+    color-scheme:light;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#faf9f7;color:var(--ink);line-height:1.55;}
+  .wrap{max-width:880px;margin:0 auto;padding:26px 22px 80px;}
+
+  .masthead{display:flex;align-items:center;gap:13px;margin-bottom:4px;}
+  .masthead img{height:24px;}
+  .mast-sub{font-size:17px;font-weight:700;color:var(--ink);border-left:1px solid #d6d3ce;padding-left:13px;}
+  .subtitle{color:var(--muted);font-size:13px;margin:8px 0 18px 1px;}
+
+  .tab-bar{display:flex;border-bottom:2px solid var(--line);margin-bottom:24px;overflow-x:auto;position:sticky;top:0;background:#faf9f7;z-index:20;padding-top:4px;}
+  .tab{padding:10px 14px;font-size:12.5px;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;color:var(--muted);transition:all .2s;background:none;border:none;white-space:nowrap;}
+  .tab:hover{color:var(--ink);}
+  .tab.active{color:var(--copper-d);border-bottom-color:var(--copper);}
+  .tab-content{display:none;animation:fade .25s ease;}
+  .tab-content.active{display:block;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+
+  h2{font-size:18px;font-weight:800;margin:26px 0 10px;letter-spacing:-0.01em;}
+  h3{font-size:14px;font-weight:700;margin-bottom:6px;}
+  p{font-size:13.5px;color:#374151;margin-bottom:10px;}
+  .lead{font-size:15px;color:#334155;}
+
+  .hero{background:linear-gradient(135deg,#fff,var(--copper-bg));border:1px solid #efe2d6;border-radius:16px;padding:24px;margin-bottom:8px;}
+  .hero .tagline{font-size:20px;font-weight:800;line-height:1.3;letter-spacing:-0.01em;margin-bottom:8px;}
+  .hero .tagline span{color:var(--copper-d);}
+  .pill{display:inline-block;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;background:var(--copper-bg);color:var(--copper-d);border:1px solid #eccfb8;text-transform:uppercase;letter-spacing:.04em;}
+
+  .steps{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:14px 0;}
+  .step{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px;}
+  .step .n{width:24px;height:24px;border-radius:50%;background:var(--copper);color:#fff;font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;margin-bottom:8px;}
+  .step h3{font-size:13.5px;}.step p{font-size:12px;margin:0;}
+
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0;}
+  .card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 15px;}
+  .card .ico{font-size:18px;margin-bottom:6px;}.card h3{font-size:13.5px;}.card p{font-size:12px;margin:0;color:#4b5563;}
+
+  .pain{background:#fff;border:1px solid var(--line);border-radius:12px;padding:6px 4px;}
+  .pain .row{display:flex;gap:10px;padding:9px 14px;border-bottom:1px solid #f1f1ee;align-items:flex-start;}
+  .pain .row:last-child{border-bottom:none;}
+  .pain .x{color:#dc2626;font-weight:800;flex-shrink:0;}.pain .row span{font-size:13px;color:#4b5563;}
+
+  .callout{background:var(--blue-bg);border:1px solid #bfdbfe;border-radius:12px;padding:14px 16px;margin:14px 0;font-size:13px;color:#1e40af;}
+  .callout b{color:#1e3a8a;}
+  .note{background:var(--amber-bg);border:1px solid #fde68a;border-radius:10px;padding:12px 14px;font-size:12.5px;color:#92400e;margin:12px 0;}
+
+  .ex-head{display:flex;align-items:center;gap:10px;margin-bottom:4px;}
+  .ex-num{width:26px;height:26px;border-radius:7px;background:var(--ink);color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;}
+  .ex-sub{font-size:12.5px;color:var(--muted);margin-bottom:16px;}
+
+  .request{background:#fff;border:1px solid var(--line);border-left:4px solid var(--copper);border-radius:10px;padding:14px 16px;margin-bottom:6px;}
+  .request .from{font-size:11px;font-weight:700;color:var(--copper-d);text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px;}
+  .request pre{font-family:inherit;white-space:pre-wrap;font-size:12.5px;color:#374151;line-height:1.5;}
+
+  .section-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:22px 0 10px;}
+
+  .chat{display:flex;flex-direction:column;gap:10px;}
+  .msg{display:flex;gap:9px;max-width:88%;}
+  .msg.agent{align-self:flex-end;flex-direction:row-reverse;}
+  .avatar{width:28px;height:28px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;}
+  .avatar.assistant{background:linear-gradient(135deg,var(--copper),var(--copper-d));color:#fff;}
+  .avatar.agent{background:#dbeafe;color:#1e40af;}
+  .bubble{padding:9px 13px;border-radius:13px;font-size:13px;line-height:1.5;}
+  .msg.assistant .bubble{background:#fff;border:1px solid var(--line);border-top-left-radius:4px;color:#1f2937;}
+  .msg.agent .bubble{background:var(--blue);color:#fff;border-top-right-radius:4px;}
+  .who{font-size:10px;font-weight:700;color:var(--muted);margin-bottom:3px;}
+  .bubble .q{display:block;background:var(--amber-bg);border:1px solid #fde68a;color:#92400e;border-radius:8px;padding:6px 9px;margin-top:6px;font-size:12.5px;}
+  .bubble .q:first-child{margin-top:0;}
+
+  .working{align-self:center;font-size:11.5px;color:#475569;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:20px;padding:5px 13px;display:inline-flex;gap:7px;align-items:center;text-align:center;}
+  .working.event{background:var(--purple-bg);border-color:#ddd6fe;color:var(--purple);}
+  .working.flag{background:#fef2f2;border-color:#fecaca;color:#dc2626;}
+  .working.ok{background:var(--green-bg);border-color:#bbf7d0;color:var(--green);}
+  .adjust-tag{display:inline-flex;gap:5px;align-items:center;font-size:11px;font-weight:700;background:var(--green-bg);color:var(--green);border:1px solid #bbf7d0;border-radius:20px;padding:3px 10px;margin-bottom:10px;}
+
+  .quote{background:#fff;border:1px solid #e7e2da;border-radius:14px;overflow:hidden;box-shadow:0 6px 24px rgba(120,80,40,.06);}
+  .quote-top{background:linear-gradient(135deg,#fff,var(--copper-bg));padding:16px 20px;border-bottom:1px solid #efe2d6;display:flex;justify-content:space-between;align-items:flex-start;}
+  .quote-top .brand{font-weight:800;font-size:15px;letter-spacing:.02em;}
+  .quote-top .brand small{display:block;font-size:10.5px;color:var(--muted);font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-top:2px;}
+  .quote-top .meta{text-align:right;font-size:11px;color:var(--muted);}
+  .quote-body{padding:16px 20px;}
+  .quote-body .for{font-size:12px;color:var(--muted);margin-bottom:12px;}.quote-body .for b{color:var(--ink);}
+
+  .opt{border:1px solid var(--line);border-radius:11px;padding:13px 15px;margin-bottom:12px;}
+  .opt.best{border-color:#cbb79f;background:var(--copper-bg);}
+  .opt .opt-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;}
+  .opt .opt-name{font-weight:800;font-size:13.5px;}
+  .opt .opt-tag{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:2px 8px;border-radius:20px;}
+  .opt-tag.cost{background:var(--green-bg);color:var(--green);border:1px solid #bbf7d0;}
+  .opt-tag.comfort{background:var(--blue-bg);color:var(--blue);border:1px solid #bfdbfe;}
+  .opt .opt-total{font-weight:800;font-size:15px;color:var(--copper-d);}
+
+  table{width:100%;border-collapse:collapse;font-size:12.5px;}
+  table th{text-align:left;font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:700;padding:6px 8px;border-bottom:1px solid var(--line);}
+  table td{padding:7px 8px;border-bottom:1px solid #f3f4f6;color:#374151;}
+  table tr:last-child td{border-bottom:none;}
+  table td.amt,table th.amt{text-align:right;font-variant-numeric:tabular-nums;}
+  .tot-row td{font-weight:800;color:var(--ink);border-top:2px solid var(--line);}
+  .disc td{color:var(--green);}
+
+  .vehmix{display:flex;flex-wrap:wrap;gap:6px;margin:2px 0 10px;}
+  .veh{font-size:11.5px;font-weight:600;background:#f8fafc;border:1px solid #e2e8f0;border-radius:7px;padding:4px 9px;color:#334155;}
+  .veh b{color:var(--copper-d);}
+  .badge-event{display:inline-flex;gap:5px;align-items:center;font-size:11px;font-weight:700;background:var(--purple-bg);color:var(--purple);border:1px solid #ddd6fe;border-radius:20px;padding:3px 10px;margin-bottom:10px;}
+  .flagbox{background:#fef2f2;border:1px solid #fecaca;border-radius:9px;padding:9px 12px;font-size:12px;color:#b91c1c;margin:10px 0;}
+  .quote-foot{padding:11px 20px;border-top:1px solid var(--line);font-size:11px;color:var(--muted);background:#fcfcfb;}
+
+  .ratecard{margin-top:14px;border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  .ratecard .rc-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--copper-d);padding:8px 12px;background:#fafafa;border-bottom:1px solid var(--line);}
+  .ratecard table{font-size:12px;}
+  .ratecard th,.ratecard td{padding:7px 12px;}
+
+  .out-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;}
+  .out-actions .a{font-size:11.5px;font-weight:700;border-radius:8px;padding:7px 13px;border:1px solid #e2d8cc;background:#fff;color:var(--copper-d);cursor:pointer;transition:all .15s;}
+  .out-actions .a:hover{background:var(--copper-bg);}
+  .out-actions .a.primary{background:var(--copper);color:#fff;border-color:var(--copper);}
+  .out-actions .a.primary:hover{background:var(--copper-d);}
+  .tiny{font-size:11px;color:var(--muted);}
+
+  .overlay{position:fixed;inset:0;background:rgba(20,16,12,.5);z-index:100;display:none;padding:24px;overflow:auto;}
+  .overlay.open{display:flex;align-items:flex-start;justify-content:center;}
+  .ov-close{position:fixed;top:16px;right:20px;background:#fff;border:none;border-radius:8px;padding:7px 13px;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.2);z-index:110;}
+
+  .sheet-app{background:#fff;border-radius:12px;width:100%;max-width:1000px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.3);}
+  .sheet-bar{background:#1f2937;color:#fff;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;}
+  .sheet-bar .file{font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px;}
+  .sheet-bar .file .gx{width:18px;height:18px;border-radius:4px;background:#16a34a;display:flex;align-items:center;justify-content:center;font-size:11px;}
+  .sheet-bar .hint{font-size:11px;color:#9ca3af;font-weight:500;}
+  .sheet-close{background:#374151;border:none;color:#fff;border-radius:6px;padding:5px 11px;font-size:12px;font-weight:700;cursor:pointer;}
+  .sheet-tabs{display:flex;background:#f3f4f6;border-bottom:1px solid #e5e7eb;padding:0 8px;}
+  .sheet-tab{padding:8px 14px;font-size:12px;font-weight:600;color:#6b7280;background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;}
+  .sheet-tab.active{color:#16a34a;border-bottom-color:#16a34a;background:#fff;}
+  .sheet-pane{display:none;overflow:auto;}.sheet-pane.active{display:block;}
+  .grid-tbl{width:100%;border-collapse:collapse;font-size:12px;}
+  .grid-tbl th{position:sticky;top:0;background:#f9fafb;border:1px solid #e5e7eb;padding:6px 9px;font-size:10.5px;text-transform:uppercase;letter-spacing:.03em;color:#6b7280;text-align:left;z-index:2;}
+  .grid-tbl td{border:1px solid #eef0f2;padding:0;}
+  .grid-tbl td .cell{padding:6px 9px;font-size:12px;color:#374151;outline:none;min-height:30px;}
+  .grid-tbl td .cell:focus{background:#eff6ff;box-shadow:inset 0 0 0 2px var(--blue);}
+  .grid-tbl td.rownum{background:#f9fafb;color:#9ca3af;text-align:center;font-size:11px;width:34px;padding:6px 0;}
+  .grid-tbl tr:hover td:not(.rownum){background:#fcfcfd;}
+  .grid-tbl td.veh-a{background:#fef6ef;} .grid-tbl td.veh-a .cell{color:#8a4f2a;font-weight:600;}
+  .grid-tbl .vip{color:#a21caf;font-weight:700;}
+  .sheet-foot{padding:8px 16px;border-top:1px solid #e5e7eb;font-size:11px;color:#9ca3af;background:#fafafa;}
+
+  .pdf-page{background:#fff;width:100%;max-width:640px;margin:0 auto;border-radius:4px;box-shadow:0 20px 60px rgba(0,0,0,.35);padding:42px 46px;font-family:Georgia,'Times New Roman',serif;}
+  .pdf-head{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid var(--gold);padding-bottom:16px;margin-bottom:20px;}
+  .pdf-head img{height:22px;}
+  .pdf-head .doc{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-d);font-weight:700;margin-top:7px;font-family:-apple-system,sans-serif;}
+  .pdf-head .who{text-align:right;font-size:11px;color:#555;font-family:-apple-system,sans-serif;line-height:1.6;}
+  .pdf-head .who b{color:#222;font-size:13px;}
+  .pdf-title{font-size:21px;color:#1a1a1a;margin-bottom:14px;}
+  .pdf-badge{display:inline-block;font-size:10px;font-family:-apple-system,sans-serif;font-weight:700;padding:3px 10px;border-radius:4px;margin-bottom:14px;background:#f3eee2;color:var(--gold-d);border:1px solid #e6dcc4;}
+  .pdf-badge.evt{background:#f5f3ff;color:#7c3aed;border-color:#ddd6fe;}
+  .pdf-sec{font-family:-apple-system,sans-serif;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-d);font-weight:700;margin:20px 0 6px;}
+  .pdf-tbl{width:100%;border-collapse:collapse;font-family:-apple-system,sans-serif;}
+  .pdf-tbl td,.pdf-tbl th{padding:8px 4px;border-bottom:1px solid #eee;font-size:12px;color:#333;text-align:left;}
+  .pdf-tbl th{font-size:9.5px;text-transform:uppercase;letter-spacing:.04em;color:#999;}
+  .pdf-tbl td.amt{text-align:right;font-variant-numeric:tabular-nums;}
+  .pdf-tbl .disc td{color:#16a34a;}
+  .pdf-tbl .tot td{font-weight:800;font-size:14px;color:#1a1a1a;border-top:2px solid #333;border-bottom:none;padding-top:11px;}
+  .pdf-flag{margin-top:14px;background:#fef2f2;border:1px solid #fecaca;border-radius:6px;padding:9px 12px;font-size:11.5px;color:#b91c1c;font-family:-apple-system,sans-serif;}
+  .pdf-foot{margin-top:24px;padding-top:14px;border-top:1px solid #eee;display:flex;justify-content:space-between;align-items:center;font-family:-apple-system,sans-serif;}
+  .pdf-foot img{height:30px;opacity:.9;}
+  .pdf-foot .ft{font-size:10px;color:#999;text-align:right;line-height:1.6;}
+
+  .prez-stage{width:100%;max-width:860px;margin:0 auto;}
+  .slide{aspect-ratio:16/9;border-radius:10px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.4);position:relative;display:none;}
+  .slide.show{display:block;}
+  .slide .pad{position:absolute;inset:0;padding:40px 50px;display:flex;flex-direction:column;}
+  .slide.cover{background:radial-gradient(circle at 70% 20%,#2a2a2a,#111);color:#fff;}
+  .slide.cover img{height:30px;margin-bottom:auto;}
+  .slide.cover .t{font-size:34px;font-weight:800;letter-spacing:-0.01em;line-height:1.1;}
+  .slide.cover .gold{color:var(--gold);}
+  .slide.cover .sub{font-size:15px;color:#bdbdbd;margin-top:10px;}
+  .slide.cover .rule{width:54px;height:3px;background:var(--gold);margin:18px 0;}
+  .slide.body{background:#fff;color:#1a1a1a;overflow:auto;}
+  .slide.body .st{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-d);font-weight:700;margin-bottom:12px;}
+  .slide.body .h{font-size:22px;font-weight:800;margin-bottom:14px;}
+  .slide.body table{font-size:13.5px;}
+  .slide.body td,.slide.body th{padding:7px 6px;border-bottom:1px solid #eee;text-align:left;}
+  .slide.body th{font-size:9.5px;text-transform:uppercase;letter-spacing:.04em;color:#999;}
+  .slide.body td.amt{text-align:right;font-weight:700;}
+  .slide.close-s{background:linear-gradient(135deg,#1a1a1a,#2c2416);color:#fff;}
+  .slide.close-s .big{font-size:15px;color:#cdb98c;letter-spacing:.04em;}
+  .slide.close-s .num{font-size:50px;font-weight:800;color:var(--gold);margin:6px 0 2px;}
+  .slide.close-s .nx{margin-top:auto;font-size:13px;color:#c9c4bb;}
+  .prez-nav{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:14px;}
+  .prez-nav button{background:#fff;border:none;border-radius:50%;width:34px;height:34px;font-size:16px;cursor:pointer;box-shadow:0 3px 10px rgba(0,0,0,.2);}
+  .prez-dots{display:flex;gap:6px;}
+  .prez-dots i{width:8px;height:8px;border-radius:50%;background:#ffffff66;cursor:pointer;}
+  .prez-dots i.on{background:#fff;}
+
+  .fb-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:12px;}
+  .fb-card .fb-h{display:flex;align-items:center;gap:8px;font-weight:800;font-size:14px;margin-bottom:8px;}
+  .fb-card .fb-h .b{width:22px;height:22px;border-radius:6px;background:var(--copper);color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;}
+  .fb-card ul{list-style:none;}
+  .fb-card li{font-size:13px;color:#374151;padding:6px 0 6px 22px;position:relative;}
+  .fb-card li::before{content:'';position:absolute;left:2px;top:12px;width:7px;height:7px;border:2px solid var(--copper);border-radius:2px;}
+  .fb-card li b{color:#1f2937;}
+  .star li::before{content:'★';border:none;color:var(--gold);font-size:12px;top:6px;left:0;width:auto;height:auto;}
+
+  @media(max-width:640px){.steps,.grid{grid-template-columns:1fr;}.msg{max-width:96%;}.overlay{padding:10px;}.pdf-page{padding:26px;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="masthead"><img src="savoya-logo.svg" alt="Savoya"><span class="mast-sub">Quoting Assistant</span></div>
+  <div class="subtitle">A sales &amp; CSM preview — how quoting a client could feel. Your feedback shapes it. <span class="tiny">(all prices below are illustrative examples)</span></div>
+
+  <div class="tab-bar" id="tabs">
+    <button class="tab active" data-tab="overview">✦ Overview</button>
+    <button class="tab" data-tab="ex1">1 · Boston Event</button>
+    <button class="tab" data-tab="ex2">2 · Quick Hourly</button>
+    <button class="tab" data-tab="ex3">3 · Super Bowl</button>
+    <button class="tab" data-tab="ex4">4 · Multi-City Tour</button>
+    <button class="tab" data-tab="ex5">5 · Manifest</button>
+    <button class="tab" data-tab="feedback">💬 Your Feedback</button>
+  </div>
+
+  <!-- ===================== OVERVIEW ===================== -->
+  <div class="tab-content active" id="overview">
+    <div class="hero">
+      <span class="pill">Pilot · for Sales &amp; CSM</span>
+      <div class="tagline" style="margin-top:10px;">Turn any client request into a <span>polished, accurate quote</span> — by just chatting.</div>
+      <p class="lead" style="margin:0;">Paste the client's email (or drop in a manifest), answer a few quick questions, and get a client-ready quote with real Savoya pricing — in minutes, not hours.</p>
+    </div>
+
+    <h2>What it does</h2>
+    <p>You talk to an assistant in plain English. It reads the request, asks you only what it needs, looks up the <b>actual pricing from Savoya's system</b> (your client's negotiated rates, special-event pricing, transfer rates — whatever applies), and hands you back a quote you can send. If a request can be fulfilled more than one way, it shows <b>options</b> to compare. You can <b>apply a discount, a fuel surcharge, or add tax right in the chat</b> and it updates instantly.</p>
+
+    <h2>What it solves today</h2>
+    <div class="pain">
+      <div class="row"><span class="x">✗</span><span><b>Hours per quote.</b> Big multi-day, multi-city requests take forever to price by hand.</span></div>
+      <div class="row"><span class="x">✗</span><span><b>Rate hunting.</b> Looking up rack, special-event, and transfer rates across markets one by one.</span></div>
+      <div class="row"><span class="x">✗</span><span><b>Easy-to-miss money.</b> A special-event rate or a missing transfer rate that should've applied.</span></div>
+      <div class="row"><span class="x">✗</span><span><b>Manual documents.</b> Rebuilding the same quote layout in a doc every time.</span></div>
+      <div class="row"><span class="x">✗</span><span><b>Guesswork on big groups.</b> Figuring out how many vehicles of which type to move 120 people.</span></div>
+    </div>
+
+    <h2>How it works — 3 steps</h2>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><h3>Paste the request</h3><p>The client's email, a few lines of text, or a manifest — however it came in.</p></div>
+      <div class="step"><div class="n">2</div><h3>Answer a few questions</h3><p>Just what's needed: which client, how many hours, any VIPs, which city, etc.</p></div>
+      <div class="step"><div class="n">3</div><h3>Get a client-ready quote</h3><p>Review it, apply discount / fuel surcharge / tax, then send as a branded PDF, deck, or spreadsheet.</p></div>
+    </div>
+
+    <h2>Why you'll like it</h2>
+    <div class="grid">
+      <div class="card"><div class="ico">⚡</div><h3>Fast</h3><p>Minutes instead of hours — especially on the big, messy requests.</p></div>
+      <div class="card"><div class="ico">🎯</div><h3>Accurate by default</h3><p>Pulls the same pricing the system would — special-event &amp; negotiated rates included.</p></div>
+      <div class="card"><div class="ico">🔀</div><h3>Options to compare</h3><p>Cost-optimized vs. premium vehicle mixes — easy to upsell or hit a budget.</p></div>
+      <div class="card"><div class="ico">🎛️</div><h3>Adjust on the fly</h3><p>Apply a discount, fuel surcharge, or add estimated tax right in the chat — the quote updates instantly.</p></div>
+      <div class="card"><div class="ico">🚩</div><h3>Catches gaps</h3><p>Flags missing vehicles, markets, or rates so nothing slips through.</p></div>
+      <div class="card"><div class="ico">📄</div><h3>Client-ready output</h3><p>Branded PDF, presentation deck, or editable spreadsheet — your choice.</p></div>
+    </div>
+
+    <div class="callout"><b>Good to know:</b> this pilot is about <b>quoting</b> — it does not book or change reservations, and it doesn't replace Convey. For manifests you'll still clean them in Convey first, then drop the result here for pricing.</div>
+
+    <div class="note">💬 <b>We want your input.</b> Flip through the five examples above — and the <b>Your Feedback</b> tab tells you exactly what we'd love to hear back.</div>
+  </div>
+
+  <!-- ===================== EXAMPLE 1 ===================== -->
+  <div class="tab-content" id="ex1">
+    <div class="ex-head"><div class="ex-num">1</div><h2 style="margin:0;">Boston Event — 120 guests</h2></div>
+    <div class="ex-sub">A group event with evening movements and an airport departure. No manifest — just headcount.</div>
+    <div class="request"><div class="from">📨 Client request</div><pre>Offsite Ground — Tuesday, September 16 — approx. 120 people
+Pick Up 1: Hyatt Regency Boston Harbor at 5:45pm
+Drop Off 1: Classic Harbor Line Boston
+Pick Up 2: Classic Harbor Line Boston at 8:00pm
+Drop Off 2: Hyatt Regency Boston Harbor
+
+Departure / Load and Go — Thursday, September 18
+Hyatt Regency to BOS — approx. 80 people — 12:00pm</pre></div>
+
+    <div class="section-label">The conversation</div>
+    <div class="chat">
+      <div class="msg agent"><div class="avatar agent">You</div><div><div class="who">You</div><div class="bubble">Quote this one please 👆</div></div></div>
+      <div class="msg assistant"><div class="avatar assistant">S</div><div><div class="who">Assistant</div><div class="bubble">Got it — a group event in <b>Boston</b> on Sep 16 &amp; 18. No manifest, so I'll quote by headcount and show vehicle options. A few quick things:
+        <span class="q">Existing client? Drop the client ID — otherwise I'll use standard published rates.</span>
+        <span class="q">Evening (5:45pm out, 8:00pm back): keep vehicles with the group all evening (hourly), or price each leg as a one-way transfer?</span>
+        <span class="q">Any VIPs needing their own vehicle, or all standard?</span></div></div></div>
+      <div class="msg agent"><div class="avatar agent">You</div><div><div class="bubble">Existing — client ID 4821 (Acme Corp). Keep vehicles for the evening, ~3 hours. All standard.</div></div></div>
+      <div class="working ok">✓ Found Acme Corp — using their negotiated Boston rates</div>
+      <div class="working">🔎 Checking Boston fleet &amp; pricing for Sep 16 &amp; 18 · no special event those dates</div>
+      <div class="msg assistant"><div class="avatar assistant">S</div><div><div class="bubble">Done. Hotel↔venue is within Boston, so it's priced <b>hourly</b>; the Sep 18 Hyatt→BOS is an <b>airport transfer</b>. Mix is mostly <b>SUVs &amp; sedans</b> with a couple of mini buses and a sprinter. Two options below.</div></div></div>
+      <div class="msg assistant"><div class="avatar assistant">S</div><div><div class="bubble">Before I generate the document — want to apply a <b>discount</b>, a <b>fuel surcharge</b>, or add <b>estimated tax</b>?</div></div></div>
+      <div class="msg agent"><div class="avatar agent">You</div><div><div class="bubble">Apply 10% discount, 5% fuel surcharge, and add tax. Go with Option A.</div></div></div>
+      <div class="working ok">✓ 10% discount · 5% fuel surcharge · estimated tax applied · quote updated</div>
+    </div>
+
+    <div class="section-label">What you'd send the client</div>
+    <div class="quote">
+      <div class="quote-top"><div class="brand">SAVOYA<small>Ground Transportation Quote</small></div><div class="meta">Prepared for <b>Acme Corp</b><br>Sep 16 &amp; 18, 2026 · Boston</div></div>
+      <div class="quote-body">
+        <span class="adjust-tag">🎛️ 10% discount + 5% fuel surcharge + estimated tax applied in chat</span>
+        <div class="for"><b>Evening event</b> — 120 guests · Hyatt ⇆ Classic Harbor Line · ~3 hours (hourly)</div>
+        <div class="opt best">
+          <div class="opt-head"><span class="opt-name">Option A — Best value</span><span class="opt-tag cost">Cost-optimized</span></div>
+          <div class="vehmix"><span class="veh"><b>15×</b> SUV (3)</span><span class="veh"><b>2×</b> Mini Bus (24)</span><span class="veh"><b>2×</b> Sprinter (14)</span><span class="veh">covers 121</span></div>
+          <table><tr><td>15 × SUV · 3 hrs</td><td class="amt">$4,950</td></tr><tr><td>2 × Mini Bus · 3 hrs</td><td class="amt">$1,950</td></tr><tr><td>2 × Sprinter · 3 hrs</td><td class="amt">$1,290</td></tr><tr class="tot-row"><td>Evening subtotal</td><td class="amt">$8,190</td></tr></table>
+        </div>
+        <div class="opt">
+          <div class="opt-head"><span class="opt-name">Option B — More sedans &amp; SUVs</span><span class="opt-tag comfort">Comfort</span></div>
+          <div class="vehmix"><span class="veh"><b>20×</b> SUV (3)</span><span class="veh"><b>11×</b> Sedan (2)</span><span class="veh"><b>1×</b> Mini Bus</span><span class="veh"><b>1×</b> Sprinter</span><span class="veh">covers 120</span></div>
+          <table><tr><td>Smaller groups per vehicle (sedan seats 2, SUV 3)</td><td class="amt">$10,320</td></tr></table>
+        </div>
+        <div class="for" style="margin-top:6px;"><b>Departure — Thursday, Sep 18</b> · 80 guests · Hyatt → BOS · 12:00pm (transfer)</div>
+        <div class="opt">
+          <div class="opt-head"><span class="opt-name">Airport departure</span><span class="opt-tag cost">Transfer</span></div>
+          <div class="vehmix"><span class="veh"><b>6×</b> SUV (3)</span><span class="veh"><b>2×</b> Mini Bus (24)</span><span class="veh"><b>1×</b> Sprinter (14)</span><span class="veh">covers 80</span></div>
+          <table><tr><td>6 × SUV + 2 × Mini Bus + 1 × Sprinter · transfer</td><td class="amt">$3,370</td></tr></table>
+        </div>
+        <table style="margin-top:6px;"><tr><td>Selected: Option A + departure</td><td class="amt">$11,560</td></tr><tr class="disc"><td>Discount (−10%)</td><td class="amt">−$1,156</td></tr><tr><td>Fuel surcharge (5%)</td><td class="amt">$520</td></tr><tr><td>Estimated tax</td><td class="amt">$765</td></tr><tr class="tot-row"><td>Estimated total</td><td class="amt">$11,689</td></tr></table>
+
+        <div class="ratecard"><div class="rc-title">Vehicle rates &amp; policies</div><table>
+          <thead><tr><th>Vehicle</th><th>Seats</th><th>Rate</th><th>Minimum</th><th>Cancellation</th></tr></thead>
+          <tr><td>SUV</td><td>3</td><td>$110/hr · $185 transfer</td><td>2 hrs</td><td>2 hrs</td></tr>
+          <tr><td>Mini Bus</td><td>24</td><td>$325/hr · $850 transfer</td><td>6 hrs</td><td>6 hrs</td></tr>
+          <tr><td>Sprinter</td><td>14</td><td>$215/hr · $560 transfer</td><td>6 hrs</td><td>6 hrs</td></tr>
+        </table></div>
+      </div>
+      <div class="quote-foot">Estimate · Acme Corp negotiated rates · 10% discount + 5% fuel surcharge applied. Final pricing confirmed at booking.</div>
+    </div>
+    <div class="out-actions"><span class="a primary" onclick="openPdf(1)">⬇ Branded PDF</span><span class="a" onclick="openPrez(1)">Presentation deck</span><span class="a" onclick="openGen(1)">Editable spreadsheet</span></div>
+  </div>
+
+  <!-- ===================== EXAMPLE 2 ===================== -->
+  <div class="tab-content" id="ex2">
+    <div class="ex-head"><div class="ex-num">2</div><h2 style="margin:0;">Quick Hourly — across 3 cities</h2></div>
+    <div class="ex-sub">A small, simple ask — plus a capacity catch.</div>
+    <div class="request"><div class="from">📨 Client request</div><pre>Hi, can I please get a quote for an hourly rate SUV for
+4 adults and 1 child without luggage in Orlando, LA & NYC? Thank you!</pre></div>
+
+    <div class="section-label">The conversation</div>
+    <div class="chat">
+      <div class="msg agent"><div class="avatar agent">You</div><div><div class="bubble">Quote please</div></div></div>
+      <div class="msg assistant"><div class="avatar assistant">S</div><div><div class="who">Assistant</div><div class="bubble">Happy to — hourly SUV in Orlando, LA &amp; NYC. Heads up: in our system an <b>SUV seats 3</b>, so 4 adults + 1 child (5) needs <b>2 SUVs</b> per city. Three quick things:
+        <span class="q">How many hours per city?</span>
+        <span class="q">What date(s)?</span>
+        <span class="q">Existing client (ID), or treat as a new prospect?</span></div></div></div>
+      <div class="msg agent"><div class="avatar agent">You</div><div><div class="bubble">4 hours each, June 20–22, new prospect.</div></div></div>
+      <div class="working">🔎 No account on file — using standard published rates · checking for special events (none active)</div>
+      <div class="msg assistant"><div class="avatar assistant">S</div><div><div class="bubble">"LA" and "NYC" each cover a couple of service areas, and I can apply adjustments if you'd like:
+        <span class="q">LA → Greater Los Angeles, and NYC → Manhattan?</span>
+        <span class="q">Any discount, fuel surcharge, or tax to add?</span></div></div></div>
+      <div class="msg agent"><div class="avatar agent">You</div><div><div class="bubble">Greater LA and Manhattan. Apply 5% discount, 5% fuel surcharge, and tax.</div></div></div>
+      <div class="working ok">✓ 5% discount · 5% fuel surcharge · estimated tax applied · quote updated</div>
+    </div>
+
+    <div class="section-label">What you'd send the client</div>
+    <div class="quote">
+      <div class="quote-top"><div class="brand">SAVOYA<small>Hourly Service Quote</small></div><div class="meta">New inquiry<br>June 20–22, 2026</div></div>
+      <div class="quote-body">
+        <span class="adjust-tag">🎛️ 5% discount + 5% fuel surcharge + estimated tax applied in chat</span>
+        <div class="for">Hourly <b>SUV</b> · 4 adults + 1 child · no luggage · 4 hours per market · <b>2 SUVs</b> (SUV seats 3)</div>
+        <table>
+          <thead><tr><th>Market</th><th>Vehicles</th><th>Hours</th><th class="amt">Hourly</th><th class="amt">Subtotal</th></tr></thead>
+          <tr><td>Orlando</td><td>2 × SUV</td><td>4</td><td class="amt">$95</td><td class="amt">$760</td></tr>
+          <tr><td>Greater Los Angeles</td><td>2 × SUV</td><td>4</td><td class="amt">$110</td><td class="amt">$880</td></tr>
+          <tr><td>Manhattan, NYC</td><td>2 × SUV</td><td>4</td><td class="amt">$125</td><td class="amt">$1,000</td></tr>
+          <tr><td>Subtotal</td><td colspan="3"></td><td class="amt">$2,640</td></tr>
+          <tr class="disc"><td>Discount (−5%)</td><td colspan="3"></td><td class="amt">−$132</td></tr>
+          <tr><td>Fuel surcharge (5%)</td><td colspan="3"></td><td class="amt">$125</td></tr>
+          <tr><td>Estimated tax</td><td colspan="3"></td><td class="amt">$211</td></tr>
+          <tr class="tot-row"><td>Estimated total</td><td colspan="3"></td><td class="amt">$2,844</td></tr>
+        </table>
+        <div class="ratecard"><div class="rc-title">Vehicle rates &amp; policies</div><table>
+          <thead><tr><th>Vehicle</th><th>Seats</th><th>Rate</th><th>Minimum</th><th>Cancellation</th></tr></thead>
+          <tr><td>SUV</td><td>3</td><td>$95 / $110 / $125 per hr (Orlando / LA / NYC)</td><td>2 hrs</td><td>2 hrs</td></tr>
+        </table></div>
+      </div>
+      <div class="quote-foot">Estimate · standard published rates · 5% discount + 5% fuel surcharge applied. 4-hour minimum per market.</div>
+    </div>
+    <div class="out-actions"><span class="a primary" onclick="openPdf(2)">⬇ Branded PDF</span><span class="a" onclick="openPrez(2)">Presentation deck</span><span class="a" onclick="openGen(2)">Editable spreadsheet</span></div>
+  </div>
+
+  <!-- ===================== EXAMPLE 3 ===================== -->
+  <div class="tab-content" id="ex3">
+    <div class="ex-head"><div class="ex-num">3</div><h2 style="margin:0;">Super Bowl LX — multi-day estimate</h2></div>
+    <div class="ex-sub">A planning request with a vehicle list per day. This is where special-event pricing shines.</div>
+    <div class="request"><div class="from">📨 Client request</div><pre>Planning for Super Bowl LX — would love estimated costs for car service:
+Thu Feb 5 → Full Day SUV · Full Day Sedan · Airport Transfer (Sedan)
+Fri Feb 6 → + Sprinter · Mini Bus/Shuttle for ~30 guests
+Sat Feb 7 → (same as Fri)
+Sun Feb 8 → Full Day SUV · Airport Transfer · Sprinter
+Mon Feb 9 → Full Day SUV · Full Day Sedan · Airport Transfer</pre></div>
+
+    <div class="section-label">The conversation</div>
+    <div class="chat">
+      <div class="msg agent"><div class="avatar agent">You</div><div><div class="bubble">Can we estimate this Super Bowl request?</div></div></div>
+      <div class="msg assistant"><div class="avatar assistant">S</div><div><div class="who">Assistant</div><div class="bubble">Yes — multi-day, Feb 5–9. The request doesn't name a city, and Super Bowl LX is in the <b>SF Bay Area</b>:
+        <span class="q">Base transport in the Bay Area (Santa Clara)? And existing client (ID)?</span>
+        <span class="q">"Full Day" — how many hours per day? (typical is 8–10)</span>
+        <span class="q">"Airport Transfer (Sedan)" — from SFO, to where?</span></div></div></div>
+      <div class="msg agent"><div class="avatar agent">You</div><div><div class="bubble">Bay Area, new prospect. Full day = 10 hours. Transfers SFO → client hotels downtown.</div></div></div>
+      <div class="working event">⭐ Special event found — "Super Bowl LX" active Feb 5–9 · special-event rates apply automatically</div>
+      <div class="working">🔎 Checking Bay Area fleet · pricing each day</div>
+      <div class="msg assistant"><div class="avatar assistant">S</div><div><div class="bubble">Because these dates fall under <b>Super Bowl LX special-event pricing</b>, I'm applying those rates automatically. Want a discount, fuel surcharge, or tax added?</div></div></div>
+      <div class="msg agent"><div class="avatar agent">You</div><div><div class="bubble">Add a 5% fuel surcharge and tax. No discount on event pricing.</div></div></div>
+      <div class="working ok">✓ 5% fuel surcharge · estimated tax applied · quote updated</div>
+    </div>
+
+    <div class="section-label">What you'd send the client</div>
+    <div class="quote">
+      <div class="quote-top"><div class="brand">SAVOYA<small>Event Transportation Estimate</small></div><div class="meta">Super Bowl LX<br>Feb 5–9, 2026 · SF Bay Area</div></div>
+      <div class="quote-body">
+        <span class="badge-event">⭐ Super Bowl LX special-event rates applied</span>
+        <span class="adjust-tag">🎛️ 5% fuel surcharge + estimated tax applied in chat</span>
+        <table>
+          <thead><tr><th>Day</th><th>Service</th><th class="amt">Est. cost</th></tr></thead>
+          <tr><td>Thu Feb 5</td><td>Full Day SUV (10h) · Full Day Sedan (10h) · SFO transfer</td><td class="amt">$3,150</td></tr>
+          <tr><td>Fri Feb 6</td><td>Full Day SUV · Sedan · Sprinter · Mini Bus/Shuttle (~30) · transfer</td><td class="amt">$6,420</td></tr>
+          <tr><td>Sat Feb 7</td><td>Full Day SUV · Sedan · Sprinter · Mini Bus/Shuttle (~30) · transfer</td><td class="amt">$6,420</td></tr>
+          <tr><td>Sun Feb 8</td><td>Full Day SUV · Sprinter · transfer</td><td class="amt">$3,980</td></tr>
+          <tr><td>Mon Feb 9</td><td>Full Day SUV · Sedan · transfer</td><td class="amt">$3,150</td></tr>
+          <tr><td>Subtotal</td><td></td><td class="amt">$23,120</td></tr>
+          <tr><td>Fuel surcharge (5%)</td><td></td><td class="amt">$1,156</td></tr>
+          <tr><td>Estimated tax</td><td></td><td class="amt">$1,942</td></tr>
+          <tr class="tot-row"><td>Estimated total</td><td></td><td class="amt">$26,218</td></tr>
+        </table>
+        <div class="ratecard"><div class="rc-title">Vehicle rates &amp; policies · special-event</div><table>
+          <thead><tr><th>Vehicle</th><th>Seats</th><th>Rate</th><th>Minimum</th><th>Cancellation</th></tr></thead>
+          <tr><td>Sedan</td><td>2</td><td>$140/hr</td><td>2 hrs</td><td>2 hrs</td></tr>
+          <tr><td>SUV</td><td>3</td><td>$175/hr</td><td>2 hrs</td><td>2 hrs</td></tr>
+          <tr><td>Sprinter</td><td>14</td><td>$300/hr</td><td>6 hrs</td><td>6 hrs</td></tr>
+          <tr><td>Mini Bus</td><td>24</td><td>$430/hr</td><td>6 hrs</td><td>6 hrs</td></tr>
+        </table></div>
+      </div>
+      <div class="quote-foot">Estimate · Super Bowl LX special-event rates · 5% fuel surcharge · "Full Day" = 10 hours. Subject to availability during peak event.</div>
+    </div>
+    <div class="out-actions"><span class="a primary" onclick="openPrez(3)">Presentation deck</span><span class="a" onclick="openPdf(3)">⬇ Branded PDF</span><span class="a" onclick="openGen(3)">Editable spreadsheet</span></div>
+  </div>
+
+  <!-- ===================== EXAMPLE 4 ===================== -->
+  <div class="tab-content" id="ex4">
+    <div class="ex-head"><div class="ex-num">4</div><h2 style="margin:0;">Multi-City Tour — the big one</h2></div>
+    <div class="ex-sub">Dozens of trips across many cities and weeks. The assistant organizes it, you verify, it prices.</div>
+    <div class="request"><div class="from">📨 Client request (excerpt)</div><pre>Oct 22 — 7:30pm — SUV from SGR to St. Regis Houston
+Oct 23 — SUV — 4pm–10pm (St. Regis to venue and back)
+Oct 23 — Sprinter — 4pm–11pm (Courtyard → Smart Financial Center)
+Oct 24 — SUV — 5:30am — St. Regis → SGR
+… plus Nov dates across Westchester, Jacksonville, Miami,
+   Atlanta, Bakersfield, Anaheim, Glendale  (43 trips total)</pre></div>
+
+    <div class="section-label">The conversation</div>
+    <div class="chat">
+      <div class="msg agent"><div class="avatar agent">You</div><div><div class="bubble">Here's a big itinerary — can you quote the whole thing?</div></div></div>
+      <div class="working">🔎 Reading itinerary · organizing trips by city &amp; date</div>
+      <div class="msg assistant"><div class="avatar assistant">S</div><div><div class="who">Assistant</div><div class="bubble">That's a big one — <b>43 trips across 9 cities over 3 weeks</b>. I've organized them. Before I price, skim my read so we're aligned:
+        <span class="q">9 cities (Houston, San Antonio, Ft. Worth, Westchester, Jacksonville, Miami, Atlanta, Bakersfield, Anaheim/Glendale) — right?</span>
+        <span class="q">"4pm–10pm to venue and back" → vehicle held for that window (hourly)?</span>
+        <span class="q">"shuttle until 11pm" → hourly shuttle for the window?</span>
+        <span class="q">Existing client (ID)? And any discount / fuel surcharge / tax to apply?</span></div></div></div>
+      <div class="msg agent"><div class="avatar agent">You</div><div><div class="bubble">All correct. Hourly for the windows and shuttle. Client ID 6610. Apply 8% discount, 5% fuel surcharge, and tax.</div></div></div>
+      <div class="working ok">✓ Client 6610 rates · 8% discount · 5% fuel surcharge · tax applied</div>
+      <div class="working">🔎 Matching airports (SGR, SAT, FTW, HPN, JAX…) &amp; hotels · pricing each market</div>
+      <div class="working flag">⚠ Bakersfield short 1 Sprinter for the Nov 20 shuttle (have 2, need 3)</div>
+      <div class="msg assistant"><div class="avatar assistant">S</div><div><div class="bubble">All 43 trips priced into one combined quote, grouped by city. <b>One availability gap to confirm with Ops</b> — see the flag; we may be able to pull a Sprinter from a nearby market. Open the <b>editable spreadsheet</b> for full per-trip detail.</div></div></div>
+    </div>
+
+    <div class="section-label">What you'd send the client</div>
+    <div class="quote">
+      <div class="quote-top"><div class="brand">SAVOYA<small>Multi-City Program Quote</small></div><div class="meta">43 trips · 9 cities<br>Oct 22 – Nov 23, 2026</div></div>
+      <div class="quote-body">
+        <span class="adjust-tag">🎛️ 8% discount + 5% fuel surcharge + estimated tax applied in chat</span>
+        <div class="for">One combined quote · grouped by city · <b>client 6610 rates applied</b></div>
+        <table>
+          <thead><tr><th>City</th><th>Trips</th><th>Mix</th><th class="amt">Subtotal</th></tr></thead>
+          <tr><td>Houston / Sugar Land</td><td>6</td><td>SUV · Sprinter</td><td class="amt">$4,120</td></tr>
+          <tr><td>San Antonio / Ft. Worth</td><td>9</td><td>SUV · Sprinter</td><td class="amt">$6,540</td></tr>
+          <tr><td>Westchester (HPN)</td><td>4</td><td>SUV · Sprinter</td><td class="amt">$2,880</td></tr>
+          <tr><td>Jacksonville · Miami</td><td>10</td><td>SUV · Sprinter</td><td class="amt">$7,310</td></tr>
+          <tr><td>Atlanta</td><td>4</td><td>SUV · Sprinter</td><td class="amt">$3,050</td></tr>
+          <tr><td>Bakersfield · Anaheim · Glendale</td><td>10</td><td>SUV · Sprinter</td><td class="amt">$7,690</td></tr>
+          <tr><td>Subtotal</td><td colspan="2"></td><td class="amt">$31,590</td></tr>
+          <tr class="disc"><td>Discount (−8%)</td><td colspan="2"></td><td class="amt">−$2,527</td></tr>
+          <tr><td>Fuel surcharge (5%)</td><td colspan="2"></td><td class="amt">$1,453</td></tr>
+          <tr><td>Estimated tax</td><td colspan="2"></td><td class="amt">$2,136</td></tr>
+          <tr class="tot-row"><td>Estimated total</td><td colspan="2"></td><td class="amt">$32,652</td></tr>
+        </table>
+        <div class="flagbox">⚠ <b>Check with Ops:</b> Bakersfield is <b>short 1 Sprinter</b> for the Nov 20 shuttle (have 2, need 3). Good chance we can <b>pull one from a nearby market</b> — ops is confirming. Pricing assumes it's sourced.</div>
+        <div class="ratecard"><div class="rc-title">Vehicle rates &amp; policies</div><table>
+          <thead><tr><th>Vehicle</th><th>Seats</th><th>Rate</th><th>Minimum</th><th>Cancellation</th></tr></thead>
+          <tr><td>SUV</td><td>3</td><td>$115/hr · $210–$240 transfer</td><td>2 hrs</td><td>2 hrs</td></tr>
+          <tr><td>Sprinter</td><td>14</td><td>$215/hr · $540 transfer</td><td>6 hrs</td><td>6 hrs</td></tr>
+        </table></div>
+      </div>
+      <div class="quote-foot">Estimate · client 6610 rates · 8% discount + 5% fuel surcharge · 43 trips itemized in the spreadsheet.</div>
+    </div>
+    <div class="out-actions"><span class="a primary" onclick="openPdf(4)">⬇ Branded PDF</span><span class="a" onclick="openPrez(4)">Presentation deck</span><span class="a" onclick="openSheet('sheet4')">📊 Editable spreadsheet →</span></div>
+  </div>
+
+  <!-- ===================== EXAMPLE 5 ===================== -->
+  <div class="tab-content" id="ex5">
+    <div class="ex-head"><div class="ex-num">5</div><h2 style="margin:0;">Manifest — arrivals &amp; departures</h2></div>
+    <div class="ex-sub">A client-provided manifest with passengers &amp; flights. Cleaned in Convey first, then priced &amp; grouped here.</div>
+    <div class="request"><div class="from">📎 Cleaned manifest (from Convey)</div><pre>arrivals_departures.csv — 86 passengers
+   52 arrivals (with flight numbers & times)
+   34 departures (with flight numbers & times)
+   VIP column included</pre></div>
+
+    <div class="section-label">The conversation</div>
+    <div class="chat">
+      <div class="msg agent"><div class="avatar agent">You</div><div><div class="bubble">Cleaned this manifest in Convey — here it is. Quote it?</div></div></div>
+      <div class="working">🔎 Reading manifest — 86 passengers · 52 arrivals · 34 departures · 6 VIPs detected</div>
+      <div class="msg assistant"><div class="avatar assistant">S</div><div><div class="who">Assistant</div><div class="bubble">Loaded. I'll group passengers into vehicles the same way the system does. The manifest doesn't include grouping rules, so:
+        <span class="q">Which vehicle types should I use, and seats each? (e.g., SUV seats 3, Sprinter 14)</span>
+        <span class="q">VIPs in their own vehicle — and which <b>vehicle type</b> should VIPs get? (e.g., S-Class Sedan, Luxury SUV)</span>
+        <span class="q">For departures, how tight a window should share a vehicle — e.g., within 30 minutes?</span>
+        <span class="q">Any discount, fuel surcharge, or tax to apply?</span></div></div></div>
+      <div class="msg agent"><div class="avatar agent">You</div><div><div class="bubble">SUV (3) and Sprinter (14). VIPs solo in an S-Class Sedan. Departures: 30-minute window. Client ID 3307. Apply 10% discount, 5% fuel surcharge, and tax.</div></div></div>
+      <div class="working ok">✓ Client 3307 rates · 10% discount · 5% fuel surcharge · tax · no special event</div>
+      <div class="working">🔎 Grouping arrivals by flight · departures by 30-min window · 6 VIPs → S-Class Sedan · pricing</div>
+      <div class="msg assistant"><div class="avatar assistant">S</div><div><div class="bubble">Grouped &amp; priced. Two options — most economical, and the system's recommended grouping. Open the <b>editable manifest</b> to see every passenger and which vehicle they're in (arrivals &amp; departures on separate tabs).</div></div></div>
+    </div>
+
+    <div class="section-label">What you'd send the client</div>
+    <div class="quote">
+      <div class="quote-top"><div class="brand">SAVOYA<small>Group Manifest Quote</small></div><div class="meta">86 passengers · 86 trips<br>Client 3307</div></div>
+      <div class="quote-body">
+        <span class="adjust-tag">🎛️ 10% discount + 5% fuel surcharge + estimated tax applied in chat</span>
+        <div class="opt best">
+          <div class="opt-head"><span class="opt-name">Option A — Most economical</span><span class="opt-tag cost">Cost-optimized</span></div>
+          <div class="vehmix"><span class="veh"><b>6×</b> S-Class (VIPs)</span><span class="veh"><b>7×</b> Sprinter (14)</span><span class="veh"><b>9×</b> SUV (3)</span></div>
+          <table>
+            <tr><td>Arrivals — grouped by flight (Sprinters + SUVs)</td><td class="amt">$8,640</td></tr>
+            <tr><td>Departures — grouped within 30-min windows</td><td class="amt">$5,910</td></tr>
+            <tr><td>VIP solo — 6 × S-Class Sedan</td><td class="amt">$2,040</td></tr>
+            <tr><td>Subtotal</td><td class="amt">$16,590</td></tr>
+            <tr class="disc"><td>Discount (−10%)</td><td class="amt">−$1,659</td></tr>
+            <tr><td>Fuel surcharge (5%)</td><td class="amt">$747</td></tr>
+            <tr><td>Estimated tax</td><td class="amt">$1,097</td></tr>
+            <tr class="tot-row"><td>Estimated total</td><td class="amt">$16,775</td></tr>
+          </table>
+        </div>
+        <div class="opt">
+          <div class="opt-head"><span class="opt-name">Option B — Recommended grouping</span><span class="opt-tag comfort">Balanced</span></div>
+          <div class="vehmix"><span class="veh">More SUVs</span><span class="veh">smaller groups</span><span class="veh">VIPs in S-Class</span></div>
+          <table><tr><td>Same passengers, fewer per vehicle (after discount, surcharge + tax)</td><td class="amt">$19,340</td></tr></table>
+        </div>
+        <div class="ratecard"><div class="rc-title">Vehicle rates &amp; policies</div><table>
+          <thead><tr><th>Vehicle</th><th>Seats</th><th>Rate</th><th>Minimum</th><th>Cancellation</th></tr></thead>
+          <tr><td>S-Class Sedan</td><td>2</td><td>$340 transfer</td><td>2 hrs</td><td>2 hrs</td></tr>
+          <tr><td>SUV</td><td>3</td><td>$185 transfer</td><td>2 hrs</td><td>2 hrs</td></tr>
+          <tr><td>Sprinter</td><td>14</td><td>$560 transfer</td><td>6 hrs</td><td>6 hrs</td></tr>
+        </table></div>
+        <p class="tiny" style="margin:8px 0 0;">Each option lists every passenger and their vehicle — open the manifest to view/edit.</p>
+      </div>
+      <div class="quote-foot">Estimate · client 3307 rates · 10% discount + 5% fuel surcharge · manifest cleaned in Convey.</div>
+    </div>
+    <div class="out-actions"><span class="a primary" onclick="openPdf(5)">⬇ Branded PDF</span><span class="a" onclick="openPrez(5)">Presentation deck</span><span class="a" onclick="openSheet('sheet5')">📊 Editable manifest →</span></div>
+  </div>
+
+  <!-- ===================== FEEDBACK ===================== -->
+  <div class="tab-content" id="feedback">
+    <h2 style="margin-top:6px;">Your feedback shapes this 🙏</h2>
+    <p>Thanks for taking a look. This is a pilot — what you tell us now decides what we build. Please go through the five examples, then help us with the following. There are no wrong answers; even "this is off" is gold.</p>
+
+    <div class="fb-card">
+      <div class="fb-h"><span class="b">1</span> Do the examples &amp; questions land?</div>
+      <ul>
+        <li>Do these five examples reflect the kinds of requests you actually get?</li>
+        <li>Are the <b>questions the assistant asks</b> the right ones — or is it asking too much, too little, or the wrong thing?</li>
+        <li>Anything in a flow that feels wrong, missing, or that you'd do differently?</li>
+        <li>Would you trust the output enough to send it to a client?</li>
+      </ul>
+    </div>
+
+    <div class="fb-card">
+      <div class="fb-h"><span class="b">2</span> Branding &amp; format of the output</div>
+      <ul>
+        <li>Open the <b>Branded PDF</b> and <b>Presentation deck</b> on any example — any changes to layout, wording, or branding you'd want?</li>
+        <li>Is the <b>vehicle rates &amp; policies</b> table (rate, minimum, cancellation) right? Are 2-hr / 6-hr policies correct?</li>
+        <li>What <b>must always appear</b> on a client-facing quote? (terms, cancellation policy, contact, logo placement, totals…)</li>
+        <li>Which format do your clients prefer — PDF, presentation, spreadsheet, or email body?</li>
+      </ul>
+    </div>
+
+    <div class="fb-card">
+      <div class="fb-h"><span class="b">3</span> Send us real inputs &amp; a gold-standard doc</div>
+      <ul class="star">
+        <li>Share <b>more real client requests</b> you get for quoting — the messier the better (emails, texts, screenshots, manifests). The more variety, the smarter this gets.</li>
+        <li>Share the <b>best branded quote document you've ever seen</b> sent to a client (yours or a competitor's) — and a line on what made it great.</li>
+      </ul>
+    </div>
+
+    <div class="fb-card">
+      <div class="fb-h"><span class="b">4</span> A few questions about how you quote today</div>
+      <ul>
+        <li>Roughly what <b>% of requests</b> come as manifests vs. freeform emails/texts?</li>
+        <li>How long does a <b>typical quote</b> take you today — and the big multi-city ones?</li>
+        <li>What's the <b>most painful part</b> of quoting right now?</li>
+        <li>What's <b>most often missing</b> from a client's request that you have to chase down?</li>
+        <li>Do you usually give the client <b>one option or several</b>? What drives that?</li>
+        <li>How do you decide a <b>discount</b> today — gut feel, guidelines, approval?</li>
+        <li>When do you add a <b>fuel surcharge</b>, and is 5% the right default?</li>
+        <li>Any <b>must-be-exactly-right</b> details where a mistake would be a dealbreaker?</li>
+        <li>Which <b>markets &amp; vehicle types</b> do you quote most often?</li>
+      </ul>
+    </div>
+
+    <div class="note">📥 <b>How to share:</b> reply in our pilot channel or send straight to Ayush — drop example requests and that gold-standard document as attachments. Thank you!</div>
+  </div>
+
+</div>
+
+<!-- ===================== OVERLAYS ===================== -->
+<div class="overlay" id="pdfOv"><button class="ov-close" onclick="closeOv('pdfOv')">✕ Close</button><div class="pdf-page" id="pdfPage"></div></div>
+
+<div class="overlay" id="prezOv"><button class="ov-close" onclick="closeOv('prezOv')">✕ Close</button>
+  <div class="prez-stage"><div id="prezStage"></div>
+    <div class="prez-nav"><button onclick="prezGo(-1)">‹</button><div class="prez-dots" id="prezDots"></div><button onclick="prezGo(1)">›</button></div>
+  </div>
+</div>
+
+<div class="overlay" id="genOv">
+  <div class="sheet-app">
+    <div class="sheet-bar"><div class="file"><span class="gx">📊</span> <span id="genName">quote.xlsx</span> <span class="hint">· cells are editable — click and type</span></div><button class="sheet-close" onclick="closeOv('genOv')">✕ Close</button></div>
+    <div class="sheet-pane active" style="max-height:78vh;"><table class="grid-tbl"><thead><tr><th></th><th>Line item</th><th class="amt">Amount</th></tr></thead><tbody id="genRows"></tbody></table></div>
+    <div class="sheet-foot">Preview of the editable export — adjust any cell and re-send.</div>
+  </div>
+</div>
+
+<div class="overlay" id="sheet4">
+  <div class="sheet-app">
+    <div class="sheet-bar"><div class="file"><span class="gx">📊</span> multi-city-program — client 6610.xlsx <span class="hint">· cells are editable</span></div><button class="sheet-close" onclick="closeOv('sheet4')">✕ Close</button></div>
+    <div class="sheet-tabs" data-sheet="sheet4"><button class="sheet-tab active" data-pane="s4-trips">All Trips (43)</button><button class="sheet-tab" data-pane="s4-summary">Summary by City</button></div>
+    <div class="sheet-pane active" id="s4-trips" style="max-height:74vh;"><table class="grid-tbl"><thead><tr><th></th><th>Date</th><th>Time</th><th>City</th><th>Vehicle</th><th>From</th><th>To</th><th>Service</th><th>Rate</th></tr></thead><tbody id="s4rows"></tbody></table></div>
+    <div class="sheet-pane" id="s4-summary" style="max-height:74vh;"><table class="grid-tbl"><thead><tr><th></th><th>City</th><th>Trips</th><th>Vehicle mix</th><th>Subtotal</th></tr></thead><tbody id="s4sum"></tbody></table></div>
+    <div class="sheet-foot">43 rows · editable export preview.</div>
+  </div>
+</div>
+
+<div class="overlay" id="sheet5">
+  <div class="sheet-app">
+    <div class="sheet-bar"><div class="file"><span class="gx">📊</span> manifest — client 3307.xlsx <span class="hint">· cells are editable</span></div><button class="sheet-close" onclick="closeOv('sheet5')">✕ Close</button></div>
+    <div class="sheet-tabs" data-sheet="sheet5"><button class="sheet-tab active" data-pane="s5-arr">Arrivals (52)</button><button class="sheet-tab" data-pane="s5-dep">Departures (34)</button><button class="sheet-tab" data-pane="s5-sum">Vehicle Summary</button></div>
+    <div class="sheet-pane active" id="s5-arr" style="max-height:74vh;"><table class="grid-tbl"><thead><tr><th></th><th>Passenger</th><th>VIP</th><th>Airline</th><th>Flight</th><th>Arrives</th><th>Airport</th><th>Drop-off</th><th>Vehicle</th></tr></thead><tbody id="s5arr"></tbody></table></div>
+    <div class="sheet-pane" id="s5-dep" style="max-height:74vh;"><table class="grid-tbl"><thead><tr><th></th><th>Passenger</th><th>VIP</th><th>Pickup</th><th>Pickup time</th><th>Airline</th><th>Flight</th><th>Airport</th><th>Vehicle</th></tr></thead><tbody id="s5dep"></tbody></table></div>
+    <div class="sheet-pane" id="s5-sum" style="max-height:74vh;"><table class="grid-tbl"><thead><tr><th></th><th>Vehicle</th><th>Type</th><th>Passengers</th><th>Leg</th><th>Cost / vehicle</th></tr></thead><tbody id="s5sum"></tbody></table></div>
+    <div class="sheet-foot">86 passengers · arrivals grouped by flight, departures by 30-min window, VIPs solo in S-Class.</div>
+  </div>
+</div>
+
+<script>
+  var EX = {
+    1:{doc:'Ground Transportation Quote',client:'Acme Corp',meta:'Sep 16 & 18, 2026 · Boston',badge:'10% discount + 5% fuel surcharge + tax applied',
+       lines:[['Evening event — 15 SUV + 2 Mini Bus + 2 Sprinter · 3 hrs (hourly)','$8,190'],['Airport departure — Hyatt → BOS · 6 SUV + 2 Mini Bus + 1 Sprinter','$3,370']],
+       totals:[['Subtotal','$11,560',''],['Discount (−10%)','−$1,156','disc'],['Fuel surcharge (5%)','$520',''],['Estimated tax','$765',''],['Estimated total','$11,689','tot']],
+       rates:[['SUV','3','$110/hr · $185 transfer','2 hrs','2 hrs'],['Mini Bus','24','$325/hr · $850 transfer','6 hrs','6 hrs'],['Sprinter','14','$215/hr · $560 transfer','6 hrs','6 hrs']],
+       foot:'Acme Corp negotiated rates · 10% discount + 5% fuel surcharge · confirmed at booking.'},
+    2:{doc:'Hourly Service Quote',client:'New inquiry',meta:'June 20–22, 2026',badge:'5% discount + 5% fuel surcharge + tax applied',
+       lines:[['Orlando — 2 × SUV · 4 hrs','$760'],['Greater Los Angeles — 2 × SUV · 4 hrs','$880'],['Manhattan, NYC — 2 × SUV · 4 hrs','$1,000']],
+       totals:[['Subtotal','$2,640',''],['Discount (−5%)','−$132','disc'],['Fuel surcharge (5%)','$125',''],['Estimated tax','$211',''],['Estimated total','$2,844','tot']],
+       rates:[['SUV','3','$95 / $110 / $125 per hr (Orlando / LA / NYC)','2 hrs','2 hrs']],
+       foot:'Standard published rates · 5% discount + 5% fuel surcharge · 4-hour minimum per market.'},
+    3:{doc:'Event Transportation Estimate',client:'Super Bowl LX',meta:'Feb 5–9, 2026 · SF Bay Area',event:'⭐ Super Bowl LX special-event rates applied',badge:'5% fuel surcharge + tax applied',
+       lines:[['Thu Feb 5 — Full Day SUV · Sedan · SFO transfer','$3,150'],['Fri Feb 6 — + Sprinter · Mini Bus/Shuttle (~30)','$6,420'],['Sat Feb 7 — same as Fri','$6,420'],['Sun Feb 8 — Full Day SUV · Sprinter · transfer','$3,980'],['Mon Feb 9 — Full Day SUV · Sedan · transfer','$3,150']],
+       totals:[['Subtotal','$23,120',''],['Fuel surcharge (5%)','$1,156',''],['Estimated tax','$1,942',''],['Estimated total','$26,218','tot']],
+       rates:[['Sedan','2','$140/hr','2 hrs','2 hrs'],['SUV','3','$175/hr','2 hrs','2 hrs'],['Sprinter','14','$300/hr','6 hrs','6 hrs'],['Mini Bus','24','$430/hr','6 hrs','6 hrs']],
+       foot:'Super Bowl LX special-event rates · 5% fuel surcharge · "Full Day" = 10 hours.'},
+    4:{doc:'Multi-City Program Quote',client:'Client 6610',meta:'43 trips · 9 cities · Oct 22 – Nov 23, 2026',badge:'8% discount + 5% fuel surcharge + tax applied',
+       lines:[['Houston / Sugar Land — 6 trips','$4,120'],['San Antonio / Ft. Worth — 9 trips','$6,540'],['Westchester (HPN) — 4 trips','$2,880'],['Jacksonville · Miami — 10 trips','$7,310'],['Atlanta — 4 trips','$3,050'],['Bakersfield · Anaheim · Glendale — 10 trips','$7,690']],
+       totals:[['Subtotal','$31,590',''],['Discount (−8%)','−$2,527','disc'],['Fuel surcharge (5%)','$1,453',''],['Estimated tax','$2,136',''],['Estimated total','$32,652','tot']],
+       rates:[['SUV','3','$115/hr · $210–$240 transfer','2 hrs','2 hrs'],['Sprinter','14','$215/hr · $540 transfer','6 hrs','6 hrs']],
+       flag:'Bakersfield short 1 Sprinter for the Nov 20 shuttle (have 2, need 3) — checking with Ops, may pull from a nearby market.',
+       foot:'Client 6610 rates · 8% discount + 5% fuel surcharge · 43 trips itemized in the spreadsheet.'},
+    5:{doc:'Group Manifest Quote',client:'Client 3307',meta:'86 passengers · 86 trips',badge:'10% discount + 5% fuel surcharge + tax applied',
+       lines:[['Arrivals — grouped by flight (Sprinters + SUVs)','$8,640'],['Departures — grouped within 30-min windows','$5,910'],['VIP solo — 6 × S-Class Sedan','$2,040']],
+       totals:[['Subtotal','$16,590',''],['Discount (−10%)','−$1,659','disc'],['Fuel surcharge (5%)','$747',''],['Estimated tax','$1,097',''],['Estimated total','$16,775','tot']],
+       rates:[['S-Class Sedan','2','$340 transfer','2 hrs','2 hrs'],['SUV','3','$185 transfer','2 hrs','2 hrs'],['Sprinter','14','$560 transfer','6 hrs','6 hrs']],
+       foot:'Client 3307 rates · 10% discount + 5% fuel surcharge · manifest cleaned in Convey.'}
+  };
+
+  document.getElementById('tabs').addEventListener('click',function(e){
+    var btn=e.target.closest('.tab');if(!btn)return;
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+    btn.classList.add('active');document.getElementById(btn.dataset.tab).classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+
+  function closeOv(id){document.getElementById(id).classList.remove('open');}
+  document.querySelectorAll('.overlay').forEach(function(ov){ov.addEventListener('click',function(e){if(e.target===ov)ov.classList.remove('open');});});
+  function openSheet(id){document.getElementById(id).classList.add('open');}
+  document.querySelectorAll('.sheet-tabs').forEach(function(bar){
+    bar.addEventListener('click',function(e){var b=e.target.closest('.sheet-tab');if(!b)return;var app=bar.closest('.sheet-app');
+      bar.querySelectorAll('.sheet-tab').forEach(t=>t.classList.remove('active'));app.querySelectorAll('.sheet-pane').forEach(p=>p.classList.remove('active'));
+      b.classList.add('active');document.getElementById(b.dataset.pane).classList.add('active');});
+  });
+
+  function ratesHtml(rows,sans){
+    var h='<table'+(sans?'':' class="pdf-tbl"')+'><thead><tr><th>Vehicle</th><th>Seats</th><th>Rate</th><th>Minimum</th><th>Cancellation</th></tr></thead>';
+    rows.forEach(function(r){h+='<tr><td>'+r[0]+'</td><td>'+r[1]+'</td><td>'+r[2]+'</td><td>'+r[3]+'</td><td>'+r[4]+'</td></tr>';});
+    return h+'</table>';
+  }
+
+  function openPdf(n){
+    var e=EX[n],h='';
+    h+='<div class="pdf-head"><div><img src="savoya-logo.svg" alt="Savoya"><div class="doc">'+e.doc+'</div></div><div class="who"><b>'+e.client+'</b><br>'+e.meta+'</div></div>';
+    h+='<div class="pdf-title">Transportation Quote</div>';
+    if(e.event) h+='<span class="pdf-badge evt">'+e.event+'</span> ';
+    if(e.badge) h+='<span class="pdf-badge">🎛️ '+e.badge+'</span>';
+    h+='<table class="pdf-tbl">';
+    e.lines.forEach(function(l){h+='<tr><td>'+l[0]+'</td><td class="amt">'+l[1]+'</td></tr>';});
+    e.totals.forEach(function(t){h+='<tr class="'+(t[2]||'')+'"><td>'+t[0]+'</td><td class="amt">'+t[1]+'</td></tr>';});
+    h+='</table>';
+    if(e.flag) h+='<div class="pdf-flag">⚠ '+e.flag+'</div>';
+    h+='<div class="pdf-sec">Vehicle rates &amp; policies</div>'+ratesHtml(e.rates,false);
+    h+='<div class="pdf-foot"><img src="savoya-logo-gold.svg" alt=""><div class="ft">'+e.foot+'<br>Savoya · concierge@savoya.com · savoya.com</div></div>';
+    document.getElementById('pdfPage').innerHTML=h;
+    document.getElementById('pdfOv').classList.add('open');
+  }
+
+  var prezIdx=0;
+  function openPrez(n){
+    var e=EX[n],s='';
+    s+='<div class="slide cover show"><div class="pad"><img src="savoya-logo-gold.svg" alt="Savoya"><div class="t">Transportation<br><span class="gold">Proposal</span></div><div class="rule"></div><div class="sub">'+e.client+' &nbsp;·&nbsp; '+e.meta+'</div></div></div>';
+    var rows='';e.lines.forEach(function(l){rows+='<tr><td>'+l[0]+'</td><td class="amt">'+l[1]+'</td></tr>';});
+    s+='<div class="slide body"><div class="pad"><div class="st">'+e.doc+'</div><div class="h">What we\'ll provide</div><table>'+rows+'</table>'+(e.event?'<p style="margin-top:12px;color:#7c3aed;font-weight:700;font-size:13px;">'+e.event+'</p>':'')+'</div></div>';
+    s+='<div class="slide body"><div class="pad"><div class="st">Rates &amp; policies</div><div class="h">Vehicle rates</div>'+ratesHtml(e.rates,true)+'<p style="margin-top:10px;color:#888;font-size:12px;">Minimums &amp; cancellation per vehicle type.</p></div></div>';
+    var total=e.totals[e.totals.length-1][1];
+    s+='<div class="slide close-s"><div class="pad"><img src="savoya-logo-gold.svg" alt="" style="height:28px;margin-bottom:auto;"><div class="big">Estimated investment</div><div class="num">'+total+'</div><div style="color:#9a917f;font-size:12px;">'+(e.badge||'special-event pricing')+' · pre-tax estimate</div><div class="nx">Ready when you are — reply to confirm and we\'ll lock it in.</div></div></div>';
+    document.getElementById('prezStage').innerHTML=s;
+    var sl=document.querySelectorAll('#prezStage .slide'),dots='';
+    for(var i=0;i<sl.length;i++)dots+='<i class="'+(i===0?'on':'')+'" onclick="prezSet('+i+')"></i>';
+    document.getElementById('prezDots').innerHTML=dots;
+    prezIdx=0;document.getElementById('prezOv').classList.add('open');
+  }
+  function prezSet(i){var sl=document.querySelectorAll('#prezStage .slide');if(i<0)i=0;if(i>=sl.length)i=sl.length-1;prezIdx=i;
+    sl.forEach((s,k)=>s.classList.toggle('show',k===i));
+    document.querySelectorAll('#prezDots i').forEach((d,k)=>d.classList.toggle('on',k===i));}
+  function prezGo(d){prezSet(prezIdx+d);}
+
+  function gcell(v,cls){return '<td'+(cls?' class="'+cls+'"':'')+'><div class="cell" contenteditable="true">'+v+'</div></td>';}
+  function openGen(n){
+    var e=EX[n];document.getElementById('genName').textContent=e.client.toLowerCase().replace(/[^a-z0-9]+/g,'-')+'-quote.xlsx';
+    var h='',i=1;
+    e.lines.forEach(function(l){h+='<tr><td class="rownum">'+(i++)+'</td>'+gcell(l[0])+gcell(l[1],'amt')+'</tr>';});
+    e.totals.forEach(function(t){h+='<tr><td class="rownum">'+(i++)+'</td>'+gcell(t[0])+gcell(t[1],'amt')+'</tr>';});
+    document.getElementById('genRows').innerHTML=h;
+    document.getElementById('genOv').classList.add('open');
+  }
+
+  function cell(v,cls){return '<td'+(cls?' class="'+cls+'"':'')+'><div class="cell" contenteditable="true">'+v+'</div></td>';}
+  function rn(n){return '<td class="rownum">'+n+'</td>';}
+
+  var trips=[['Oct 22','7:30pm','Houston','SUV','SGR','St. Regis Houston','Transfer','$210'],['Oct 23','4:00pm','Houston','SUV','St. Regis','Venue + return','Hourly (6h)','$690'],['Oct 23','4:00pm','Houston','Sprinter','Courtyard','Smart Financial Ctr','Hourly (7h)','$1,505'],['Oct 24','5:30am','Houston','SUV','St. Regis','SGR','Transfer','$210'],['Oct 24','7:15am','San Antonio','SUV','SAT','Omni La Mansion','Transfer','$230'],['Oct 24','7:15am','San Antonio','Sprinter','SAT','Majestic → Omni','Transfer','$540'],['Oct 25','6:15am','San Antonio','SUV','Omni La Mansion','SAT','Transfer','$230'],['Oct 25','7:15am','Ft. Worth','SUV','FTW','Bowie House','Transfer','$220'],['Oct 25','5:00pm','Ft. Worth','SUV','Bowie House','Dickies + wait','Hourly (5h)','$575'],['Nov 5','3:00pm','Westchester','SUV','HPN','Westchester Cty Ctr','Transfer','$240'],['Nov 5','5:00pm','Westchester','Sprinter','Residence Inn','Cty Ctr (shuttle)','Hourly (6h)','$1,290'],['Nov 6','8:45am','Jacksonville','SUV','JAX','Marriott Downtown','Transfer','$205'],['Nov 7','7:45am','Miami','SUV','OPF','JW Marriott Marquis','Transfer','$235'],['Nov 20','5:00pm','Bakersfield','Sprinter','Marriott','Shuttle (need 3)','Hourly (6h)','$1,290 ⚠'],['Nov 21','7:15am','Anaheim','SUV','SNA','JW Marriott Anaheim','Transfer','$225']];
+  document.getElementById('s4rows').innerHTML=trips.map(function(r,i){return '<tr>'+rn(i+1)+r.map(function(c){return cell(c);}).join('')+'</tr>';}).join('')+'<tr><td class="rownum">…</td><td colspan="8"><div class="cell" style="color:#9ca3af;">+ 28 more trips</div></td></tr>';
+  var s4sum=[['Houston / Sugar Land','6','SUV · Sprinter','$4,120'],['San Antonio / Ft. Worth','9','SUV · Sprinter','$6,540'],['Westchester (HPN)','4','SUV · Sprinter','$2,880'],['Jacksonville · Miami','10','SUV · Sprinter','$7,310'],['Atlanta','4','SUV · Sprinter','$3,050'],['Bakersfield · Anaheim · Glendale','10','SUV · Sprinter','$7,690']];
+  document.getElementById('s4sum').innerHTML=s4sum.map(function(r,i){return '<tr>'+rn(i+1)+r.map(function(c){return cell(c);}).join('')+'</tr>';}).join('');
+
+  function vipRow(r,i){var v=r[1]?'vip':'';return '<tr>'+rn(i+1)+cell(r[0])+'<td'+(v?' class="'+v+'"':'')+'><div class="cell" contenteditable="true">'+r[1]+'</div></td>'+cell(r[2])+cell(r[3])+cell(r[4])+cell(r[5])+cell(r[6])+cell(r[7],'veh-a')+'</tr>';}
+  var arr=[['Nguyen, Marci','★','Delta','DL 1170','Sep 14 · 4:40pm','BOS','Four Seasons','Sprinter #1'],['Booth, James','','Delta','DL 1170','Sep 14 · 4:40pm','BOS','Four Seasons','Sprinter #1'],['Pietig, Craig','','Delta','DL 1170','Sep 14 · 4:40pm','BOS','Four Seasons','Sprinter #1'],['Okafor, Lena','★','United','UA 322','Sep 14 · 5:10pm','BOS','Four Seasons','S-Class #V1'],['Reyes, Tom','','American','AA 5278','Sep 14 · 7:45pm','BOS','Four Seasons','SUV #4'],['Park, Sue','','American','AA 5278','Sep 14 · 7:45pm','BOS','Four Seasons','SUV #4'],['Bingham, Ron','','American','AA 5278','Sep 14 · 7:45pm','BOS','Four Seasons','SUV #4'],['Cole, Dana','','JetBlue','B6 615','Sep 15 · 9:05am','BOS','Four Seasons','Sprinter #2']];
+  document.getElementById('s5arr').innerHTML=arr.map(vipRow).join('')+'<tr><td class="rownum">…</td><td colspan="8"><div class="cell" style="color:#9ca3af;">+ 44 more arrivals</div></td></tr>';
+  var dep=[['Nguyen, Marci','★','Four Seasons','Sep 18 · 6:15am','Delta','DL 1188','BOS','S-Class #V1'],['Reyes, Tom','','Four Seasons','Sep 18 · 6:25am','American','AA 410','BOS','SUV #7'],['Park, Sue','','Four Seasons','Sep 18 · 6:40am','American','AA 410','BOS','SUV #7'],['Cole, Dana','','Four Seasons','Sep 18 · 6:45am','JetBlue','B6 720','BOS','SUV #7'],['Okafor, Lena','★','Four Seasons','Sep 18 · 11:00am','United','UA 511','BOS','S-Class #V2'],['Bingham, Ron','','Four Seasons','Sep 18 · 11:10am','American','AA 980','BOS','Sprinter #5']];
+  document.getElementById('s5dep').innerHTML=dep.map(vipRow).join('')+'<tr><td class="rownum">…</td><td colspan="8"><div class="cell" style="color:#9ca3af;">+ 28 more departures</div></td></tr>';
+  var s5sum=[['Sprinter #1','Sprinter (14)','3 + 9 more','Arrival','$560'],['S-Class #V1','S-Class Sedan','1 (VIP)','Arrival','$340'],['SUV #4','SUV (3)','3','Arrival','$185'],['Sprinter #2','Sprinter (14)','11','Arrival','$560'],['S-Class #V2','S-Class Sedan','1 (VIP)','Departure','$340'],['SUV #7','SUV (3)','3','Departure','$185'],['Sprinter #5','Sprinter (14)','9','Departure','$560']];
+  document.getElementById('s5sum').innerHTML=s5sum.map(function(r,i){return '<tr>'+rn(i+1)+r.map(function(c){return cell(c);}).join('')+'</tr>';}).join('');
+</script>
+</body>
+</html>
