@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product & Engineering Update — Week of June 7, 2026</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --color-primary: #0F1B2D;
+      --color-secondary: #1A2942;
+      --color-accent: #3B82F6;
+      --color-accent-dim: rgba(59, 130, 246, 0.15);
+      --color-bg: #FFFFFF;
+      --color-bg-dark: #0F1B2D;
+      --color-text: #1E293B;
+      --color-text-light: #F1F5F9;
+      --color-text-muted: #64748B;
+      --color-surface: #F8FAFC;
+      --color-border: #E2E8F0;
+      --color-green: #10B981;
+      --color-amber: #F59E0B;
+      --color-red: #EF4444;
+      --color-green-bg: rgba(16, 185, 129, 0.1);
+      --color-amber-bg: rgba(245, 158, 11, 0.1);
+      --color-red-bg: rgba(239, 68, 68, 0.1);
+
+      --font-heading: 'Space Grotesk', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+
+      --text-hero: clamp(2.5rem, 5vw, 4rem);
+      --text-title: clamp(1.8rem, 3.5vw, 2.8rem);
+      --text-subtitle: clamp(1.2rem, 2vw, 1.6rem);
+      --text-body: clamp(0.95rem, 1.3vw, 1.15rem);
+      --text-small: clamp(0.8rem, 1vw, 0.95rem);
+      --text-caption: clamp(0.7rem, 0.85vw, 0.8rem);
+
+      --space-xs: 0.5rem;
+      --space-sm: 1rem;
+      --space-md: 2rem;
+      --space-lg: 3.5rem;
+      --space-xl: 5rem;
+      --slide-padding: 5vh 6vw;
+
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+      --duration-fast: 0.3s;
+      --duration-normal: 0.6s;
+
+      --slide-max-width: 1100px;
+      --border-radius-sm: 8px;
+      --border-radius-md: 12px;
+      --border-radius-lg: 20px;
+    }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      color: var(--color-text);
+      background: var(--color-bg);
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .slides-container {
+      width: 100vw; height: 100vh;
+      overflow-y: auto;
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+    }
+
+    .slide {
+      width: 100vw; height: 100vh; min-height: 100vh;
+      scroll-snap-align: start;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: var(--slide-padding);
+      position: relative; overflow: hidden;
+    }
+
+    .slide-content {
+      max-width: var(--slide-max-width);
+      margin: 0 auto; width: 100%;
+      position: relative; z-index: 2;
+    }
+
+    .progress-bar {
+      position: fixed; top: 0; left: 0; height: 3px;
+      background: var(--color-accent);
+      transition: width var(--duration-fast) var(--ease-out-expo);
+      z-index: 100;
+    }
+
+    .slide-counter {
+      position: fixed; bottom: 2rem; right: 2rem;
+      font-family: var(--font-body);
+      font-size: var(--text-caption);
+      color: var(--color-text-muted);
+      z-index: 100; opacity: 0.7;
+    }
+
+    /* === Title Slide === */
+    .slide-hero { background: var(--color-bg-dark); color: var(--color-text-light); }
+    .slide-hero::before {
+      content: ''; position: absolute; top: -20%; right: -10%;
+      width: 60vw; height: 60vw; border-radius: 50%;
+      background: radial-gradient(circle, rgba(59,130,246,0.06) 0%, transparent 60%);
+    }
+    .hero-eyebrow {
+      font-size: var(--text-small); font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--color-accent); margin-bottom: var(--space-sm);
+    }
+    .hero-title {
+      font-family: var(--font-heading); font-size: var(--text-hero);
+      font-weight: 700; line-height: 1.15; margin-bottom: var(--space-sm);
+    }
+    .hero-meta {
+      font-size: var(--text-body); color: var(--color-text-muted);
+      margin-top: var(--space-md);
+    }
+    .hero-meta span { color: var(--color-text-light); font-weight: 500; }
+
+    /* === Executive Summary === */
+    .summary-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: var(--space-md); margin-top: var(--space-md);
+    }
+    .summary-card {
+      background: var(--color-surface); border: 1px solid var(--color-border);
+      border-radius: var(--border-radius-md); padding: var(--space-sm) var(--space-md);
+    }
+    .summary-card h4 {
+      font-family: var(--font-heading); font-size: var(--text-small);
+      font-weight: 700; color: var(--color-text-muted);
+      text-transform: uppercase; letter-spacing: 0.04em;
+      margin-bottom: var(--space-xs);
+    }
+    .summary-card ul { list-style: none; padding: 0; }
+    .summary-card li {
+      font-size: var(--text-body); line-height: 1.5;
+      padding: 0.25rem 0; padding-left: 1rem; position: relative;
+    }
+    .summary-card li::before {
+      content: ''; position: absolute; left: 0; top: 0.65rem;
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--color-accent);
+    }
+
+    .health-row {
+      display: flex; gap: var(--space-md);
+      margin-top: var(--space-md); flex-wrap: wrap;
+    }
+    .health-item {
+      display: flex; align-items: center; gap: 0.6rem;
+      font-size: var(--text-body); font-weight: 500;
+    }
+    .health-dot {
+      width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+    }
+    .dot-green { background: var(--color-green); }
+    .dot-amber { background: var(--color-amber); }
+    .dot-red { background: var(--color-red); }
+
+    /* === Project Slides === */
+    .slide-title {
+      font-family: var(--font-heading); font-size: var(--text-title);
+      font-weight: 700; color: var(--color-primary);
+      margin-bottom: var(--space-xs);
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+    .slide-phase {
+      font-size: var(--text-small); color: var(--color-text-muted);
+      margin-bottom: var(--space-md);
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .phase-badge {
+      display: inline-block; padding: 0.2em 0.7em;
+      border-radius: 100px; font-size: var(--text-caption);
+      font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em;
+    }
+    .phase-shipped { background: var(--color-green-bg); color: var(--color-green); }
+    .phase-dev { background: var(--color-accent-dim); color: var(--color-accent); }
+    .phase-scoping { background: var(--color-amber-bg); color: var(--color-amber); }
+
+    .project-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md);
+    }
+    .project-section h4 {
+      font-family: var(--font-heading); font-size: var(--text-small);
+      font-weight: 700; color: var(--color-text-muted);
+      text-transform: uppercase; letter-spacing: 0.04em;
+      margin-bottom: var(--space-xs); padding-bottom: 0.4rem;
+      border-bottom: 2px solid var(--color-border);
+    }
+    .project-section ul { list-style: none; padding: 0; }
+    .project-section li {
+      font-size: var(--text-body); line-height: 1.6;
+      padding: 0.3rem 0; padding-left: 1rem; position: relative;
+    }
+    .project-section li::before {
+      content: ''; position: absolute; left: 0; top: 0.75rem;
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--color-accent);
+    }
+    .blocker-item::before { background: var(--color-amber) !important; }
+
+    /* === Milestones Table === */
+    .milestone-table {
+      width: 100%; border-collapse: collapse;
+      margin-top: var(--space-md); font-size: var(--text-body);
+    }
+    .milestone-table th {
+      font-family: var(--font-heading); font-size: var(--text-caption);
+      font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
+      color: var(--color-text-muted); text-align: left;
+      padding: 0.6rem 1rem; border-bottom: 2px solid var(--color-border);
+    }
+    .milestone-table td {
+      padding: 0.7rem 1rem; border-bottom: 1px solid var(--color-border);
+      vertical-align: top;
+    }
+    .milestone-table tr:last-child td { border-bottom: none; }
+    .milestone-table .date-cell {
+      font-family: var(--font-heading); font-weight: 500; white-space: nowrap;
+    }
+
+    /* === Animations === */
+    @media (prefers-reduced-motion: no-preference) {
+      .slide.active .animate-in {
+        animation: slideUp var(--duration-normal) var(--ease-out-expo) both;
+      }
+      .slide.active .animate-in:nth-child(2) { animation-delay: 0.08s; }
+      .slide.active .animate-in:nth-child(3) { animation-delay: 0.16s; }
+      .slide.active .animate-in:nth-child(4) { animation-delay: 0.24s; }
+      .slide.active .animate-in:nth-child(5) { animation-delay: 0.32s; }
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* === Responsive === */
+    @media (max-width: 768px) {
+      :root { --slide-padding: 5vw 5vw; }
+      .summary-grid, .project-grid { grid-template-columns: 1fr; }
+      .health-row { flex-direction: column; gap: var(--space-xs); }
+    }
+
+    @media print {
+      .slides-container { overflow: visible; scroll-snap-type: none; }
+      .slide { page-break-after: always; height: auto; min-height: 100vh; }
+      .slide-counter, .progress-bar { display: none; }
+      * { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="progress-bar" style="width: 0%"></div>
+  <div class="slide-counter">1 / 7</div>
+
+  <div class="slides-container">
+
+    <!-- SLIDE 1: Title -->
+    <section class="slide slide-hero" id="slide-1">
+      <div class="slide-content">
+        <p class="hero-eyebrow animate-in">Savoya Product & Engineering</p>
+        <h1 class="hero-title animate-in">Weekly Update</h1>
+        <p class="hero-meta animate-in">Week ending <span>June 7, 2026</span> · Prepared by <span>Ayush Bhargava</span></p>
+      </div>
+    </section>
+
+    <!-- SLIDE 2: Executive Summary -->
+    <section class="slide" id="slide-2">
+      <div class="slide-content">
+        <h2 class="slide-title animate-in">Executive Summary</h2>
+
+        <div class="health-row animate-in">
+          <div class="health-item"><span class="health-dot dot-green"></span> Assignment Logic</div>
+          <div class="health-item"><span class="health-dot dot-green"></span> Ground Span</div>
+          <div class="health-item"><span class="health-dot dot-green"></span> Quoting & Manifest</div>
+          <div class="health-item"><span class="health-dot dot-green"></span> FNE & Bugs</div>
+        </div>
+
+        <div class="summary-grid animate-in">
+          <div class="summary-card">
+            <h4>Top Highlights</h4>
+            <ul>
+              <li>Assignment Logic ready for business testing — June 15 go-live on track</li>
+              <li>5 FNE & bug fixes developed and releasing Tuesday via scheduled release</li>
+              <li>Quoting pilot proposal shared with sales team — review session June 11/12</li>
+            </ul>
+          </div>
+          <div class="summary-card">
+            <h4>Discussion Needed</h4>
+            <ul>
+              <li>Business testing sign-off: Dan, Kelsey, and Amber needed this week for Assignment Logic</li>
+              <li>Plutus team go-live coordination: need release timeline confirmed for June 15</li>
+              <li>Quoting & Manifest go/no-go: two-stream proposal up for leadership decision after June 11/12 review</li>
+            </ul>
+          </div>
+        </div>
+        <p class="animate-in" style="margin-top: var(--space-md); font-size: var(--text-small); color: var(--color-text-muted);">
+          Full team timeline &amp; workstreams →
+          <a href="https://capitaldrive.atlassian.net/jira/plans/367/scenarios/367/timeline?vid=496" target="_blank" style="color: var(--color-accent); text-decoration: none; font-weight: 500;">Jira Plans Timeline</a>
+        </p>
+      </div>
+    </section>
+
+    <!-- SLIDE 3: Assignment Logic -->
+    <section class="slide" id="slide-3">
+      <div class="slide-content">
+        <h2 class="slide-title animate-in">
+          Vendor Assignment Logic
+          <span class="health-dot dot-green" style="display:inline-block;"></span>
+        </h2>
+        <div class="slide-phase animate-in">
+          <span class="phase-badge phase-dev">Pre-Launch Testing</span>
+          · Target Go-Live: <strong>June 15, 2026</strong>
+        </div>
+
+        <div class="project-grid animate-in">
+          <div class="project-section">
+            <h4>Progress This Week</h4>
+            <ul>
+              <li>Production data obtained for testing — unlocks final validation of assignment logic against real trip data</li>
+              <li>All 9 of 9 Phase 1 workstreams fully complete — minor enhancements may be identified during or after business testing</li>
+            </ul>
+          </div>
+          <div class="project-section">
+            <h4>Next Week</h4>
+            <ul>
+              <li>Business testing with Dan, Kelsey, and Amber — functional sign-off before go-live</li>
+              <li>Bug fixes if testing surfaces issues</li>
+              <li>Plutus team release and smoke testing coordination for June 15</li>
+            </ul>
+
+            <h4 style="margin-top: var(--space-sm);">Blockers / Risks</h4>
+            <ul>
+              <li class="blocker-item">Release and smoke testing dependent on Plutus team — coordination in progress for June 15</li>
+              <li class="blocker-item">Performance risk: a recent application crash caused by vendor-related queries — proactively optimizing before go-live, but performance issues could still impact the release timeline</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 4: Ground Span -->
+    <section class="slide" id="slide-4">
+      <div class="slide-content">
+        <h2 class="slide-title animate-in">
+          Ground Span Integration
+          <span class="health-dot dot-green" style="display:inline-block;"></span>
+        </h2>
+        <div class="slide-phase animate-in">
+          <span class="phase-badge phase-dev">Development — Forward Flow</span>
+          · Target: Late June 2026
+        </div>
+
+        <div class="project-grid animate-in">
+          <div class="project-section">
+            <h4>Progress This Week</h4>
+            <ul>
+              <li>All 3 booking endpoints (pricing, booking, cancellation) deployed and happy-flow validated against GroundSpan's test environment</li>
+              <li>Work intentionally paused this week to focus engineering resources on Assignment Logic go-live</li>
+            </ul>
+          </div>
+          <div class="project-section">
+            <h4>Next Week</h4>
+            <ul>
+              <li>Edge-case testing iteration resumes after Assignment Logic ships (June 15)</li>
+              <li>Expect 2 more rounds of integration testing to reach forward-flow production readiness</li>
+              <li>Backward flow (push notifications to GroundSpan) begins after forward flow is complete</li>
+            </ul>
+
+            <h4 style="margin-top: var(--space-sm);">Blockers / Risks</h4>
+            <ul>
+              <li class="blocker-item">Himanshu overseeing Assignment Logic while developing Ground Span — forward flow completion is dependent on Assignment Logic shipping first</li>
+              <li class="blocker-item">Complex integration — pricing and stop-change edge cases still need iteration; expect mid-to-late June for forward-flow completion</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 5: Manifest Automation / Quoting -->
+    <section class="slide" id="slide-5">
+      <div class="slide-content">
+        <h2 class="slide-title animate-in">
+          Quoting & Manifest Automation
+          <span class="health-dot dot-green" style="display:inline-block;"></span>
+        </h2>
+        <div class="slide-phase animate-in">
+          <span class="phase-badge phase-scoping">Scoping & Design</span>
+          · Target Go-Live: TBD — pending leadership go/no-go
+        </div>
+
+        <div class="project-grid animate-in">
+          <div class="project-section">
+            <h4>Progress This Week</h4>
+            <ul>
+              <li>Sales walkthrough shared with team — illustrates the quoting pilot concept with 5 real-world scenarios and a feedback loop</li>
+              <li>Quoting pilot requirements finalized — all 14 open questions resolved; ready for sign-off</li>
+              <li>Two-stream proposal: quoting pilot (Stream 1) + manifest processing automation (Stream 2)</li>
+            </ul>
+          </div>
+          <div class="project-section">
+            <h4>Next Week</h4>
+            <ul>
+              <li>Review session June 11/12 — sales/CSM team feedback on the proposal, direction, and next steps</li>
+              <li>Collect real client request examples to validate pilot scope</li>
+              <li>Technical design begins after sign-off</li>
+            </ul>
+
+            <h4 style="margin-top: var(--space-sm);">Asks</h4>
+            <ul>
+              <li class="blocker-item">Leadership decision needed on two-stream proposal after June 11/12 sales review</li>
+              <li class="blocker-item">Sales/CSM team availability to share real quoting examples ahead of review session</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 6: FNE & Bugs -->
+    <section class="slide" id="slide-6">
+      <div class="slide-content">
+        <h2 class="slide-title animate-in">
+          FNE & Bugs
+          <span class="health-dot dot-green" style="display:inline-block;"></span>
+        </h2>
+        <div class="slide-phase animate-in">
+          <span class="phase-badge phase-dev">Development</span>
+          · Release: <strong>Tuesday, June 9</strong>
+        </div>
+
+        <div class="project-grid animate-in">
+          <div class="project-section">
+            <h4>Progress This Week</h4>
+            <ul>
+              <li>5 items developed and cleared testing in under a week — fraud prevention controls, calendar invite rewrite, push notification fix, vendor portal bug fix, and World Cup retail discount exclusion</li>
+              <li>2 additional performance items picked up proactively following a recent application crash — optimizing vendor-related queries that are also used in Assignment Logic to reduce risk ahead of go-live</li>
+            </ul>
+          </div>
+          <div class="project-section">
+            <h4>Next Week</h4>
+            <ul>
+              <li>Tuesday release via Plutus-scheduled deploy — all 5 tested items ship</li>
+              <li>Performance work continues: vendor tab and reassign modal load time optimization</li>
+            </ul>
+
+            <h4 style="margin-top: var(--space-sm);">Blockers / Risks</h4>
+            <ul>
+              <li class="blocker-item">Scheduled release dependent on Plutus team releasing their code — coordinating for Tuesday, June 9</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 7: Upcoming Milestones -->
+    <section class="slide" id="slide-7">
+      <div class="slide-content">
+        <h2 class="slide-title animate-in">Upcoming Milestones</h2>
+        <p class="slide-phase animate-in">2-week lookahead &nbsp;·&nbsp; <a href="https://capitaldrive.atlassian.net/jira/plans/367/scenarios/367/timeline?vid=496" target="_blank" style="color: var(--color-accent); text-decoration: none; font-weight: 500;">Full Team Timeline ↗</a></p>
+
+        <table class="milestone-table animate-in">
+          <thead>
+            <tr>
+              <th>Project</th>
+              <th>Milestone</th>
+              <th>Target</th>
+              <th>Owner</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>FNE & Bugs</td>
+              <td>Release: fraud prevention, calendar invite, notification fix, vendor portal fix, World Cup discount</td>
+              <td class="date-cell">June 9</td>
+              <td>Ethan / Plutus team</td>
+            </tr>
+            <tr>
+              <td>Assignment Logic</td>
+              <td>Business testing sign-off (Dan, Kelsey, Amber)</td>
+              <td class="date-cell">Week of June 9</td>
+              <td>Dan, Kelsey &amp; Amber</td>
+            </tr>
+            <tr>
+              <td>Quoting & Manifest</td>
+              <td>Pilot review session — direction and go/no-go recommendation</td>
+              <td class="date-cell">June 11–12</td>
+              <td>Ayush + Sales/CSM</td>
+            </tr>
+            <tr>
+              <td>Assignment Logic</td>
+              <td>Go-live — new driver assignment logic live in production</td>
+              <td class="date-cell">June 15</td>
+              <td>Ethan, Himanshu &amp; Plutus team</td>
+            </tr>
+            <tr>
+              <td>Ground Span</td>
+              <td>Forward flow edge-case testing complete — production-ready</td>
+              <td class="date-cell">Late June</td>
+              <td>Himanshu</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    const counter = document.querySelector('.slide-counter');
+    const progressBar = document.querySelector('.progress-bar');
+    const container = document.querySelector('.slides-container');
+    let currentSlide = 0;
+
+    function updateUI() {
+      counter.textContent = `${currentSlide + 1} / ${slides.length}`;
+      const progress = ((currentSlide + 1) / slides.length) * 100;
+      progressBar.style.width = progress + '%';
+      slides.forEach((s, i) => { s.classList.toggle('active', i === currentSlide); });
+    }
+
+    function goToSlide(n) {
+      if (n < 0 || n >= slides.length) return;
+      currentSlide = n;
+      slides[n].scrollIntoView({ behavior: 'smooth' });
+      updateUI();
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ') {
+        e.preventDefault(); goToSlide(currentSlide + 1);
+      } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+        e.preventDefault(); goToSlide(currentSlide - 1);
+      }
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const idx = Array.from(slides).indexOf(entry.target);
+          if (idx !== -1) { currentSlide = idx; updateUI(); }
+        }
+      });
+    }, { root: container, threshold: 0.6 });
+
+    slides.forEach(s => observer.observe(s));
+    updateUI();
+  </script>
+</body>
+</html>
