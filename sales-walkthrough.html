@@ -87,7 +87,6 @@
   .working.event{background:var(--purple-bg);border-color:#ddd6fe;color:var(--purple);}
   .working.flag{background:#fef2f2;border-color:#fecaca;color:#dc2626;}
   .working.ok{background:var(--green-bg);border-color:#bbf7d0;color:var(--green);}
-  .adjust-tag{display:inline-flex;gap:5px;align-items:center;font-size:11px;font-weight:700;background:var(--green-bg);color:var(--green);border:1px solid #bbf7d0;border-radius:20px;padding:3px 10px;margin-bottom:10px;}
 
   .quote{background:#fff;border:1px solid #e7e2da;border-radius:14px;overflow:hidden;box-shadow:0 6px 24px rgba(120,80,40,.06);}
   .quote-top{background:linear-gradient(135deg,#fff,var(--copper-bg));padding:16px 20px;border-bottom:1px solid #efe2d6;display:flex;justify-content:space-between;align-items:flex-start;}
@@ -97,14 +96,6 @@
   .quote-body{padding:16px 20px;}
   .quote-body .for{font-size:12px;color:var(--muted);margin-bottom:12px;}.quote-body .for b{color:var(--ink);}
 
-  .opt{border:1px solid var(--line);border-radius:11px;padding:13px 15px;margin-bottom:12px;}
-  .opt.best{border-color:#cbb79f;background:var(--copper-bg);}
-  .opt .opt-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;}
-  .opt .opt-name{font-weight:800;font-size:13.5px;}
-  .opt .opt-tag{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:2px 8px;border-radius:20px;}
-  .opt-tag.cost{background:var(--green-bg);color:var(--green);border:1px solid #bbf7d0;}
-  .opt-tag.comfort{background:var(--blue-bg);color:var(--blue);border:1px solid #bfdbfe;}
-  .opt .opt-total{font-weight:800;font-size:15px;color:var(--copper-d);}
 
   table{width:100%;border-collapse:collapse;font-size:12.5px;}
   table th{text-align:left;font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:700;padding:6px 8px;border-bottom:1px solid var(--line);}
@@ -215,6 +206,30 @@
   .fb-card li b{color:#1f2937;}
   .star li::before{content:'★';border:none;color:var(--gold);font-size:12px;top:6px;left:0;width:auto;height:auto;}
 
+  /* ---- end-to-end flow (matches the real-request pages) ---- */
+  .stepline{display:flex;align-items:center;gap:8px;margin:26px 0 8px;border-top:1px dashed #e5e1da;padding-top:18px;}
+  .stepline h2{margin:0;font-size:16px;}
+  .step-tag{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#fff;background:var(--copper);border-radius:5px;padding:2px 8px;margin-right:8px;}
+  .tblscroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .preview{border:1px solid var(--line);border-radius:11px;overflow:hidden;margin-bottom:12px;}
+  .preview .ph{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 13px;background:#fafafa;border-bottom:1px solid var(--line);flex-wrap:wrap;}
+  .preview .ph .pt{font-weight:800;font-size:13px;}
+  .preview table{font-size:12px;}
+  .preview th,.preview td{padding:7px 10px;white-space:nowrap;}
+  .rt{font-size:10px;font-weight:700;border-radius:20px;padding:1px 7px;}
+  .rt.rack{background:#f1f5f9;color:#475569;border:1px solid #e2e8f0;}
+  .rt.evt{background:#ede9fe;color:#7c3aed;border:1px solid #ddd6fe;}
+  .rt.comp{background:var(--copper-bg);color:var(--copper-d);border:1px solid #eccfb8;}
+  .subopt{border:1px solid #e2e8f0;border-radius:8px;padding:11px 13px;margin-bottom:8px;}
+  .subopt.best{background:var(--copper-bg);border-color:#cbb79f;}
+  .subopt .sh{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:4px;}
+  .subopt .sh b{font-size:13px;}
+  .terms{margin-top:14px;background:#fcfcfb;border:1px solid var(--line);border-radius:10px;padding:11px 14px;}
+  .terms .tt{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:6px;}
+  .terms ul{margin:0;padding-left:16px;} .terms li{font-size:11px;color:#52525b;margin-bottom:3px;}
+  .prompt{background:#fff;border:1px solid var(--line);border-left:4px solid var(--copper);border-radius:10px;padding:12px 14px;margin:12px 0;}
+  .prompt .pq{font-weight:800;font-size:13px;margin-bottom:6px;}.prompt p{font-size:12.5px;margin:0;color:#3f3f46;}
+
   @media(max-width:640px){.steps,.grid{grid-template-columns:1fr;}.msg{max-width:96%;}.overlay{padding:10px;}.pdf-page{padding:26px;}}
 </style>
 </head>
@@ -243,7 +258,7 @@
     </div>
 
     <h2>What it does</h2>
-    <p>You talk to an assistant in plain English. It reads the request, asks you only what it needs, looks up the <b>actual pricing from Savoya's system</b> (your client's negotiated rates, special-event pricing, transfer rates — whatever applies), and hands you back a quote you can send. If a request can be fulfilled more than one way, it shows <b>options</b> to compare. You can <b>apply a discount, a fuel surcharge, or add tax right in the chat</b> and it updates instantly.</p>
+    <p>You talk to an assistant in plain English. It reads the request, asks you only what it needs, looks up the <b>actual pricing from Savoya's system</b> (your client's negotiated rates, special-event pricing, transfer rates — whatever applies), and hands you back a quote you can send. If a request can be fulfilled more than one way, it shows <b>options</b> to compare. Pricing is presented <b>all-in by default</b> (fuel surcharge + federal tax included, gratuity not charged), and you can <b>apply a client discount right in the chat</b> and it updates instantly.</p>
 
     <h2>What it solves today</h2>
     <div class="pain">
@@ -258,7 +273,7 @@
     <div class="steps">
       <div class="step"><div class="n">1</div><h3>Paste the request</h3><p>The client's email, a few lines of text, or a manifest — however it came in.</p></div>
       <div class="step"><div class="n">2</div><h3>Answer a few questions</h3><p>Just what's needed: which client, how many hours, any VIPs, which city, etc.</p></div>
-      <div class="step"><div class="n">3</div><h3>Get a client-ready quote</h3><p>Review it, apply discount / fuel surcharge / tax, then send as a branded PDF, deck, or spreadsheet.</p></div>
+      <div class="step"><div class="n">3</div><h3>Get a client-ready quote</h3><p>Review it (all-in pricing), apply a discount if needed, then send as a branded PDF, deck, or spreadsheet.</p></div>
     </div>
 
     <h2>Why you'll like it</h2>
@@ -266,7 +281,7 @@
       <div class="card"><div class="ico">⚡</div><h3>Fast</h3><p>Minutes instead of hours — especially on the big, messy requests.</p></div>
       <div class="card"><div class="ico">🎯</div><h3>Accurate by default</h3><p>Pulls the same pricing the system would — special-event &amp; negotiated rates included.</p></div>
       <div class="card"><div class="ico">🔀</div><h3>Options to compare</h3><p>Cost-optimized vs. premium vehicle mixes — easy to upsell or hit a budget.</p></div>
-      <div class="card"><div class="ico">🎛️</div><h3>Adjust on the fly</h3><p>Apply a discount, fuel surcharge, or add estimated tax right in the chat — the quote updates instantly.</p></div>
+      <div class="card"><div class="ico">🎛️</div><h3>All-in &amp; adjustable</h3><p>Fuel surcharge &amp; federal tax are included by default; apply a client discount right in the chat and the quote updates instantly.</p></div>
       <div class="card"><div class="ico">🚩</div><h3>Catches gaps</h3><p>Flags missing vehicles, markets, or rates so nothing slips through.</p></div>
       <div class="card"><div class="ico">📄</div><h3>Client-ready output</h3><p>Branded PDF, presentation deck, or editable spreadsheet — your choice.</p></div>
     </div>
@@ -289,54 +304,77 @@ Drop Off 2: Hyatt Regency Boston Harbor
 Departure / Load and Go — Thursday, September 18
 Hyatt Regency to BOS — approx. 80 people — 12:00pm</pre></div>
 
-    <div class="section-label">The conversation</div>
+    <!-- Steps 1-4 -->
+    <div class="stepline"><span class="step-tag">Steps 1–4</span><h2>Intake · Client ID · Resolve dates &amp; locations</h2></div>
     <div class="chat">
       <div class="msg agent"><div class="avatar agent">You</div><div><div class="who">You</div><div class="bubble">Quote this one please 👆</div></div></div>
-      <div class="msg assistant"><div class="avatar assistant">S</div><div><div class="who">Assistant</div><div class="bubble">Got it — a group event in <b>Boston</b> on Sep 16 &amp; 18. No manifest, so I'll quote by headcount and show vehicle options. A few quick things:
+      <div class="msg assistant"><div class="avatar assistant">S</div><div><div class="who">Assistant</div><div class="bubble">A group event in <b>Boston</b> on Sep 16 &amp; 18. No manifest, so I'll quote by headcount and show vehicle options. A few quick things:
         <span class="q">Existing client? Drop the client ID — otherwise I'll use standard published rates.</span>
         <span class="q">Evening (5:45pm out, 8:00pm back): keep vehicles with the group all evening (hourly), or price each leg as a one-way transfer?</span>
         <span class="q">Any VIPs needing their own vehicle, or all standard?</span></div></div></div>
       <div class="msg agent"><div class="avatar agent">You</div><div><div class="bubble">Existing — client ID 4821 (Acme Corp). Keep vehicles for the evening, ~3 hours. All standard.</div></div></div>
-      <div class="working ok">✓ Found Acme Corp — using their negotiated Boston rates</div>
-      <div class="working">🔎 Checking Boston fleet &amp; pricing for Sep 16 &amp; 18 · no special event those dates</div>
-      <div class="msg assistant"><div class="avatar assistant">S</div><div><div class="bubble">Done. Hotel↔venue is within Boston, so it's priced <b>hourly</b>; the Sep 18 Hyatt→BOS is an <b>airport transfer</b>. Mix is mostly <b>SUVs &amp; sedans</b> with a couple of mini buses and a sprinter. Two options below.</div></div></div>
-      <div class="msg assistant"><div class="avatar assistant">S</div><div><div class="bubble">Before I generate the document — want to apply a <b>discount</b>, a <b>fuel surcharge</b>, or add <b>estimated tax</b>?</div></div></div>
-      <div class="msg agent"><div class="avatar agent">You</div><div><div class="bubble">Apply 10% discount, 5% fuel surcharge, and add tax. Go with Option A.</div></div></div>
-      <div class="working ok">✓ 10% discount · 5% fuel surcharge · estimated tax applied · quote updated</div>
+      <div class="working ok">✓ Acme Corp 4821 — their negotiated Boston rates apply automatically</div>
+      <div class="working">📍 Boston market · Hyatt ⇆ Classic Harbor Line is in-city → hourly · Sep 18 Hyatt→BOS → airport transfer · no special event those dates</div>
     </div>
 
-    <div class="section-label">What you'd send the client</div>
+    <!-- Step 5 -->
+    <div class="stepline"><span class="step-tag">Step 5</span><h2>Rate preview — Boston (Acme −10%)</h2></div>
+    <div class="preview">
+      <div class="ph"><span class="pt">Boston — Sep 16 &amp; 18</span><span class="tiny">evening event <b>3 h quoted time</b> (incl. garage-to-garage) · Sep 18 Hyatt→BOS airport transfer · Acme −10%</span></div>
+      <div class="tblscroll"><table>
+        <thead><tr><th>Vehicle (cap)</th><th># in mkt</th><th>Hourly</th><th>Transfer</th><th>Rate type</th><th>Min</th><th>Cancel</th></tr></thead>
+        <tr><td>Sedan (2)</td><td>26</td><td>$90/hr</td><td>$150</td><td><span class="rt comp">Company −10%</span></td><td>2h</td><td>2h</td></tr>
+        <tr><td>SUV (3)</td><td>30</td><td>$110/hr</td><td>$185</td><td><span class="rt comp">Company −10%</span></td><td>2h</td><td>2h</td></tr>
+        <tr><td>Sprinter (14)</td><td>6</td><td>$215/hr</td><td>$560</td><td><span class="rt comp">Company −10%</span></td><td>6h</td><td>6h</td></tr>
+        <tr><td>Mini Bus (24)</td><td>3</td><td>$325/hr</td><td>$850</td><td><span class="rt comp">Company −10%</span></td><td>6h</td><td>6h</td></tr>
+      </table></div>
+    </div>
+    <p class="tiny" style="margin:-4px 0 0;">One quoted time per route, shown in the header (system estimate incl. garage-in/garage-out). <b>“# in mkt”</b> = Boston fleet count.</p>
+
+    <!-- Step 7 -->
+    <div class="stepline"><span class="step-tag">Step 7</span><h2>Options — how we'd move 120 (pick / edit)</h2></div>
+    <div class="chat" style="margin-bottom:8px;">
+      <div class="msg assistant"><div class="avatar assistant">S</div><div><div class="bubble">Two ways to cover the evening, each with a <b>rough all-in total</b>. Want a discount applied? (Acme rates are already in.)</div></div></div>
+      <div class="msg agent"><div class="avatar agent">You</div><div><div class="bubble">Add a 10% courtesy discount. Go with Option A.</div></div></div>
+      <div class="working ok">✓ 10% discount applied · calculating exact, all-in quote</div>
+    </div>
+    <div class="subopt best"><div class="sh"><b>Option A — Best value</b><span class="rt comp">rough ~$8,190</span></div>
+      <div class="vehmix"><span class="veh"><b>15×</b> SUV (3)</span><span class="veh"><b>2×</b> Mini Bus (24)</span><span class="veh"><b>2×</b> Sprinter (14)</span><span class="veh">covers 121</span></div></div>
+    <div class="subopt"><div class="sh"><b>Option B — More sedans &amp; SUVs (comfort)</b><span class="rt comp">rough ~$10,320</span></div>
+      <div class="vehmix"><span class="veh"><b>20×</b> SUV (3)</span><span class="veh"><b>11×</b> Sedan (2)</span><span class="veh"><b>1×</b> Mini Bus</span><span class="veh"><b>1×</b> Sprinter</span><span class="veh">covers 120</span></div></div>
+
+    <!-- Steps 8-9 -->
+    <div class="stepline"><span class="step-tag">Steps 8–9</span><h2>Exact quote (with quoted time per leg) → send</h2></div>
     <div class="quote">
       <div class="quote-top"><div class="brand">SAVOYA<small>Ground Transportation Quote</small></div><div class="meta">Prepared for <b>Acme Corp</b><br>Sep 16 &amp; 18, 2026 · Boston</div></div>
       <div class="quote-body">
-        <span class="adjust-tag">🎛️ 10% discount + 5% fuel surcharge + estimated tax applied in chat</span>
-        <div class="for"><b>Evening event</b> — 120 guests · Hyatt ⇆ Classic Harbor Line · ~3 hours (hourly)</div>
-        <div class="opt best">
-          <div class="opt-head"><span class="opt-name">Option A — Best value</span><span class="opt-tag cost">Cost-optimized</span></div>
-          <div class="vehmix"><span class="veh"><b>15×</b> SUV (3)</span><span class="veh"><b>2×</b> Mini Bus (24)</span><span class="veh"><b>2×</b> Sprinter (14)</span><span class="veh">covers 121</span></div>
-          <table><tr><td>15 × SUV · 3 hrs</td><td class="amt">$4,950</td></tr><tr><td>2 × Mini Bus · 3 hrs</td><td class="amt">$1,950</td></tr><tr><td>2 × Sprinter · 3 hrs</td><td class="amt">$1,290</td></tr><tr class="tot-row"><td>Evening subtotal</td><td class="amt">$8,190</td></tr></table>
-        </div>
-        <div class="opt">
-          <div class="opt-head"><span class="opt-name">Option B — More sedans &amp; SUVs</span><span class="opt-tag comfort">Comfort</span></div>
-          <div class="vehmix"><span class="veh"><b>20×</b> SUV (3)</span><span class="veh"><b>11×</b> Sedan (2)</span><span class="veh"><b>1×</b> Mini Bus</span><span class="veh"><b>1×</b> Sprinter</span><span class="veh">covers 120</span></div>
-          <table><tr><td>Smaller groups per vehicle (sedan seats 2, SUV 3)</td><td class="amt">$10,320</td></tr></table>
-        </div>
-        <div class="for" style="margin-top:6px;"><b>Departure — Thursday, Sep 18</b> · 80 guests · Hyatt → BOS · 12:00pm (transfer)</div>
-        <div class="opt">
-          <div class="opt-head"><span class="opt-name">Airport departure</span><span class="opt-tag cost">Transfer</span></div>
-          <div class="vehmix"><span class="veh"><b>6×</b> SUV (3)</span><span class="veh"><b>2×</b> Mini Bus (24)</span><span class="veh"><b>1×</b> Sprinter (14)</span><span class="veh">covers 80</span></div>
-          <table><tr><td>6 × SUV + 2 × Mini Bus + 1 × Sprinter · transfer</td><td class="amt">$3,370</td></tr></table>
-        </div>
-        <table style="margin-top:6px;"><tr><td>Selected: Option A + departure</td><td class="amt">$11,560</td></tr><tr class="disc"><td>Discount (−10%)</td><td class="amt">−$1,156</td></tr><tr><td>Fuel surcharge (5%)</td><td class="amt">$520</td></tr><tr><td>Estimated tax</td><td class="amt">$765</td></tr><tr class="tot-row"><td>Estimated total</td><td class="amt">$11,689</td></tr></table>
-
-        <div class="ratecard"><div class="rc-title">Vehicle rates &amp; policies</div><table>
-          <thead><tr><th>Vehicle</th><th>Seats</th><th>Rate</th><th>Minimum</th><th>Cancellation</th></tr></thead>
-          <tr><td>SUV</td><td>3</td><td>$110/hr · $185 transfer</td><td>2 hrs</td><td>2 hrs</td></tr>
-          <tr><td>Mini Bus</td><td>24</td><td>$325/hr · $850 transfer</td><td>6 hrs</td><td>6 hrs</td></tr>
-          <tr><td>Sprinter</td><td>14</td><td>$215/hr · $560 transfer</td><td>6 hrs</td><td>6 hrs</td></tr>
+        <div class="for">Option A · all-in (incl. 5% fuel surcharge &amp; federal tax) · Acme −10% · <b>quoted times include garage-to-garage</b>.</div>
+        <div class="tblscroll"><table>
+          <thead><tr><th>Leg / route</th><th>Vehicles</th><th>Quoted time</th><th>Rate type</th><th>Min</th><th class="amt">Price</th></tr></thead>
+          <tr><td>Sep 16 · Hyatt ⇆ Classic Harbor Line (evening)</td><td>15 SUV + 2 Mini Bus + 2 Sprinter</td><td>3.0 h <span class="tiny">(incl. g2g)</span></td><td><span class="rt comp">Company −10%</span></td><td>hourly</td><td class="amt">$8,190.00</td></tr>
+          <tr><td>Sep 18 · Hyatt → BOS (departure)</td><td>6 SUV + 2 Mini Bus + 1 Sprinter</td><td>transfer</td><td><span class="rt comp">Company −10%</span></td><td>—</td><td class="amt">$3,370.00</td></tr>
+          <tr><td>Subtotal</td><td colspan="4"></td><td class="amt">$11,560.00</td></tr>
+          <tr class="disc"><td>Courtesy discount (−10%)</td><td colspan="4"></td><td class="amt">−$1,156.00</td></tr>
+          <tr><td>Fuel surcharge (5%)</td><td colspan="4"></td><td class="amt">$520.00</td></tr>
+          <tr><td>Federal tax</td><td colspan="4"></td><td class="amt">$765.00</td></tr>
+          <tr class="tot-row"><td>Estimated total (all-in)</td><td colspan="4"></td><td class="amt">$11,689.00</td></tr>
         </table></div>
+        <div class="ratecard"><div class="rc-title">Vehicle rates &amp; policies — vehicles in this quote</div><table>
+          <thead><tr><th>Vehicle</th><th>Cap.</th><th>Rate</th><th>Rate type</th><th>Minimum</th><th>Cancellation</th></tr></thead>
+          <tr><td>SUV</td><td>3</td><td>$110/hr · $185 transfer</td><td><span class="rt comp">Company −10%</span></td><td>2 h</td><td>2 h</td></tr>
+          <tr><td>Mini Bus</td><td>24</td><td>$325/hr · $850 transfer</td><td><span class="rt comp">Company −10%</span></td><td>6 h</td><td>6 h</td></tr>
+          <tr><td>Sprinter</td><td>14</td><td>$215/hr · $560 transfer</td><td><span class="rt comp">Company −10%</span></td><td>6 h</td><td>6 h</td></tr>
+        </table></div>
+        <div class="terms"><div class="tt">Terms</div><ul>
+          <li>Our pricing includes all charges EXCLUDING: variable fees such as parking, airport fees, tolls, and state taxes where applicable. We bill these charges at cost as they are incurred.</li>
+          <li>Our drivers are well compensated and additional gratuity is not expected.</li>
+          <li>A fuel surcharge of 5% is currently in effect.</li>
+          <li>Transfer rates include up to 30 minutes of complimentary wait time. Additional wait time is billed in 15 minute increments at the market hourly rate.</li>
+          <li>Trips with stops are billed hourly. Hourly trips are billed garage to garage.</li>
+          <li>This is a quoting tool and therefore builds quotes. This is not a final price nor is it guaranteed pricing.</li>
+        </ul></div>
       </div>
-      <div class="quote-foot">Estimate · Acme Corp negotiated rates · 10% discount + 5% fuel surcharge applied. Final pricing confirmed at booking.</div>
+      <div class="quote-foot">Estimate · Acme Corp rates · Option A · 10% courtesy discount · quoted times include garage-to-garage.</div>
     </div>
     <div class="out-actions"><span class="a primary" onclick="openPdf(1)">⬇ Branded PDF</span><span class="a" onclick="openPrez(1)">Presentation deck</span><span class="a" onclick="openGen(1)">Editable spreadsheet</span></div>
   </div>
@@ -348,45 +386,69 @@ Hyatt Regency to BOS — approx. 80 people — 12:00pm</pre></div>
     <div class="request"><div class="from">📨 Client request</div><pre>Hi, can I please get a quote for an hourly rate SUV for
 4 adults and 1 child without luggage in Orlando, LA & NYC? Thank you!</pre></div>
 
-    <div class="section-label">The conversation</div>
+    <!-- Steps 1-4 -->
+    <div class="stepline"><span class="step-tag">Steps 1–4</span><h2>Intake · Client ID · Resolve markets</h2></div>
     <div class="chat">
       <div class="msg agent"><div class="avatar agent">You</div><div><div class="bubble">Quote please</div></div></div>
-      <div class="msg assistant"><div class="avatar assistant">S</div><div><div class="who">Assistant</div><div class="bubble">Happy to — hourly SUV in Orlando, LA &amp; NYC. Heads up: in our system an <b>SUV seats 3</b>, so 4 adults + 1 child (5) needs <b>2 SUVs</b> per city. Three quick things:
+      <div class="msg assistant"><div class="avatar assistant">S</div><div><div class="who">Assistant</div><div class="bubble">Hourly SUV in Orlando, LA &amp; NYC. Heads up: in our system an <b>SUV seats 3</b>, so 4 adults + 1 child (5) needs <b>2 SUVs</b> per city. Three quick things:
         <span class="q">How many hours per city?</span>
         <span class="q">What date(s)?</span>
         <span class="q">Existing client (ID), or treat as a new prospect?</span></div></div></div>
       <div class="msg agent"><div class="avatar agent">You</div><div><div class="bubble">4 hours each, June 20–22, new prospect.</div></div></div>
-      <div class="working">🔎 No account on file — using standard published rates · checking for special events (none active)</div>
-      <div class="msg assistant"><div class="avatar assistant">S</div><div><div class="bubble">"LA" and "NYC" each cover a couple of service areas, and I can apply adjustments if you'd like:
-        <span class="q">LA → Greater Los Angeles, and NYC → Manhattan?</span>
-        <span class="q">Any discount, fuel surcharge, or tax to add?</span></div></div></div>
-      <div class="msg agent"><div class="avatar agent">You</div><div><div class="bubble">Greater LA and Manhattan. Apply 5% discount, 5% fuel surcharge, and tax.</div></div></div>
-      <div class="working ok">✓ 5% discount · 5% fuel surcharge · estimated tax applied · quote updated</div>
+      <div class="working">📍 No account on file → standard published (rack) rates · "LA" → Greater Los Angeles, "NYC" → Manhattan · no special events active</div>
+      <div class="msg agent"><div class="avatar agent">You</div><div><div class="bubble">Greater LA and Manhattan are right. Add a 5% courtesy discount.</div></div></div>
+      <div class="working ok">✓ 5% discount applied · pricing each market</div>
     </div>
 
-    <div class="section-label">What you'd send the client</div>
+    <!-- Step 5 -->
+    <div class="stepline"><span class="step-tag">Step 5</span><h2>Rate preview — hourly SUV across 3 markets</h2></div>
+    <div class="preview">
+      <div class="ph"><span class="pt">Orlando · Greater LA · Manhattan</span><span class="tiny">hourly, as-directed · <b>4 h quoted time</b> per market (incl. garage-to-garage) · standard (rack) rates</span></div>
+      <div class="tblscroll"><table>
+        <thead><tr><th>Market</th><th>Vehicle (cap)</th><th># in mkt</th><th>Hourly</th><th>Rate type</th><th>Min</th><th>Cancel</th></tr></thead>
+        <tr><td>Orlando</td><td>SUV (3)</td><td>14</td><td>$95/hr</td><td><span class="rt rack">Rack</span></td><td>2h</td><td>2h</td></tr>
+        <tr><td>Greater Los Angeles</td><td>SUV (3)</td><td>22</td><td>$110/hr</td><td><span class="rt rack">Rack</span></td><td>2h</td><td>2h</td></tr>
+        <tr><td>Manhattan, NYC</td><td>SUV (3)</td><td>18</td><td>$125/hr</td><td><span class="rt rack">Rack</span></td><td>2h</td><td>2h</td></tr>
+      </table></div>
+    </div>
+    <p class="tiny" style="margin:-4px 0 0;">Hourly trips are billed garage to garage, so quoted time = booked hours + garage-in/out. <b>“# in mkt”</b> = SUV fleet per market.</p>
+
+    <!-- Step 7 -->
+    <div class="stepline"><span class="step-tag">Step 7</span><h2>One sensible config (party of 5 → 2 SUVs)</h2></div>
+    <div class="subopt best"><div class="sh"><b>2 × SUV per market · 4 h each</b><span class="rt comp">rough ~$2,640</span></div>
+      <div class="vehmix"><span class="veh"><b>2×</b> SUV (3) · covers 6</span><span class="veh">Orlando · LA · NYC</span></div>
+      <div class="tiny">A single SUV seats 3, so a party of 5 needs two — the assistant catches this automatically.</div></div>
+
+    <!-- Steps 8-9 -->
+    <div class="stepline"><span class="step-tag">Steps 8–9</span><h2>Exact quote (with quoted time per market) → send</h2></div>
     <div class="quote">
       <div class="quote-top"><div class="brand">SAVOYA<small>Hourly Service Quote</small></div><div class="meta">New inquiry<br>June 20–22, 2026</div></div>
       <div class="quote-body">
-        <span class="adjust-tag">🎛️ 5% discount + 5% fuel surcharge + estimated tax applied in chat</span>
-        <div class="for">Hourly <b>SUV</b> · 4 adults + 1 child · no luggage · 4 hours per market · <b>2 SUVs</b> (SUV seats 3)</div>
-        <table>
-          <thead><tr><th>Market</th><th>Vehicles</th><th>Hours</th><th class="amt">Hourly</th><th class="amt">Subtotal</th></tr></thead>
-          <tr><td>Orlando</td><td>2 × SUV</td><td>4</td><td class="amt">$95</td><td class="amt">$760</td></tr>
-          <tr><td>Greater Los Angeles</td><td>2 × SUV</td><td>4</td><td class="amt">$110</td><td class="amt">$880</td></tr>
-          <tr><td>Manhattan, NYC</td><td>2 × SUV</td><td>4</td><td class="amt">$125</td><td class="amt">$1,000</td></tr>
-          <tr><td>Subtotal</td><td colspan="3"></td><td class="amt">$2,640</td></tr>
-          <tr class="disc"><td>Discount (−5%)</td><td colspan="3"></td><td class="amt">−$132</td></tr>
-          <tr><td>Fuel surcharge (5%)</td><td colspan="3"></td><td class="amt">$125</td></tr>
-          <tr><td>Estimated tax</td><td colspan="3"></td><td class="amt">$211</td></tr>
-          <tr class="tot-row"><td>Estimated total</td><td colspan="3"></td><td class="amt">$2,844</td></tr>
-        </table>
-        <div class="ratecard"><div class="rc-title">Vehicle rates &amp; policies</div><table>
-          <thead><tr><th>Vehicle</th><th>Seats</th><th>Rate</th><th>Minimum</th><th>Cancellation</th></tr></thead>
-          <tr><td>SUV</td><td>3</td><td>$95 / $110 / $125 per hr (Orlando / LA / NYC)</td><td>2 hrs</td><td>2 hrs</td></tr>
+        <div class="for">All-in (incl. 5% fuel surcharge &amp; federal tax) · 5% courtesy discount · <b>quoted times include garage-to-garage</b>.</div>
+        <div class="tblscroll"><table>
+          <thead><tr><th>Market</th><th>Vehicles</th><th>Quoted time</th><th>Rate type</th><th class="amt">Hourly</th><th class="amt">Price</th></tr></thead>
+          <tr><td>Orlando</td><td>2 × SUV</td><td>4.0 h <span class="tiny">(incl. g2g)</span></td><td><span class="rt rack">Rack</span></td><td class="amt">$95</td><td class="amt">$760</td></tr>
+          <tr><td>Greater Los Angeles</td><td>2 × SUV</td><td>4.0 h <span class="tiny">(incl. g2g)</span></td><td><span class="rt rack">Rack</span></td><td class="amt">$110</td><td class="amt">$880</td></tr>
+          <tr><td>Manhattan, NYC</td><td>2 × SUV</td><td>4.0 h <span class="tiny">(incl. g2g)</span></td><td><span class="rt rack">Rack</span></td><td class="amt">$125</td><td class="amt">$1,000</td></tr>
+          <tr><td>Subtotal</td><td colspan="4"></td><td class="amt">$2,640</td></tr>
+          <tr class="disc"><td>Courtesy discount (−5%)</td><td colspan="4"></td><td class="amt">−$132</td></tr>
+          <tr><td>Fuel surcharge (5%)</td><td colspan="4"></td><td class="amt">$125</td></tr>
+          <tr><td>Federal tax</td><td colspan="4"></td><td class="amt">$211</td></tr>
+          <tr class="tot-row"><td>Estimated total (all-in)</td><td colspan="4"></td><td class="amt">$2,844</td></tr>
         </table></div>
+        <div class="ratecard"><div class="rc-title">Vehicle rates &amp; policies — vehicles in this quote</div><table>
+          <thead><tr><th>Vehicle</th><th>Cap.</th><th>Rate</th><th>Rate type</th><th>Minimum</th><th>Cancellation</th></tr></thead>
+          <tr><td>SUV</td><td>3</td><td>$95 / $110 / $125 per hr (Orlando / LA / NYC)</td><td><span class="rt rack">Rack</span></td><td>2 h</td><td>2 h</td></tr>
+        </table></div>
+        <div class="terms"><div class="tt">Terms</div><ul>
+          <li>Our pricing includes all charges EXCLUDING: variable fees such as parking, airport fees, tolls, and state taxes where applicable. We bill these charges at cost as they are incurred.</li>
+          <li>Our drivers are well compensated and additional gratuity is not expected.</li>
+          <li>A fuel surcharge of 5% is currently in effect.</li>
+          <li>Hourly trips are billed garage to garage. A 4-hour minimum applies per market.</li>
+          <li>This is a quoting tool and therefore builds quotes. This is not a final price nor is it guaranteed pricing.</li>
+        </ul></div>
       </div>
-      <div class="quote-foot">Estimate · standard published rates · 5% discount + 5% fuel surcharge applied. 4-hour minimum per market.</div>
+      <div class="quote-foot">Estimate · standard published rates · 5% courtesy discount · 4-hour minimum per market.</div>
     </div>
     <div class="out-actions"><span class="a primary" onclick="openPdf(2)">⬇ Branded PDF</span><span class="a" onclick="openPrez(2)">Presentation deck</span><span class="a" onclick="openGen(2)">Editable spreadsheet</span></div>
   </div>
@@ -402,48 +464,68 @@ Sat Feb 7 → (same as Fri)
 Sun Feb 8 → Full Day SUV · Airport Transfer · Sprinter
 Mon Feb 9 → Full Day SUV · Full Day Sedan · Airport Transfer</pre></div>
 
-    <div class="section-label">The conversation</div>
+    <!-- Steps 1-4 -->
+    <div class="stepline"><span class="step-tag">Steps 1–4</span><h2>Intake · Resolve city, dates &amp; special event</h2></div>
     <div class="chat">
       <div class="msg agent"><div class="avatar agent">You</div><div><div class="bubble">Can we estimate this Super Bowl request?</div></div></div>
-      <div class="msg assistant"><div class="avatar assistant">S</div><div><div class="who">Assistant</div><div class="bubble">Yes — multi-day, Feb 5–9. The request doesn't name a city, and Super Bowl LX is in the <b>SF Bay Area</b>:
+      <div class="msg assistant"><div class="avatar assistant">S</div><div><div class="who">Assistant</div><div class="bubble">Multi-day, Feb 5–9. The request doesn't name a city, and Super Bowl LX is in the <b>SF Bay Area</b>:
         <span class="q">Base transport in the Bay Area (Santa Clara)? And existing client (ID)?</span>
         <span class="q">"Full Day" — how many hours per day? (typical is 8–10)</span>
         <span class="q">"Airport Transfer (Sedan)" — from SFO, to where?</span></div></div></div>
       <div class="msg agent"><div class="avatar agent">You</div><div><div class="bubble">Bay Area, new prospect. Full day = 10 hours. Transfers SFO → client hotels downtown.</div></div></div>
-      <div class="working event">⭐ Special event found — "Super Bowl LX" active Feb 5–9 · special-event rates apply automatically</div>
-      <div class="working">🔎 Checking Bay Area fleet · pricing each day</div>
-      <div class="msg assistant"><div class="avatar assistant">S</div><div><div class="bubble">Because these dates fall under <b>Super Bowl LX special-event pricing</b>, I'm applying those rates automatically. Want a discount, fuel surcharge, or tax added?</div></div></div>
-      <div class="msg agent"><div class="avatar agent">You</div><div><div class="bubble">Add a 5% fuel surcharge and tax. No discount on event pricing.</div></div></div>
-      <div class="working ok">✓ 5% fuel surcharge · estimated tax applied · quote updated</div>
+      <div class="working event">⭐ Special event matched by service area + date — "Super Bowl LX" active Feb 5–9 · special-event rates apply automatically</div>
+      <div class="working">📍 Bay Area (Santa Clara) market · pricing each day · no discount on event pricing</div>
     </div>
 
-    <div class="section-label">What you'd send the client</div>
+    <!-- Step 5 -->
+    <div class="stepline"><span class="step-tag">Step 5</span><h2>Rate preview — Bay Area ⭐ Super Bowl LX</h2></div>
+    <div class="preview">
+      <div class="ph"><span class="pt">Bay Area (Santa Clara) — Feb 5–9 ⭐</span><span class="tiny">full day <b>10 h quoted time</b> (incl. g2g) · SFO transfers · special-event rates · limited availability</span></div>
+      <div class="tblscroll"><table>
+        <thead><tr><th>Vehicle (cap)</th><th># in mkt</th><th>Hourly</th><th>Transfer (SFO)</th><th>Rate type</th><th>Min</th><th>Cancel</th></tr></thead>
+        <tr><td>Sedan (2)</td><td>40</td><td>$140/hr</td><td>$220</td><td><span class="rt evt">⭐ Special-event</span></td><td>2h</td><td>7 days</td></tr>
+        <tr><td>SUV (3)</td><td>34</td><td>$175/hr</td><td>$280</td><td><span class="rt evt">⭐ Special-event</span></td><td>2h</td><td>7 days</td></tr>
+        <tr><td>Sprinter (14)</td><td>10</td><td>$300/hr</td><td>$640</td><td><span class="rt evt">⭐ Special-event</span></td><td>6h</td><td>7 days</td></tr>
+        <tr><td>Mini Bus (24)</td><td>6</td><td>$430/hr</td><td>—</td><td><span class="rt evt">⭐ Special-event</span></td><td>6h</td><td>7 days</td></tr>
+      </table></div>
+    </div>
+    <p class="tiny" style="margin:-4px 0 0;">Special-event rates are matched automatically by <b>service area + date</b> — no manual lookup. Availability is tight during the event.</p>
+
+    <!-- Steps 8-9 -->
+    <div class="stepline"><span class="step-tag">Steps 8–9</span><h2>Day-by-day estimate → send</h2></div>
     <div class="quote">
       <div class="quote-top"><div class="brand">SAVOYA<small>Event Transportation Estimate</small></div><div class="meta">Super Bowl LX<br>Feb 5–9, 2026 · SF Bay Area</div></div>
       <div class="quote-body">
         <span class="badge-event">⭐ Super Bowl LX special-event rates applied</span>
-        <span class="adjust-tag">🎛️ 5% fuel surcharge + estimated tax applied in chat</span>
-        <table>
-          <thead><tr><th>Day</th><th>Service</th><th class="amt">Est. cost</th></tr></thead>
-          <tr><td>Thu Feb 5</td><td>Full Day SUV (10h) · Full Day Sedan (10h) · SFO transfer</td><td class="amt">$3,150</td></tr>
-          <tr><td>Fri Feb 6</td><td>Full Day SUV · Sedan · Sprinter · Mini Bus/Shuttle (~30) · transfer</td><td class="amt">$6,420</td></tr>
-          <tr><td>Sat Feb 7</td><td>Full Day SUV · Sedan · Sprinter · Mini Bus/Shuttle (~30) · transfer</td><td class="amt">$6,420</td></tr>
-          <tr><td>Sun Feb 8</td><td>Full Day SUV · Sprinter · transfer</td><td class="amt">$3,980</td></tr>
-          <tr><td>Mon Feb 9</td><td>Full Day SUV · Sedan · transfer</td><td class="amt">$3,150</td></tr>
-          <tr><td>Subtotal</td><td></td><td class="amt">$23,120</td></tr>
-          <tr><td>Fuel surcharge (5%)</td><td></td><td class="amt">$1,156</td></tr>
-          <tr><td>Estimated tax</td><td></td><td class="amt">$1,942</td></tr>
-          <tr class="tot-row"><td>Estimated total</td><td></td><td class="amt">$26,218</td></tr>
-        </table>
-        <div class="ratecard"><div class="rc-title">Vehicle rates &amp; policies · special-event</div><table>
-          <thead><tr><th>Vehicle</th><th>Seats</th><th>Rate</th><th>Minimum</th><th>Cancellation</th></tr></thead>
-          <tr><td>Sedan</td><td>2</td><td>$140/hr</td><td>2 hrs</td><td>2 hrs</td></tr>
-          <tr><td>SUV</td><td>3</td><td>$175/hr</td><td>2 hrs</td><td>2 hrs</td></tr>
-          <tr><td>Sprinter</td><td>14</td><td>$300/hr</td><td>6 hrs</td><td>6 hrs</td></tr>
-          <tr><td>Mini Bus</td><td>24</td><td>$430/hr</td><td>6 hrs</td><td>6 hrs</td></tr>
+        <div class="for">All-in (incl. 5% fuel surcharge &amp; federal tax) · "Full Day" = 10 h · <b>quoted times include garage-to-garage</b>.</div>
+        <div class="tblscroll"><table>
+          <thead><tr><th>Day</th><th>Service</th><th>Quoted time</th><th>Rate type</th><th class="amt">Est. cost</th></tr></thead>
+          <tr><td>Thu Feb 5</td><td>Full Day SUV · Full Day Sedan · SFO transfer</td><td>10 h + transfer</td><td><span class="rt evt">⭐ Event</span></td><td class="amt">$3,150</td></tr>
+          <tr><td>Fri Feb 6</td><td>+ Sprinter · Mini Bus/Shuttle (~30) · transfer</td><td>10 h + transfer</td><td><span class="rt evt">⭐ Event</span></td><td class="amt">$6,420</td></tr>
+          <tr><td>Sat Feb 7</td><td>same as Fri</td><td>10 h + transfer</td><td><span class="rt evt">⭐ Event</span></td><td class="amt">$6,420</td></tr>
+          <tr><td>Sun Feb 8</td><td>Full Day SUV · Sprinter · transfer</td><td>10 h + transfer</td><td><span class="rt evt">⭐ Event</span></td><td class="amt">$3,980</td></tr>
+          <tr><td>Mon Feb 9</td><td>Full Day SUV · Sedan · transfer</td><td>10 h + transfer</td><td><span class="rt evt">⭐ Event</span></td><td class="amt">$3,150</td></tr>
+          <tr><td>Subtotal</td><td colspan="3"></td><td class="amt">$23,120</td></tr>
+          <tr><td>Fuel surcharge (5%)</td><td colspan="3"></td><td class="amt">$1,156</td></tr>
+          <tr><td>Federal tax</td><td colspan="3"></td><td class="amt">$1,942</td></tr>
+          <tr class="tot-row"><td>Estimated total (all-in)</td><td colspan="3"></td><td class="amt">$26,218</td></tr>
         </table></div>
+        <div class="ratecard"><div class="rc-title">Vehicle rates &amp; policies — vehicles in this quote</div><table>
+          <thead><tr><th>Vehicle</th><th>Cap.</th><th>Rate</th><th>Rate type</th><th>Minimum</th><th>Cancellation</th></tr></thead>
+          <tr><td>Sedan</td><td>2</td><td>$140/hr · $220 transfer</td><td><span class="rt evt">⭐ Special-event</span></td><td>2 h</td><td>7 days</td></tr>
+          <tr><td>SUV</td><td>3</td><td>$175/hr · $280 transfer</td><td><span class="rt evt">⭐ Special-event</span></td><td>2 h</td><td>7 days</td></tr>
+          <tr><td>Sprinter</td><td>14</td><td>$300/hr · $640 transfer</td><td><span class="rt evt">⭐ Special-event</span></td><td>6 h</td><td>7 days</td></tr>
+          <tr><td>Mini Bus</td><td>24</td><td>$430/hr</td><td><span class="rt evt">⭐ Special-event</span></td><td>6 h</td><td>7 days</td></tr>
+        </table></div>
+        <div class="terms"><div class="tt">Terms</div><ul>
+          <li>Our pricing includes all charges EXCLUDING: variable fees such as parking, airport fees, tolls, and state taxes where applicable. We bill these charges at cost as they are incurred.</li>
+          <li>Our drivers are well compensated and additional gratuity is not expected.</li>
+          <li>A fuel surcharge of 5% is currently in effect.</li>
+          <li>Special-event pricing &amp; cancellation terms apply; availability is subject to confirmation during the peak event window.</li>
+          <li>This is a quoting tool and therefore builds quotes. This is not a final price nor is it guaranteed pricing.</li>
+        </ul></div>
       </div>
-      <div class="quote-foot">Estimate · Super Bowl LX special-event rates · 5% fuel surcharge · "Full Day" = 10 hours. Subject to availability during peak event.</div>
+      <div class="quote-foot">Estimate · Super Bowl LX special-event rates · "Full Day" = 10 hours. Subject to availability during peak event.</div>
     </div>
     <div class="out-actions"><span class="a primary" onclick="openPrez(3)">Presentation deck</span><span class="a" onclick="openPdf(3)">⬇ Branded PDF</span><span class="a" onclick="openGen(3)">Editable spreadsheet</span></div>
   </div>
@@ -459,7 +541,8 @@ Oct 24 — SUV — 5:30am — St. Regis → SGR
 … plus Nov dates across Westchester, Jacksonville, Miami,
    Atlanta, Bakersfield, Anaheim, Glendale  (43 trips total)</pre></div>
 
-    <div class="section-label">The conversation</div>
+    <!-- Steps 1-4 -->
+    <div class="stepline"><span class="step-tag">Steps 1–4</span><h2>Intake · Organize · Confirm read · Resolve</h2></div>
     <div class="chat">
       <div class="msg agent"><div class="avatar agent">You</div><div><div class="bubble">Here's a big itinerary — can you quote the whole thing?</div></div></div>
       <div class="working">🔎 Reading itinerary · organizing trips by city &amp; date</div>
@@ -467,42 +550,58 @@ Oct 24 — SUV — 5:30am — St. Regis → SGR
         <span class="q">9 cities (Houston, San Antonio, Ft. Worth, Westchester, Jacksonville, Miami, Atlanta, Bakersfield, Anaheim/Glendale) — right?</span>
         <span class="q">"4pm–10pm to venue and back" → vehicle held for that window (hourly)?</span>
         <span class="q">"shuttle until 11pm" → hourly shuttle for the window?</span>
-        <span class="q">Existing client (ID)? And any discount / fuel surcharge / tax to apply?</span></div></div></div>
-      <div class="msg agent"><div class="avatar agent">You</div><div><div class="bubble">All correct. Hourly for the windows and shuttle. Client ID 6610. Apply 8% discount, 5% fuel surcharge, and tax.</div></div></div>
-      <div class="working ok">✓ Client 6610 rates · 8% discount · 5% fuel surcharge · tax applied</div>
-      <div class="working">🔎 Matching airports (SGR, SAT, FTW, HPN, JAX…) &amp; hotels · pricing each market</div>
-      <div class="working flag">⚠ Bakersfield short 1 Sprinter for the Nov 20 shuttle (have 2, need 3)</div>
-      <div class="msg assistant"><div class="avatar assistant">S</div><div><div class="bubble">All 43 trips priced into one combined quote, grouped by city. <b>One availability gap to confirm with Ops</b> — see the flag; we may be able to pull a Sprinter from a nearby market. Open the <b>editable spreadsheet</b> for full per-trip detail.</div></div></div>
+        <span class="q">Existing client (ID)?</span></div></div></div>
+      <div class="msg agent"><div class="avatar agent">You</div><div><div class="bubble">All correct. Hourly for the windows and shuttle. Client ID 6610. Apply an 8% discount.</div></div></div>
+      <div class="working ok">✓ Client 6610 rates · 8% discount applied</div>
+      <div class="working">📍 Matching airports (SGR, SAT, FTW, HPN, JAX…) &amp; hotels · pricing each market</div>
     </div>
 
-    <div class="section-label">What you'd send the client</div>
+    <!-- Step 5 -->
+    <div class="stepline"><span class="step-tag">Step 5</span><h2>Rate preview — client 6610 rates across markets</h2></div>
+    <div class="preview">
+      <div class="ph"><span class="pt">9 markets — Oct 22 – Nov 23</span><span class="tiny">airport transfers + held hourly windows · <b>quoted time per leg incl. g2g</b> · client 6610 rates</span></div>
+      <div class="tblscroll"><table>
+        <thead><tr><th>Vehicle (cap)</th><th>Hourly</th><th>Transfer</th><th>Rate type</th><th>Min</th><th>Cancel</th></tr></thead>
+        <tr><td>SUV (3)</td><td>$115/hr</td><td>$210–$240</td><td><span class="rt comp">Company 6610</span></td><td>2h</td><td>2h</td></tr>
+        <tr><td>Sprinter (14)</td><td>$215/hr</td><td>$540</td><td><span class="rt comp">Company 6610</span></td><td>6h</td><td>6h</td></tr>
+      </table></div>
+    </div>
+    <div class="flagbox">⚠ <b>Availability catch:</b> Bakersfield is <b>short 1 Sprinter</b> for the Nov 20 shuttle (have 2, need 3). The assistant flags it so it never silently slips — Ops can pull one from a nearby market. Pricing assumes it's sourced.</div>
+
+    <!-- Steps 8-9 -->
+    <div class="stepline"><span class="step-tag">Steps 8–9</span><h2>One combined quote, grouped by city → send</h2></div>
     <div class="quote">
       <div class="quote-top"><div class="brand">SAVOYA<small>Multi-City Program Quote</small></div><div class="meta">43 trips · 9 cities<br>Oct 22 – Nov 23, 2026</div></div>
       <div class="quote-body">
-        <span class="adjust-tag">🎛️ 8% discount + 5% fuel surcharge + estimated tax applied in chat</span>
-        <div class="for">One combined quote · grouped by city · <b>client 6610 rates applied</b></div>
-        <table>
-          <thead><tr><th>City</th><th>Trips</th><th>Mix</th><th class="amt">Subtotal</th></tr></thead>
-          <tr><td>Houston / Sugar Land</td><td>6</td><td>SUV · Sprinter</td><td class="amt">$4,120</td></tr>
-          <tr><td>San Antonio / Ft. Worth</td><td>9</td><td>SUV · Sprinter</td><td class="amt">$6,540</td></tr>
-          <tr><td>Westchester (HPN)</td><td>4</td><td>SUV · Sprinter</td><td class="amt">$2,880</td></tr>
-          <tr><td>Jacksonville · Miami</td><td>10</td><td>SUV · Sprinter</td><td class="amt">$7,310</td></tr>
-          <tr><td>Atlanta</td><td>4</td><td>SUV · Sprinter</td><td class="amt">$3,050</td></tr>
-          <tr><td>Bakersfield · Anaheim · Glendale</td><td>10</td><td>SUV · Sprinter</td><td class="amt">$7,690</td></tr>
-          <tr><td>Subtotal</td><td colspan="2"></td><td class="amt">$31,590</td></tr>
-          <tr class="disc"><td>Discount (−8%)</td><td colspan="2"></td><td class="amt">−$2,527</td></tr>
-          <tr><td>Fuel surcharge (5%)</td><td colspan="2"></td><td class="amt">$1,453</td></tr>
-          <tr><td>Estimated tax</td><td colspan="2"></td><td class="amt">$2,136</td></tr>
-          <tr class="tot-row"><td>Estimated total</td><td colspan="2"></td><td class="amt">$32,652</td></tr>
-        </table>
-        <div class="flagbox">⚠ <b>Check with Ops:</b> Bakersfield is <b>short 1 Sprinter</b> for the Nov 20 shuttle (have 2, need 3). Good chance we can <b>pull one from a nearby market</b> — ops is confirming. Pricing assumes it's sourced.</div>
-        <div class="ratecard"><div class="rc-title">Vehicle rates &amp; policies</div><table>
-          <thead><tr><th>Vehicle</th><th>Seats</th><th>Rate</th><th>Minimum</th><th>Cancellation</th></tr></thead>
-          <tr><td>SUV</td><td>3</td><td>$115/hr · $210–$240 transfer</td><td>2 hrs</td><td>2 hrs</td></tr>
-          <tr><td>Sprinter</td><td>14</td><td>$215/hr · $540 transfer</td><td>6 hrs</td><td>6 hrs</td></tr>
+        <div class="for">All-in (incl. 5% fuel surcharge &amp; federal tax) · client 6610 rates · 8% discount · 43 trips itemized in the spreadsheet.</div>
+        <div class="tblscroll"><table>
+          <thead><tr><th>City</th><th>Trips</th><th>Mix</th><th>Rate type</th><th class="amt">Subtotal</th></tr></thead>
+          <tr><td>Houston / Sugar Land</td><td>6</td><td>SUV · Sprinter</td><td><span class="rt comp">Company 6610</span></td><td class="amt">$4,120</td></tr>
+          <tr><td>San Antonio / Ft. Worth</td><td>9</td><td>SUV · Sprinter</td><td><span class="rt comp">Company 6610</span></td><td class="amt">$6,540</td></tr>
+          <tr><td>Westchester (HPN)</td><td>4</td><td>SUV · Sprinter</td><td><span class="rt comp">Company 6610</span></td><td class="amt">$2,880</td></tr>
+          <tr><td>Jacksonville · Miami</td><td>10</td><td>SUV · Sprinter</td><td><span class="rt comp">Company 6610</span></td><td class="amt">$7,310</td></tr>
+          <tr><td>Atlanta</td><td>4</td><td>SUV · Sprinter</td><td><span class="rt comp">Company 6610</span></td><td class="amt">$3,050</td></tr>
+          <tr><td>Bakersfield · Anaheim · Glendale</td><td>10</td><td>SUV · Sprinter</td><td><span class="rt comp">Company 6610</span></td><td class="amt">$7,690</td></tr>
+          <tr><td>Subtotal</td><td colspan="3"></td><td class="amt">$31,590</td></tr>
+          <tr class="disc"><td>Discount (−8%)</td><td colspan="3"></td><td class="amt">−$2,527</td></tr>
+          <tr><td>Fuel surcharge (5%)</td><td colspan="3"></td><td class="amt">$1,453</td></tr>
+          <tr><td>Federal tax</td><td colspan="3"></td><td class="amt">$2,136</td></tr>
+          <tr class="tot-row"><td>Estimated total (all-in)</td><td colspan="3"></td><td class="amt">$32,652</td></tr>
         </table></div>
+        <div class="ratecard"><div class="rc-title">Vehicle rates &amp; policies — vehicles in this quote</div><table>
+          <thead><tr><th>Vehicle</th><th>Cap.</th><th>Rate</th><th>Rate type</th><th>Minimum</th><th>Cancellation</th></tr></thead>
+          <tr><td>SUV</td><td>3</td><td>$115/hr · $210–$240 transfer</td><td><span class="rt comp">Company 6610</span></td><td>2 h</td><td>2 h</td></tr>
+          <tr><td>Sprinter</td><td>14</td><td>$215/hr · $540 transfer</td><td><span class="rt comp">Company 6610</span></td><td>6 h</td><td>6 h</td></tr>
+        </table></div>
+        <div class="terms"><div class="tt">Terms</div><ul>
+          <li>Our pricing includes all charges EXCLUDING: variable fees such as parking, airport fees, tolls, and state taxes where applicable. We bill these charges at cost as they are incurred.</li>
+          <li>Our drivers are well compensated and additional gratuity is not expected.</li>
+          <li>A fuel surcharge of 5% is currently in effect.</li>
+          <li>Trips with stops are billed hourly. Hourly trips are billed garage to garage.</li>
+          <li>This is a quoting tool and therefore builds quotes. This is not a final price nor is it guaranteed pricing.</li>
+        </ul></div>
       </div>
-      <div class="quote-foot">Estimate · client 6610 rates · 8% discount + 5% fuel surcharge · 43 trips itemized in the spreadsheet.</div>
+      <div class="quote-foot">Estimate · client 6610 rates · 8% discount · 43 trips itemized in the spreadsheet.</div>
     </div>
     <div class="out-actions"><span class="a primary" onclick="openPdf(4)">⬇ Branded PDF</span><span class="a" onclick="openPrez(4)">Presentation deck</span><span class="a" onclick="openSheet('sheet4')">📊 Editable spreadsheet →</span></div>
   </div>
@@ -516,54 +615,73 @@ Oct 24 — SUV — 5:30am — St. Regis → SGR
    34 departures (with flight numbers & times)
    VIP column included</pre></div>
 
-    <div class="section-label">The conversation</div>
+    <!-- Steps 1-4 -->
+    <div class="stepline"><span class="step-tag">Steps 1–4</span><h2>Intake · Client ID · Grouping rules</h2></div>
     <div class="chat">
       <div class="msg agent"><div class="avatar agent">You</div><div><div class="bubble">Cleaned this manifest in Convey — here it is. Quote it?</div></div></div>
       <div class="working">🔎 Reading manifest — 86 passengers · 52 arrivals · 34 departures · 6 VIPs detected</div>
       <div class="msg assistant"><div class="avatar assistant">S</div><div><div class="who">Assistant</div><div class="bubble">Loaded. I'll group passengers into vehicles the same way the system does. The manifest doesn't include grouping rules, so:
         <span class="q">Which vehicle types should I use, and seats each? (e.g., SUV seats 3, Sprinter 14)</span>
         <span class="q">VIPs in their own vehicle — and which <b>vehicle type</b> should VIPs get? (e.g., S-Class Sedan, Luxury SUV)</span>
-        <span class="q">For departures, how tight a window should share a vehicle — e.g., within 30 minutes?</span>
-        <span class="q">Any discount, fuel surcharge, or tax to apply?</span></div></div></div>
-      <div class="msg agent"><div class="avatar agent">You</div><div><div class="bubble">SUV (3) and Sprinter (14). VIPs solo in an S-Class Sedan. Departures: 30-minute window. Client ID 3307. Apply 10% discount, 5% fuel surcharge, and tax.</div></div></div>
-      <div class="working ok">✓ Client 3307 rates · 10% discount · 5% fuel surcharge · tax · no special event</div>
-      <div class="working">🔎 Grouping arrivals by flight · departures by 30-min window · 6 VIPs → S-Class Sedan · pricing</div>
-      <div class="msg assistant"><div class="avatar assistant">S</div><div><div class="bubble">Grouped &amp; priced. Two options — most economical, and the system's recommended grouping. Open the <b>editable manifest</b> to see every passenger and which vehicle they're in (arrivals &amp; departures on separate tabs).</div></div></div>
+        <span class="q">For departures, how tight a window should share a vehicle — e.g., within 30 minutes?</span></div></div></div>
+      <div class="msg agent"><div class="avatar agent">You</div><div><div class="bubble">SUV (3) and Sprinter (14). VIPs solo in an S-Class Sedan. Departures: 30-minute window. Client ID 3307, apply a 10% discount.</div></div></div>
+      <div class="working ok">✓ Client 3307 rates · 10% discount applied · no special event</div>
+      <div class="working">📍 Grouping arrivals by flight · departures by 30-min window · 6 VIPs → S-Class Sedan · pricing as transfers</div>
     </div>
 
-    <div class="section-label">What you'd send the client</div>
+    <!-- Step 5 -->
+    <div class="stepline"><span class="step-tag">Step 5</span><h2>Rate preview — transfer rates (client 3307)</h2></div>
+    <div class="preview">
+      <div class="ph"><span class="pt">Manifest transfers — 86 passengers</span><span class="tiny">arrivals grouped by flight · departures by 30-min window · <b>quoted time per group incl. g2g</b> · client 3307</span></div>
+      <div class="tblscroll"><table>
+        <thead><tr><th>Vehicle (cap)</th><th>Transfer</th><th>Rate type</th><th>Min</th><th>Cancel</th></tr></thead>
+        <tr><td>S-Class Sedan (2)</td><td>$340</td><td><span class="rt comp">Company 3307</span></td><td>2h</td><td>2h</td></tr>
+        <tr><td>SUV (3)</td><td>$185</td><td><span class="rt comp">Company 3307</span></td><td>2h</td><td>2h</td></tr>
+        <tr><td>Sprinter (14)</td><td>$560</td><td><span class="rt comp">Company 3307</span></td><td>6h</td><td>6h</td></tr>
+      </table></div>
+    </div>
+    <p class="tiny" style="margin:-4px 0 0;">The assistant groups passengers into vehicles the same way the system does — by flight for arrivals, by 30-minute window for departures, VIPs solo.</p>
+
+    <!-- Step 7 -->
+    <div class="stepline"><span class="step-tag">Step 7</span><h2>Two grouping options (pick / edit)</h2></div>
+    <div class="subopt best"><div class="sh"><b>Option A — Most economical</b><span class="rt comp">rough ~$16,590</span></div>
+      <div class="vehmix"><span class="veh"><b>6×</b> S-Class (VIPs)</span><span class="veh"><b>7×</b> Sprinter (14)</span><span class="veh"><b>9×</b> SUV (3)</span><span class="veh">fewest vehicles</span></div></div>
+    <div class="subopt"><div class="sh"><b>Option B — Recommended grouping (balanced)</b><span class="rt comp">rough ~$19,340</span></div>
+      <div class="vehmix"><span class="veh">More SUVs</span><span class="veh">smaller groups</span><span class="veh">VIPs in S-Class</span></div></div>
+
+    <!-- Steps 8-9 -->
+    <div class="stepline"><span class="step-tag">Steps 8–9</span><h2>Exact quote (Option A) → send</h2></div>
     <div class="quote">
       <div class="quote-top"><div class="brand">SAVOYA<small>Group Manifest Quote</small></div><div class="meta">86 passengers · 86 trips<br>Client 3307</div></div>
       <div class="quote-body">
-        <span class="adjust-tag">🎛️ 10% discount + 5% fuel surcharge + estimated tax applied in chat</span>
-        <div class="opt best">
-          <div class="opt-head"><span class="opt-name">Option A — Most economical</span><span class="opt-tag cost">Cost-optimized</span></div>
-          <div class="vehmix"><span class="veh"><b>6×</b> S-Class (VIPs)</span><span class="veh"><b>7×</b> Sprinter (14)</span><span class="veh"><b>9×</b> SUV (3)</span></div>
-          <table>
-            <tr><td>Arrivals — grouped by flight (Sprinters + SUVs)</td><td class="amt">$8,640</td></tr>
-            <tr><td>Departures — grouped within 30-min windows</td><td class="amt">$5,910</td></tr>
-            <tr><td>VIP solo — 6 × S-Class Sedan</td><td class="amt">$2,040</td></tr>
-            <tr><td>Subtotal</td><td class="amt">$16,590</td></tr>
-            <tr class="disc"><td>Discount (−10%)</td><td class="amt">−$1,659</td></tr>
-            <tr><td>Fuel surcharge (5%)</td><td class="amt">$747</td></tr>
-            <tr><td>Estimated tax</td><td class="amt">$1,097</td></tr>
-            <tr class="tot-row"><td>Estimated total</td><td class="amt">$16,775</td></tr>
-          </table>
-        </div>
-        <div class="opt">
-          <div class="opt-head"><span class="opt-name">Option B — Recommended grouping</span><span class="opt-tag comfort">Balanced</span></div>
-          <div class="vehmix"><span class="veh">More SUVs</span><span class="veh">smaller groups</span><span class="veh">VIPs in S-Class</span></div>
-          <table><tr><td>Same passengers, fewer per vehicle (after discount, surcharge + tax)</td><td class="amt">$19,340</td></tr></table>
-        </div>
-        <div class="ratecard"><div class="rc-title">Vehicle rates &amp; policies</div><table>
-          <thead><tr><th>Vehicle</th><th>Seats</th><th>Rate</th><th>Minimum</th><th>Cancellation</th></tr></thead>
-          <tr><td>S-Class Sedan</td><td>2</td><td>$340 transfer</td><td>2 hrs</td><td>2 hrs</td></tr>
-          <tr><td>SUV</td><td>3</td><td>$185 transfer</td><td>2 hrs</td><td>2 hrs</td></tr>
-          <tr><td>Sprinter</td><td>14</td><td>$560 transfer</td><td>6 hrs</td><td>6 hrs</td></tr>
+        <div class="for">Option A · all-in (incl. 5% fuel surcharge &amp; federal tax) · client 3307 rates · 10% discount · manifest cleaned in Convey.</div>
+        <div class="tblscroll"><table>
+          <thead><tr><th>Group</th><th>Vehicles</th><th>Rate type</th><th class="amt">Price</th></tr></thead>
+          <tr><td>Arrivals — grouped by flight</td><td>7 Sprinter + 9 SUV</td><td><span class="rt comp">Company 3307</span></td><td class="amt">$8,640</td></tr>
+          <tr><td>Departures — grouped within 30-min windows</td><td>Sprinter + SUV</td><td><span class="rt comp">Company 3307</span></td><td class="amt">$5,910</td></tr>
+          <tr><td>VIP solo</td><td>6 × S-Class Sedan</td><td><span class="rt comp">Company 3307</span></td><td class="amt">$2,040</td></tr>
+          <tr><td>Subtotal</td><td colspan="2"></td><td class="amt">$16,590</td></tr>
+          <tr class="disc"><td>Discount (−10%)</td><td colspan="2"></td><td class="amt">−$1,659</td></tr>
+          <tr><td>Fuel surcharge (5%)</td><td colspan="2"></td><td class="amt">$747</td></tr>
+          <tr><td>Federal tax</td><td colspan="2"></td><td class="amt">$1,097</td></tr>
+          <tr class="tot-row"><td>Estimated total (all-in)</td><td colspan="2"></td><td class="amt">$16,775</td></tr>
         </table></div>
-        <p class="tiny" style="margin:8px 0 0;">Each option lists every passenger and their vehicle — open the manifest to view/edit.</p>
+        <div class="ratecard"><div class="rc-title">Vehicle rates &amp; policies — vehicles in this quote</div><table>
+          <thead><tr><th>Vehicle</th><th>Cap.</th><th>Rate</th><th>Rate type</th><th>Minimum</th><th>Cancellation</th></tr></thead>
+          <tr><td>S-Class Sedan</td><td>2</td><td>$340 transfer</td><td><span class="rt comp">Company 3307</span></td><td>2 h</td><td>2 h</td></tr>
+          <tr><td>SUV</td><td>3</td><td>$185 transfer</td><td><span class="rt comp">Company 3307</span></td><td>2 h</td><td>2 h</td></tr>
+          <tr><td>Sprinter</td><td>14</td><td>$560 transfer</td><td><span class="rt comp">Company 3307</span></td><td>6 h</td><td>6 h</td></tr>
+        </table></div>
+        <div class="terms"><div class="tt">Terms</div><ul>
+          <li>Our pricing includes all charges EXCLUDING: variable fees such as parking, airport fees, tolls, and state taxes where applicable. We bill these charges at cost as they are incurred.</li>
+          <li>Our drivers are well compensated and additional gratuity is not expected.</li>
+          <li>A fuel surcharge of 5% is currently in effect.</li>
+          <li>Transfer rates include up to 30 minutes of complimentary wait time. Additional wait time is billed in 15 minute increments at the market hourly rate.</li>
+          <li>This is a quoting tool and therefore builds quotes. This is not a final price nor is it guaranteed pricing.</li>
+        </ul></div>
+        <p class="tiny" style="margin:8px 0 0;">The manifest lists every passenger and their vehicle — open it to view/edit (arrivals &amp; departures on separate tabs).</p>
       </div>
-      <div class="quote-foot">Estimate · client 3307 rates · 10% discount + 5% fuel surcharge · manifest cleaned in Convey.</div>
+      <div class="quote-foot">Estimate · client 3307 rates · Option A · 10% discount · manifest cleaned in Convey.</div>
     </div>
     <div class="out-actions"><span class="a primary" onclick="openPdf(5)">⬇ Branded PDF</span><span class="a" onclick="openPrez(5)">Presentation deck</span><span class="a" onclick="openSheet('sheet5')">📊 Editable manifest →</span></div>
   </div>
@@ -661,32 +779,32 @@ Oct 24 — SUV — 5:30am — St. Regis → SGR
 
 <script>
   var EX = {
-    1:{doc:'Ground Transportation Quote',client:'Acme Corp',meta:'Sep 16 & 18, 2026 · Boston',badge:'10% discount + 5% fuel surcharge + tax applied',
-       lines:[['Evening event — 15 SUV + 2 Mini Bus + 2 Sprinter · 3 hrs (hourly)','$8,190'],['Airport departure — Hyatt → BOS · 6 SUV + 2 Mini Bus + 1 Sprinter','$3,370']],
-       totals:[['Subtotal','$11,560',''],['Discount (−10%)','−$1,156','disc'],['Fuel surcharge (5%)','$520',''],['Estimated tax','$765',''],['Estimated total','$11,689','tot']],
-       rates:[['SUV','3','$110/hr · $185 transfer','2 hrs','2 hrs'],['Mini Bus','24','$325/hr · $850 transfer','6 hrs','6 hrs'],['Sprinter','14','$215/hr · $560 transfer','6 hrs','6 hrs']],
-       foot:'Acme Corp negotiated rates · 10% discount + 5% fuel surcharge · confirmed at booking.'},
-    2:{doc:'Hourly Service Quote',client:'New inquiry',meta:'June 20–22, 2026',badge:'5% discount + 5% fuel surcharge + tax applied',
-       lines:[['Orlando — 2 × SUV · 4 hrs','$760'],['Greater Los Angeles — 2 × SUV · 4 hrs','$880'],['Manhattan, NYC — 2 × SUV · 4 hrs','$1,000']],
-       totals:[['Subtotal','$2,640',''],['Discount (−5%)','−$132','disc'],['Fuel surcharge (5%)','$125',''],['Estimated tax','$211',''],['Estimated total','$2,844','tot']],
-       rates:[['SUV','3','$95 / $110 / $125 per hr (Orlando / LA / NYC)','2 hrs','2 hrs']],
-       foot:'Standard published rates · 5% discount + 5% fuel surcharge · 4-hour minimum per market.'},
-    3:{doc:'Event Transportation Estimate',client:'Super Bowl LX',meta:'Feb 5–9, 2026 · SF Bay Area',event:'⭐ Super Bowl LX special-event rates applied',badge:'5% fuel surcharge + tax applied',
-       lines:[['Thu Feb 5 — Full Day SUV · Sedan · SFO transfer','$3,150'],['Fri Feb 6 — + Sprinter · Mini Bus/Shuttle (~30)','$6,420'],['Sat Feb 7 — same as Fri','$6,420'],['Sun Feb 8 — Full Day SUV · Sprinter · transfer','$3,980'],['Mon Feb 9 — Full Day SUV · Sedan · transfer','$3,150']],
-       totals:[['Subtotal','$23,120',''],['Fuel surcharge (5%)','$1,156',''],['Estimated tax','$1,942',''],['Estimated total','$26,218','tot']],
-       rates:[['Sedan','2','$140/hr','2 hrs','2 hrs'],['SUV','3','$175/hr','2 hrs','2 hrs'],['Sprinter','14','$300/hr','6 hrs','6 hrs'],['Mini Bus','24','$430/hr','6 hrs','6 hrs']],
-       foot:'Super Bowl LX special-event rates · 5% fuel surcharge · "Full Day" = 10 hours.'},
-    4:{doc:'Multi-City Program Quote',client:'Client 6610',meta:'43 trips · 9 cities · Oct 22 – Nov 23, 2026',badge:'8% discount + 5% fuel surcharge + tax applied',
+    1:{doc:'Ground Transportation Quote',client:'Acme Corp',meta:'Sep 16 & 18, 2026 · Boston',badge:'Option A · all-in · Acme −10%',
+       lines:[['Sep 16 · Hyatt ⇆ Classic Harbor Line (evening) · 3.0 h','$8,190.00'],['Sep 18 · Hyatt → BOS (departure) · transfer','$3,370.00']],
+       totals:[['Subtotal','$11,560.00',''],['Courtesy discount (−10%)','−$1,156.00','disc'],['Fuel surcharge (5%)','$520.00',''],['Federal tax','$765.00',''],['Estimated total (all-in)','$11,689.00','tot']],
+       rates:[['SUV','3','$110/hr · $185 transfer','Company −10%','2 h','2 h'],['Mini Bus','24','$325/hr · $850 transfer','Company −10%','6 h','6 h'],['Sprinter','14','$215/hr · $560 transfer','Company −10%','6 h','6 h']],
+       foot:'Acme Corp rates · Option A · 10% courtesy discount · quoted times include garage-to-garage.'},
+    2:{doc:'Hourly Service Quote',client:'New inquiry',meta:'June 20–22, 2026',badge:'All-in · 5% courtesy discount',
+       lines:[['Orlando — 2 × SUV · 4.0 h','$760'],['Greater Los Angeles — 2 × SUV · 4.0 h','$880'],['Manhattan, NYC — 2 × SUV · 4.0 h','$1,000']],
+       totals:[['Subtotal','$2,640',''],['Courtesy discount (−5%)','−$132','disc'],['Fuel surcharge (5%)','$125',''],['Federal tax','$211',''],['Estimated total (all-in)','$2,844','tot']],
+       rates:[['SUV','3','$95 / $110 / $125 per hr (Orlando / LA / NYC)','Rack','2 h','2 h']],
+       foot:'Standard published rates · 5% courtesy discount · 4-hour minimum per market.'},
+    3:{doc:'Event Transportation Estimate',client:'Super Bowl LX',meta:'Feb 5–9, 2026 · SF Bay Area',event:'⭐ Super Bowl LX special-event rates applied',badge:'All-in · special-event pricing',
+       lines:[['Thu Feb 5 — Full Day SUV · Sedan · SFO transfer · 10 h','$3,150'],['Fri Feb 6 — + Sprinter · Mini Bus/Shuttle (~30)','$6,420'],['Sat Feb 7 — same as Fri','$6,420'],['Sun Feb 8 — Full Day SUV · Sprinter · transfer','$3,980'],['Mon Feb 9 — Full Day SUV · Sedan · transfer','$3,150']],
+       totals:[['Subtotal','$23,120',''],['Fuel surcharge (5%)','$1,156',''],['Federal tax','$1,942',''],['Estimated total (all-in)','$26,218','tot']],
+       rates:[['Sedan','2','$140/hr · $220 transfer','⭐ Special-event','2 h','7 days'],['SUV','3','$175/hr · $280 transfer','⭐ Special-event','2 h','7 days'],['Sprinter','14','$300/hr · $640 transfer','⭐ Special-event','6 h','7 days'],['Mini Bus','24','$430/hr','⭐ Special-event','6 h','7 days']],
+       foot:'Super Bowl LX special-event rates · "Full Day" = 10 hours. Subject to availability.'},
+    4:{doc:'Multi-City Program Quote',client:'Client 6610',meta:'43 trips · 9 cities · Oct 22 – Nov 23, 2026',badge:'All-in · client 6610 · 8% discount',
        lines:[['Houston / Sugar Land — 6 trips','$4,120'],['San Antonio / Ft. Worth — 9 trips','$6,540'],['Westchester (HPN) — 4 trips','$2,880'],['Jacksonville · Miami — 10 trips','$7,310'],['Atlanta — 4 trips','$3,050'],['Bakersfield · Anaheim · Glendale — 10 trips','$7,690']],
-       totals:[['Subtotal','$31,590',''],['Discount (−8%)','−$2,527','disc'],['Fuel surcharge (5%)','$1,453',''],['Estimated tax','$2,136',''],['Estimated total','$32,652','tot']],
-       rates:[['SUV','3','$115/hr · $210–$240 transfer','2 hrs','2 hrs'],['Sprinter','14','$215/hr · $540 transfer','6 hrs','6 hrs']],
+       totals:[['Subtotal','$31,590',''],['Discount (−8%)','−$2,527','disc'],['Fuel surcharge (5%)','$1,453',''],['Federal tax','$2,136',''],['Estimated total (all-in)','$32,652','tot']],
+       rates:[['SUV','3','$115/hr · $210–$240 transfer','Company 6610','2 h','2 h'],['Sprinter','14','$215/hr · $540 transfer','Company 6610','6 h','6 h']],
        flag:'Bakersfield short 1 Sprinter for the Nov 20 shuttle (have 2, need 3) — checking with Ops, may pull from a nearby market.',
-       foot:'Client 6610 rates · 8% discount + 5% fuel surcharge · 43 trips itemized in the spreadsheet.'},
-    5:{doc:'Group Manifest Quote',client:'Client 3307',meta:'86 passengers · 86 trips',badge:'10% discount + 5% fuel surcharge + tax applied',
-       lines:[['Arrivals — grouped by flight (Sprinters + SUVs)','$8,640'],['Departures — grouped within 30-min windows','$5,910'],['VIP solo — 6 × S-Class Sedan','$2,040']],
-       totals:[['Subtotal','$16,590',''],['Discount (−10%)','−$1,659','disc'],['Fuel surcharge (5%)','$747',''],['Estimated tax','$1,097',''],['Estimated total','$16,775','tot']],
-       rates:[['S-Class Sedan','2','$340 transfer','2 hrs','2 hrs'],['SUV','3','$185 transfer','2 hrs','2 hrs'],['Sprinter','14','$560 transfer','6 hrs','6 hrs']],
-       foot:'Client 3307 rates · 10% discount + 5% fuel surcharge · manifest cleaned in Convey.'}
+       foot:'Client 6610 rates · 8% discount · 43 trips itemized in the spreadsheet.'},
+    5:{doc:'Group Manifest Quote',client:'Client 3307',meta:'86 passengers · 86 trips',badge:'Option A · all-in · client 3307 · 10% discount',
+       lines:[['Arrivals — grouped by flight (7 Sprinter + 9 SUV)','$8,640'],['Departures — grouped within 30-min windows','$5,910'],['VIP solo — 6 × S-Class Sedan','$2,040']],
+       totals:[['Subtotal','$16,590',''],['Discount (−10%)','−$1,659','disc'],['Fuel surcharge (5%)','$747',''],['Federal tax','$1,097',''],['Estimated total (all-in)','$16,775','tot']],
+       rates:[['S-Class Sedan','2','$340 transfer','Company 3307','2 h','2 h'],['SUV','3','$185 transfer','Company 3307','2 h','2 h'],['Sprinter','14','$560 transfer','Company 3307','6 h','6 h']],
+       foot:'Client 3307 rates · Option A · 10% discount · manifest cleaned in Convey.'}
   };
 
   document.getElementById('tabs').addEventListener('click',function(e){
@@ -707,8 +825,8 @@ Oct 24 — SUV — 5:30am — St. Regis → SGR
   });
 
   function ratesHtml(rows,sans){
-    var h='<table'+(sans?'':' class="pdf-tbl"')+'><thead><tr><th>Vehicle</th><th>Seats</th><th>Rate</th><th>Minimum</th><th>Cancellation</th></tr></thead>';
-    rows.forEach(function(r){h+='<tr><td>'+r[0]+'</td><td>'+r[1]+'</td><td>'+r[2]+'</td><td>'+r[3]+'</td><td>'+r[4]+'</td></tr>';});
+    var h='<table'+(sans?'':' class="pdf-tbl"')+'><thead><tr><th>Vehicle</th><th>Cap.</th><th>Rate</th><th>Rate type</th><th>Minimum</th><th>Cancellation</th></tr></thead>';
+    rows.forEach(function(r){h+='<tr><td>'+r[0]+'</td><td>'+r[1]+'</td><td>'+r[2]+'</td><td>'+r[3]+'</td><td>'+r[4]+'</td><td>'+r[5]+'</td></tr>';});
     return h+'</table>';
   }
 
@@ -717,13 +835,13 @@ Oct 24 — SUV — 5:30am — St. Regis → SGR
     h+='<div class="pdf-head"><div><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMyIiBoZWlnaHQ9IjIyIiB2aWV3Qm94PSIwIDAgMTMyIDIyIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBkPSJNMTIwLjAyOCAxLjE1MjM0SDExNy41ODNMMTA2LjM4MSAyMC44NzY1SDExMi40NTZMMTE0LjA4OSAxNy44NDJIMTIzLjU4MkwxMjUuMTg0IDIwLjg3NjVIMTMxLjI2TDEyMC4wMjggMS4xNTIzNFpNMTE2LjI4NCAxMy43ODM0TDExOC44MDUgOC43OTE2NUwxMjEuMzA0IDEzLjc4MzRIMTE2LjI4NFoiIGZpbGw9IiMyQzJDMkMiLz4KPHBhdGggZD0iTTEwLjMyODMgOC43MTU2OUM2Ljk4NjggOC4xNjE5IDYuMTIxMDUgOC4wMDI1OCA2LjEyMTA1IDcuMDA4NzlDNi4xMjEwNSA2LjAxNSA3LjMwNTc3IDUuMzU0OTkgOS4zMDMwOCA1LjM1NDk5QzExLjQwNDIgNS4zMzYzNiAxMy40MzQzIDYuMTE0NDIgMTQuOTgzNyA3LjUzMjIzTDE3LjQwNjMgMy4yNzYzN0MxNS43ODg3IDIuMDA5NDcgMTIuODI2OSAwLjg4NjcxOSA5LjIwNDM1IDAuODg2NzE5QzQuMTU0MTEgMC44ODY3MTkgMC42ODM0OTIgMy40ODg3OSAwLjY4MzQ5MiA3LjI0Mzk2QzAuNjgzNDkyIDEwLjk5OTEgMy43NTkyIDEyLjIzNTcgOC4zMzg2IDEyLjk3MTVDMTIuMzg2NCAxMy42MjQgMTMuMjc0OSAxMy45NDI2IDEzLjI3NDkgMTQuOTY2N0MxMy4yNzQ5IDE1Ljk5MDkgMTIuMDkwMiAxNi42NTA5IDkuNTQ2MSAxNi42NTA5QzguMjI4NTQgMTYuNjc5MiA2LjkxODk4IDE2LjQzOTYgNS42OTcwMSAxNS45NDY2QzQuNDc1MDMgMTUuNDUzNiAzLjM2NjE2IDE0LjcxNzYgMi40Mzc3OSAxMy43ODMzTDAgMTguMDg0NkMxLjcyMzkyIDE5LjczMDkgNS4wMzUwNiAyMS4wODEyIDkuNTY4ODggMjEuMDgxMkMxNC4yNDcgMjEuMDgxMiAxOC43NDI5IDE4Ljk3OTggMTguNzQyOSAxNC41MTkxQzE4Ljc0MjkgMTEuMTI4MSAxNS45MDI2IDkuNjMzNjIgMTAuMzI4MyA4LjcxNTY5WiIgZmlsbD0iIzJDMkMyQyIvPgo8cGF0aCBkPSJNMzAuNjU4NyAxLjE1MjM0TDE5LjQ1NyAyMC44NzY1SDI1LjUzMjVMMjcuMTY1MyAxNy44NDJIMzYuNjU4MkwzOC4yNjA2IDIwLjg3NjVINDQuMzM2MUwzMy4xMzQ1IDEuMTUyMzRIMzAuNjU4N1pNMjkuMzY3NyAxMy43ODM0TDMxLjg5NjYgOC43OTE2NUwzNC4zOTUxIDEzLjc4MzRIMjkuMzY3N1oiIGZpbGw9IiMyQzJDMkMiLz4KPHBhdGggZD0iTTc2LjU2NjIgMC44ODY3MTlDNjkuOTg5NSAwLjg4NjcxOSA2NSA1LjE0MjU4IDY1IDEwLjk3NjRDNjUgMTYuODEwMiA2OS45NTkxIDIxLjExMTUgNzYuNTY2MiAyMS4xMTE1QzgzLjE3MzMgMjEuMTExNSA4OC4xODU2IDE2LjgxNzggODguMTg1NiAxMC45NzY0Qzg4LjE4NTYgNS4xMzUgODMuMTY1NyAwLjg4NjcxOSA3Ni41NjYyIDAuODg2NzE5Wk03Ni41NjYyIDE2LjU2NzRDNzMuMjAxOSAxNi41Njc0IDcwLjQ5MDcgMTQuMzkwMiA3MC40OTA3IDEwLjk3NjRDNzAuNDkwNyA3LjU2MjU4IDczLjE5NDMgNS40MzA4NiA3Ni41NjYyIDUuNDMwODZDNzkuOTM4MSA1LjQzMDg2IDgyLjc0OCA3LjU2MjU4IDgyLjc0OCAxMC45NzY0QzgyLjc0OCAxNC4zOTAyIDc5Ljk1MzMgMTYuNTY3NCA3Ni41NjYyIDE2LjU2NzRaIiBmaWxsPSIjMkMyQzJDIi8+CjxwYXRoIGQ9Ik01Mi4yOTUgMTIuNjIyN0w0NS45NjEzIDEuMTUyMzRIMzkuODU1NUw1MS4wNTcxIDIwLjg0NjFINTMuNTAyNUw2NC43MDQyIDEuMTUyMzRINTguNjA1OUw1Mi4yOTUgMTIuNjIyN1oiIGZpbGw9IiMyQzJDMkMiLz4KPHBhdGggZD0iTTEwNC44NzkgMS4xNTIzNEw5OS42MjM0IDguNTAzMzhMOTQuMzYwNiAxLjE1MjM0SDg3LjczODNMOTYuOTg4MiAxMy42MDEzVjIwLjg0NjFIMTAyLjI3NFYxMy41NzFMMTExLjUwOSAxLjE1MjM0SDEwNC44NzlaIiBmaWxsPSIjMkMyQzJDIi8+Cjwvc3ZnPgo=" alt="Savoya"><div class="doc">'+e.doc+'</div></div><div class="who"><b>'+e.client+'</b><br>'+e.meta+'</div></div>';
     h+='<div class="pdf-title">Transportation Quote</div>';
     if(e.event) h+='<span class="pdf-badge evt">'+e.event+'</span> ';
-    if(e.badge) h+='<span class="pdf-badge">🎛️ '+e.badge+'</span>';
+    if(e.badge) h+='<span class="pdf-badge">'+e.badge+'</span>';
     h+='<table class="pdf-tbl">';
     e.lines.forEach(function(l){h+='<tr><td>'+l[0]+'</td><td class="amt">'+l[1]+'</td></tr>';});
     e.totals.forEach(function(t){h+='<tr class="'+(t[2]||'')+'"><td>'+t[0]+'</td><td class="amt">'+t[1]+'</td></tr>';});
     h+='</table>';
     if(e.flag) h+='<div class="pdf-flag">⚠ '+e.flag+'</div>';
-    h+='<div class="pdf-sec">Vehicle rates &amp; policies</div>'+ratesHtml(e.rates,false);
+    h+='<div class="pdf-sec">Vehicle rates &amp; policies — vehicles in this quote</div>'+ratesHtml(e.rates,false);
     h+='<div class="pdf-foot"><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDEiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0MSA0OCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTQwLjc1NDcgMjkuNDY1N1YxMy45NjQ5TDE2Ljk3MSAwTDAuMDAwNjExMTYyIDkuOTcwMTlWMTMuODkyN0wzMS4wOTAyIDMyLjE0MTVMMTYuOTc3NyA0MC40MzJMOS45Mjg1MiAzNi4yOTA3VjI0LjM1NzdMNi44MTMzMyAyMi41Mjk2VjM0LjQ2OThMMy4xMTQ1OCAzMi4yOTY2VjIwLjM2M0wwIDE4LjUzNDNWMzQuMDM1N0wyMy43ODQzIDQ4TDQwLjc1NDEgMzguMDMwNFYzNC4xMDc5TDkuNjY1MTUgMTUuODU5MUwyMy43NzcgNy41Njc5N0wzMC44MjUgMTEuNzA4N1YyMy42NDE3TDMzLjk0MTQgMjUuNDY5OFYxMy41MzAyTDM3LjY0MDEgMTUuNzAyOFYyNy42Mzc2TDQwLjc1NDcgMjkuNDY1N1pNMzcuNjM5NSAzNS45ODExVjM2LjI5MDFMMjMuNzg0MyA0NC40MzA5TDIwLjAxNTMgNDIuMjE2OUwzNC4xMzMzIDMzLjkyMjdMMzcuNjM5NSAzNS45ODExWk02LjYyMjA3IDE0LjA3NzNMMy4xMTUxOSAxMi4wMTk1VjExLjcxMDVMMTYuOTcxIDMuNTY5NjdMMjAuNzM4OCA1Ljc4MzEzTDYuNjIyMDcgMTQuMDc3M1oiIGZpbGw9InVybCgjcGFpbnQwX2xpbmVhcl85NzBfNTIyNikiLz4KPGRlZnM+CjxsaW5lYXJHcmFkaWVudCBpZD0icGFpbnQwX2xpbmVhcl85NzBfNTIyNiIgeDE9IjkuNDg4OTVlLTA4IiB5MT0iMjQiIHgyPSI0MC43NTQ3IiB5Mj0iMjQiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KPHN0b3Agc3RvcC1jb2xvcj0iI0M1NjEyOSIvPgo8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNGNUFENTkiLz4KPC9saW5lYXJHcmFkaWVudD4KPC9kZWZzPgo8L3N2Zz4K" alt=""><div class="ft">'+e.foot+'<br>Savoya · concierge@savoya.com · savoya.com</div></div>';
     document.getElementById('pdfPage').innerHTML=h;
     document.getElementById('pdfOv').classList.add('open');
@@ -735,9 +853,9 @@ Oct 24 — SUV — 5:30am — St. Regis → SGR
     s+='<div class="slide cover show"><div class="pad"><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDEiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0MSA0OCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTQwLjc1NDcgMjkuNDY1N1YxMy45NjQ5TDE2Ljk3MSAwTDAuMDAwNjExMTYyIDkuOTcwMTlWMTMuODkyN0wzMS4wOTAyIDMyLjE0MTVMMTYuOTc3NyA0MC40MzJMOS45Mjg1MiAzNi4yOTA3VjI0LjM1NzdMNi44MTMzMyAyMi41Mjk2VjM0LjQ2OThMMy4xMTQ1OCAzMi4yOTY2VjIwLjM2M0wwIDE4LjUzNDNWMzQuMDM1N0wyMy43ODQzIDQ4TDQwLjc1NDEgMzguMDMwNFYzNC4xMDc5TDkuNjY1MTUgMTUuODU5MUwyMy43NzcgNy41Njc5N0wzMC44MjUgMTEuNzA4N1YyMy42NDE3TDMzLjk0MTQgMjUuNDY5OFYxMy41MzAyTDM3LjY0MDEgMTUuNzAyOFYyNy42Mzc2TDQwLjc1NDcgMjkuNDY1N1pNMzcuNjM5NSAzNS45ODExVjM2LjI5MDFMMjMuNzg0MyA0NC40MzA5TDIwLjAxNTMgNDIuMjE2OUwzNC4xMzMzIDMzLjkyMjdMMzcuNjM5NSAzNS45ODExWk02LjYyMjA3IDE0LjA3NzNMMy4xMTUxOSAxMi4wMTk1VjExLjcxMDVMMTYuOTcxIDMuNTY5NjdMMjAuNzM4OCA1Ljc4MzEzTDYuNjIyMDcgMTQuMDc3M1oiIGZpbGw9InVybCgjcGFpbnQwX2xpbmVhcl85NzBfNTIyNikiLz4KPGRlZnM+CjxsaW5lYXJHcmFkaWVudCBpZD0icGFpbnQwX2xpbmVhcl85NzBfNTIyNiIgeDE9IjkuNDg4OTVlLTA4IiB5MT0iMjQiIHgyPSI0MC43NTQ3IiB5Mj0iMjQiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KPHN0b3Agc3RvcC1jb2xvcj0iI0M1NjEyOSIvPgo8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNGNUFENTkiLz4KPC9saW5lYXJHcmFkaWVudD4KPC9kZWZzPgo8L3N2Zz4K" alt="Savoya"><div class="t">Transportation<br><span class="gold">Proposal</span></div><div class="rule"></div><div class="sub">'+e.client+' &nbsp;·&nbsp; '+e.meta+'</div></div></div>';
     var rows='';e.lines.forEach(function(l){rows+='<tr><td>'+l[0]+'</td><td class="amt">'+l[1]+'</td></tr>';});
     s+='<div class="slide body"><div class="pad"><div class="st">'+e.doc+'</div><div class="h">What we\'ll provide</div><table>'+rows+'</table>'+(e.event?'<p style="margin-top:12px;color:#7c3aed;font-weight:700;font-size:13px;">'+e.event+'</p>':'')+'</div></div>';
-    s+='<div class="slide body"><div class="pad"><div class="st">Rates &amp; policies</div><div class="h">Vehicle rates</div>'+ratesHtml(e.rates,true)+'<p style="margin-top:10px;color:#888;font-size:12px;">Minimums &amp; cancellation per vehicle type.</p></div></div>';
+    s+='<div class="slide body"><div class="pad"><div class="st">Transparent, all on one page</div><div class="h">Vehicle rates &amp; policies</div>'+ratesHtml(e.rates,true)+'<p style="margin-top:10px;color:#888;font-size:12px;">Only the vehicle types in this quote · all-in pricing.</p></div></div>';
     var total=e.totals[e.totals.length-1][1];
-    s+='<div class="slide close-s"><div class="pad"><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDEiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0MSA0OCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTQwLjc1NDcgMjkuNDY1N1YxMy45NjQ5TDE2Ljk3MSAwTDAuMDAwNjExMTYyIDkuOTcwMTlWMTMuODkyN0wzMS4wOTAyIDMyLjE0MTVMMTYuOTc3NyA0MC40MzJMOS45Mjg1MiAzNi4yOTA3VjI0LjM1NzdMNi44MTMzMyAyMi41Mjk2VjM0LjQ2OThMMy4xMTQ1OCAzMi4yOTY2VjIwLjM2M0wwIDE4LjUzNDNWMzQuMDM1N0wyMy43ODQzIDQ4TDQwLjc1NDEgMzguMDMwNFYzNC4xMDc5TDkuNjY1MTUgMTUuODU5MUwyMy43NzcgNy41Njc5N0wzMC44MjUgMTEuNzA4N1YyMy42NDE3TDMzLjk0MTQgMjUuNDY5OFYxMy41MzAyTDM3LjY0MDEgMTUuNzAyOFYyNy42Mzc2TDQwLjc1NDcgMjkuNDY1N1pNMzcuNjM5NSAzNS45ODExVjM2LjI5MDFMMjMuNzg0MyA0NC40MzA5TDIwLjAxNTMgNDIuMjE2OUwzNC4xMzMzIDMzLjkyMjdMMzcuNjM5NSAzNS45ODExWk02LjYyMjA3IDE0LjA3NzNMMy4xMTUxOSAxMi4wMTk1VjExLjcxMDVMMTYuOTcxIDMuNTY5NjdMMjAuNzM4OCA1Ljc4MzEzTDYuNjIyMDcgMTQuMDc3M1oiIGZpbGw9InVybCgjcGFpbnQwX2xpbmVhcl85NzBfNTIyNikiLz4KPGRlZnM+CjxsaW5lYXJHcmFkaWVudCBpZD0icGFpbnQwX2xpbmVhcl85NzBfNTIyNiIgeDE9IjkuNDg4OTVlLTA4IiB5MT0iMjQiIHgyPSI0MC43NTQ3IiB5Mj0iMjQiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KPHN0b3Agc3RvcC1jb2xvcj0iI0M1NjEyOSIvPgo8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNGNUFENTkiLz4KPC9saW5lYXJHcmFkaWVudD4KPC9kZWZzPgo8L3N2Zz4K" alt="" style="height:28px;margin-bottom:auto;"><div class="big">Estimated investment</div><div class="num">'+total+'</div><div style="color:#9a917f;font-size:12px;">'+(e.badge||'special-event pricing')+' · pre-tax estimate</div><div class="nx">Ready when you are — reply to confirm and we\'ll lock it in.</div></div></div>';
+    s+='<div class="slide close-s"><div class="pad"><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDEiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0MSA0OCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTQwLjc1NDcgMjkuNDY1N1YxMy45NjQ5TDE2Ljk3MSAwTDAuMDAwNjExMTYyIDkuOTcwMTlWMTMuODkyN0wzMS4wOTAyIDMyLjE0MTVMMTYuOTc3NyA0MC40MzJMOS45Mjg1MiAzNi4yOTA3VjI0LjM1NzdMNi44MTMzMyAyMi41Mjk2VjM0LjQ2OThMMy4xMTQ1OCAzMi4yOTY2VjIwLjM2M0wwIDE4LjUzNDNWMzQuMDM1N0wyMy43ODQzIDQ4TDQwLjc1NDEgMzguMDMwNFYzNC4xMDc5TDkuNjY1MTUgMTUuODU5MUwyMy43NzcgNy41Njc5N0wzMC44MjUgMTEuNzA4N1YyMy42NDE3TDMzLjk0MTQgMjUuNDY5OFYxMy41MzAyTDM3LjY0MDEgMTUuNzAyOFYyNy42Mzc2TDQwLjc1NDcgMjkuNDY1N1pNMzcuNjM5NSAzNS45ODExVjM2LjI5MDFMMjMuNzg0MyA0NC40MzA5TDIwLjAxNTMgNDIuMjE2OUwzNC4xMzMzIDMzLjkyMjdMMzcuNjM5NSAzNS45ODExWk02LjYyMjA3IDE0LjA3NzNMMy4xMTUxOSAxMi4wMTk1VjExLjcxMDVMMTYuOTcxIDMuNTY5NjdMMjAuNzM4OCA1Ljc4MzEzTDYuNjIyMDcgMTQuMDc3M1oiIGZpbGw9InVybCgjcGFpbnQwX2xpbmVhcl85NzBfNTIyNikiLz4KPGRlZnM+CjxsaW5lYXJHcmFkaWVudCBpZD0icGFpbnQwX2xpbmVhcl85NzBfNTIyNiIgeDE9IjkuNDg4OTVlLTA4IiB5MT0iMjQiIHgyPSI0MC43NTQ3IiB5Mj0iMjQiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KPHN0b3Agc3RvcC1jb2xvcj0iI0M1NjEyOSIvPgo8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNGNUFENTkiLz4KPC9saW5lYXJHcmFkaWVudD4KPC9kZWZzPgo8L3N2Zz4K" alt="" style="height:28px;margin-bottom:auto;"><div class="big">Estimated investment</div><div class="num">'+total+'</div><div style="color:#9a917f;font-size:12px;">'+(e.badge||'special-event pricing')+' · all-in estimate</div><div class="nx">Ready when you are — reply to confirm and we\'ll lock it in.</div></div></div>';
     document.getElementById('prezStage').innerHTML=s;
     var sl=document.querySelectorAll('#prezStage .slide'),dots='';
     for(var i=0;i<sl.length;i++)dots+='<i class="'+(i===0?'on':'')+'" onclick="prezSet('+i+')"></i>';
