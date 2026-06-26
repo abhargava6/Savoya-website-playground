@@ -1,0 +1,1419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vendor Assignment Logic — What's New</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Galatia:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+:root {
+  --bg-primary:    #0d1520;
+  --bg-card:       #131e2e;
+  --bg-card-alt:   #1a2840;
+  --border:        #253348;
+  --copper:        #c8793a;
+  --copper-light:  #e09560;
+  --copper-glow:   rgba(200,121,58,0.15);
+  --text-primary:  #f0ede8;
+  --text-secondary:#9aacbf;
+  --text-muted:    #5e738a;
+  --green:         #52b788;
+  --green-bg:      rgba(82,183,136,0.12);
+  --red:           #e07070;
+  --red-bg:        rgba(224,112,112,0.12);
+  --amber:         #f0c060;
+  --amber-bg:      rgba(240,192,96,0.12);
+  --font-heading:  'Cormorant Galatia', serif;
+  --font-body:     'DM Sans', sans-serif;
+  --slide-pad:     5vw;
+  --transition:    0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-snap-type: y mandatory;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+/* ── SLIDE BASE ───────────────────────────────────── */
+.slide {
+  min-height: 100vh;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 4rem var(--slide-pad);
+  position: relative;
+  overflow: hidden;
+}
+
+.slide::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 50% at 85% 50%, rgba(200,121,58,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* ── COUNTER ──────────────────────────────────────── */
+.slide-counter {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 2rem;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  z-index: 100;
+  background: rgba(13,21,32,0.8);
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+}
+
+/* ── PROGRESS BAR ─────────────────────────────────── */
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: var(--copper);
+  width: 0%;
+  z-index: 200;
+  transition: width 0.3s ease;
+}
+
+/* ── NAV DOTS ─────────────────────────────────────── */
+.nav-dots {
+  position: fixed;
+  right: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  z-index: 100;
+}
+
+.nav-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border);
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.3s;
+  padding: 0;
+}
+
+.nav-dot.active {
+  background: var(--copper);
+  transform: scale(1.3);
+}
+
+.nav-dot:hover {
+  background: var(--copper-light);
+}
+
+/* ── TYPOGRAPHY ───────────────────────────────────── */
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--copper);
+  margin-bottom: 0.75rem;
+}
+
+h1 {
+  font-family: var(--font-heading);
+  font-size: clamp(3rem, 6vw, 5.5rem);
+  font-weight: 700;
+  line-height: 1.08;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+h2 {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+h3 {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.4rem;
+}
+
+p, li {
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+
+.lead {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  max-width: 55ch;
+  line-height: 1.6;
+  margin-top: 1rem;
+}
+
+/* ── DECORATIVE LINE ──────────────────────────────── */
+.copper-line {
+  width: 3rem;
+  height: 2px;
+  background: var(--copper);
+  margin-bottom: 1.5rem;
+}
+
+/* ── CARDS ────────────────────────────────────────── */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.25rem;
+  margin-top: 2rem;
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.5rem;
+  transition: border-color var(--transition), transform var(--transition);
+}
+
+.card:hover {
+  border-color: var(--copper);
+  transform: translateY(-2px);
+}
+
+.card-icon {
+  font-size: 1.75rem;
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+.card h3 { font-size: 1rem; margin-bottom: 0.5rem; }
+.card p { font-size: 0.9rem; color: var(--text-secondary); }
+
+/* ── BEFORE/AFTER ─────────────────────────────────── */
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-top: 2rem;
+}
+
+.compare-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.5rem;
+}
+
+.compare-panel.before { border-left: 3px solid var(--red); }
+.compare-panel.after { border-left: 3px solid var(--green); }
+
+.compare-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.compare-panel.before .compare-label { color: var(--red); }
+.compare-panel.after .compare-label { color: var(--green); }
+
+.compare-panel ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.compare-panel li {
+  font-size: 0.9rem;
+  padding-left: 1.2rem;
+  position: relative;
+}
+
+.compare-panel.before li::before {
+  content: '✕';
+  position: absolute;
+  left: 0;
+  color: var(--red);
+  font-size: 0.75rem;
+}
+
+.compare-panel.after li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--green);
+  font-size: 0.75rem;
+}
+
+/* ── BADGES ───────────────────────────────────────── */
+.badge {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.6rem;
+  border-radius: 3px;
+  vertical-align: middle;
+}
+
+.badge-new    { background: var(--green-bg); color: var(--green); border: 1px solid var(--green); }
+.badge-change { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber); }
+.badge-note   { background: var(--copper-glow); color: var(--copper-light); border: 1px solid var(--copper); }
+.badge-live   { background: rgba(82,183,136,0.2); color: #7ddba8; border: 1px solid #52b788; }
+
+/* ── SECTION HIGHLIGHT ────────────────────────────── */
+.highlight-box {
+  background: var(--copper-glow);
+  border: 1px solid var(--copper);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  margin-top: 1.25rem;
+  font-size: 0.9rem;
+  color: var(--copper-light);
+}
+
+/* ── ROUTE PATHS ──────────────────────────────────── */
+.path-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-top: 2rem;
+}
+
+.path-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.5rem;
+}
+
+.path-card.premium { border-top: 3px solid var(--copper); }
+.path-card.cost { border-top: 3px solid var(--green); }
+
+.path-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+  display: block;
+}
+
+.path-card.premium .path-label { color: var(--copper); }
+.path-card.cost .path-label { color: var(--green); }
+.path-card h3 { font-size: 1.05rem; margin-bottom: 0.5rem; }
+.path-card p { font-size: 0.88rem; }
+
+/* ── BUCKET GRID ──────────────────────────────────── */
+.bucket-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.bucket-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.1rem 1.25rem;
+}
+
+.bucket-item .bucket-name {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.35rem;
+}
+
+.bucket-item p { font-size: 0.82rem; color: var(--text-secondary); }
+
+.bucket-item.bucket-auto { border-left: 3px solid var(--green); }
+.bucket-item.bucket-no-auto { border-left: 3px solid var(--amber); }
+.bucket-item.bucket-lowmargin { border-left: 3px solid var(--text-muted); }
+.bucket-item.bucket-unavail { border-left: 3px solid var(--red); }
+
+/* ── STAT ROW ─────────────────────────────────────── */
+.stat-row {
+  display: flex;
+  gap: 2rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.25rem 1.75rem;
+  flex: 1;
+  min-width: 160px;
+}
+
+.stat-number {
+  font-family: var(--font-heading);
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: var(--copper);
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+/* ── TWO-COL LAYOUT ───────────────────────────────── */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+  margin-top: 1.5rem;
+  align-items: start;
+}
+
+.two-col-wide {
+  display: grid;
+  grid-template-columns: 5fr 4fr;
+  gap: 2.5rem;
+  margin-top: 1.5rem;
+  align-items: start;
+}
+
+/* ── TAG ──────────────────────────────────────────── */
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+}
+
+.tag {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* ── DIVIDER LINE ─────────────────────────────────── */
+.h-divider {
+  width: 100%;
+  height: 1px;
+  background: var(--border);
+  margin: 1.25rem 0;
+}
+
+/* ── INFO ROW ─────────────────────────────────────── */
+.info-row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1.25rem;
+}
+
+.info-pill {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.6rem 1rem;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.info-pill .pill-icon { font-size: 1rem; }
+.info-pill span { color: var(--text-secondary); }
+.info-pill strong { color: var(--text-primary); font-weight: 600; }
+
+/* ── CONTACT CARD ─────────────────────────────────── */
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.contact-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.25rem;
+  text-align: center;
+}
+
+.contact-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--bg-card-alt);
+  border: 2px solid var(--copper);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  margin: 0 auto 0.75rem;
+}
+
+.contact-name { font-size: 0.95rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.2rem; }
+.contact-role { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem; }
+.contact-for { font-size: 0.78rem; color: var(--text-secondary); }
+
+/* ── TITLE SLIDE ─────────────────────────────────── */
+#slide-1 { justify-content: center; }
+
+#slide-1 .slide-visual {
+  position: absolute;
+  right: 0; top: 0; bottom: 0;
+  width: 42%;
+  background: linear-gradient(135deg, #1a2840 0%, #0d1520 100%);
+  border-left: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+#slide-1 .icon-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+#slide-1 .icon-block {
+  width: 56px; height: 56px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+#slide-1 .content-area { max-width: 54%; }
+
+/* ── CLOSING SLIDE ────────────────────────────────── */
+.big-text {
+  font-family: var(--font-heading);
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--text-primary);
+}
+
+.big-text span { color: var(--copper); }
+
+/* ── ROLE CARD ────────────────────────────────────── */
+.role-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.5rem;
+}
+
+.role-card h3 {
+  font-size: 1rem;
+  margin-bottom: 0.6rem;
+  color: var(--copper-light);
+}
+
+.role-card ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.role-card li {
+  font-size: 0.85rem;
+  padding-left: 1.2rem;
+  position: relative;
+  color: var(--text-secondary);
+}
+
+.role-card li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--copper);
+}
+
+/* ── ENTRY ANIMATIONS ─────────────────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  .slide .animate {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .slide.active .animate {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .slide.active .animate:nth-child(1) { transition-delay: 0.05s; }
+  .slide.active .animate:nth-child(2) { transition-delay: 0.15s; }
+  .slide.active .animate:nth-child(3) { transition-delay: 0.25s; }
+  .slide.active .animate:nth-child(4) { transition-delay: 0.35s; }
+  .slide.active .animate:nth-child(5) { transition-delay: 0.45s; }
+  .slide.active .animate:nth-child(6) { transition-delay: 0.55s; }
+}
+
+/* ── SCROLLBAR ────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--copper); }
+
+/* ── TABLE ────────────────────────────────────────── */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  font-size: 0.85rem;
+}
+
+.data-table th {
+  text-align: left;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--copper);
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-card-alt);
+}
+
+.data-table td {
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-secondary);
+}
+
+.data-table tr:last-child td {
+  border-bottom: none;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.data-table tbody tr:hover td {
+  background: rgba(200,121,58,0.05);
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+<div class="slide-counter" id="slideCounter">1 / 16</div>
+<nav class="nav-dots" id="navDots"></nav>
+
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 1 — TITLE
+══════════════════════════════════════════════════ -->
+<section class="slide" id="slide-1">
+  <div class="content-area">
+    <p class="eyebrow animate">Savoya · What's New</p>
+    <h1 class="animate">Vendor<br>Assignment<br>Logic</h1>
+    <p class="lead animate" style="margin-top:1.25rem; color: var(--text-secondary);">
+      What changed, how it works now,<br>and what it means for your team.
+    </p>
+    <div class="info-row animate">
+      <div class="info-pill">
+        <span class="pill-icon">📅</span>
+        <span>June 2026</span>
+      </div>
+      <div class="info-pill">
+        <span class="pill-icon">👥</span>
+        <span>Audience: <strong>All Teams</strong></span>
+      </div>
+      <div class="info-pill">
+        <span class="pill-icon">🚀</span>
+        <span>Phase 1 <strong>Live</strong></span>
+      </div>
+    </div>
+  </div>
+  <div class="slide-visual">
+    <div class="icon-stack">
+      <div class="icon-block">🚗</div>
+      <div class="icon-block">⚡</div>
+      <div class="icon-block">📊</div>
+      <div class="icon-block">✅</div>
+    </div>
+    <p style="font-size:0.7rem; color: var(--text-muted); margin-top:0.5rem; letter-spacing:0.1em; text-transform:uppercase;">Phase 1 · 12 Epics · Live</p>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 2 — WHY WE MADE THESE CHANGES
+══════════════════════════════════════════════════ -->
+<section class="slide" id="slide-2">
+  <p class="eyebrow animate">Context</p>
+  <h2 class="animate">Why we made these changes</h2>
+  <div class="copper-line animate"></div>
+
+  <div class="card-grid animate">
+    <div class="card">
+      <span class="card-icon">💵</span>
+      <h3>Better Margin Decisions</h3>
+      <p>Previously, the system ranked vendors using rough estimates — not actual quotes. The vendor that looked cheapest wasn't always cheapest when the real invoice landed. Now, ranking uses real vendor quotes.</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">🏁</span>
+      <h3>Beta Vendors Getting Volume</h3>
+      <p>Our newer "Beta" vendors (formerly called ASAP) were completely excluded from auto-assignment. They now participate in the pool where appropriate — increasing supply and competition.</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">🎛️</span>
+      <h3>Per-Client Routing Controls</h3>
+      <p>There was no easy way to route a specific client differently. Now, Sales and Ops can configure routing at the Company, TC, or Passenger level — independently.</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">🔍</span>
+      <h3>Visibility Into Decisions</h3>
+      <p>When a vendor was auto-assigned, it was hard to know why. A new Audit Trail tab now shows every decision the system made — who was considered, who was filtered out, and why the winner was chosen.</p>
+    </div>
+  </div>
+
+  <div class="highlight-box animate" style="margin-top:1.5rem;">
+    <strong>Projected outcome:</strong> Conservative estimate of ~$1.0M in annual savings across analyzed markets — from smarter routing, accurate cost comparisons, and competitive vendor pools. See the Impact slide for full breakdown.
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 3 — CURRENT STATE DIAGRAM
+══════════════════════════════════════════════════ -->
+<section class="slide" id="slide-3">
+  <p class="eyebrow animate">Before</p>
+  <h2 class="animate">How assignment worked previously</h2>
+  <div class="copper-line animate"></div>
+  <p class="animate" style="color:var(--text-secondary); font-size:0.9rem; max-width:65ch; margin-bottom:1.5rem;">
+    The previous logic had two main paths — retail and non-retail — but used rough cost estimates and excluded Beta vendors entirely. This is the baseline the new system replaces.
+  </p>
+  <div class="animate" style="background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:1.5rem; display:flex; align-items:center; justify-content:center; overflow:hidden;">
+    <img
+      src="https://res.cloudinary.com/dctq8l4sp/image/upload/v1780949175/Screenshot_2026-06-08_at_3.05.56_PM_evraoy.png"
+      alt="Previous vendor assignment flow diagram"
+      style="max-width:100%; max-height:62vh; object-fit:contain; border-radius:6px;"
+    />
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 4 — FUTURE STATE DIAGRAM
+══════════════════════════════════════════════════ -->
+<section class="slide" id="slide-4">
+  <p class="eyebrow animate">Now</p>
+  <h2 class="animate">How assignment works today</h2>
+  <div class="copper-line animate"></div>
+  <p class="animate" style="color:var(--text-secondary); font-size:0.9rem; max-width:65ch; margin-bottom:1.5rem;">
+    The new logic adds a smarter non-retail split (premium vs cost path), brings Beta vendors into the pool, refines retail routing by email domain, and uses real vendor quotes throughout.
+  </p>
+  <div class="animate" style="background:var(--bg-card); border:1px solid var(--copper); border-radius:12px; padding:1.5rem; display:flex; align-items:center; justify-content:center; overflow:hidden;">
+    <img
+      src="https://res.cloudinary.com/dctq8l4sp/image/upload/v1780949175/Screenshot_2026-06-08_at_3.05.42_PM_fkrnhh.png"
+      alt="New vendor assignment flow diagram"
+      style="max-width:100%; max-height:62vh; object-fit:contain; border-radius:6px;"
+    />
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 5 — BEFORE & AFTER SUMMARY
+══════════════════════════════════════════════════ -->
+<section class="slide" id="slide-5">
+  <p class="eyebrow animate">Summary</p>
+  <h2 class="animate">Before &amp; after — at a glance</h2>
+  <div class="copper-line animate"></div>
+
+  <div class="compare-grid animate">
+    <div class="compare-panel before">
+      <span class="compare-label">Previously</span>
+      <ul>
+        <li>Vendor cost estimates used rough base rates (not what's actually quoted)</li>
+        <li>Beta/ASAP vendors never received auto-assigned trips</li>
+        <li>Vendors with no pricing on file could still win auto-assignment</li>
+        <li>One global setting per TC — no override at Passenger level</li>
+        <li>Retail trips always routed to lowest cost, regardless of client type</li>
+        <li>No audit trail — you couldn't see why a vendor was chosen</li>
+        <li>Reassign modal had limited vendor info and a separate "ASAP" bucket</li>
+      </ul>
+    </div>
+    <div class="compare-panel after">
+      <span class="compare-label">Now (Phase 1 Live)</span>
+      <ul>
+        <li>Vendor ranking uses actual quotes (includes trial discounts, fuel, garage time)</li>
+        <li>Beta vendors included in auto-assignment pool (per-client toggle)</li>
+        <li>Vendors with no pricing on file are excluded entirely from auto-assignment</li>
+        <li>Override at Company, TC, or Passenger level — independently configurable</li>
+        <li>Business email retail clients get premium routing for first 3 trips, then cost-based</li>
+        <li>New Audit Trail tab shows full decision tree per assignment event</li>
+        <li>Redesigned Reassign modal with clear buckets, reasons, and cost detail</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 6 — CHANGE 1: TWO ROUTING PATHS
+══════════════════════════════════════════════════ -->
+<section class="slide" id="slide-6">
+  <p class="eyebrow animate">Change 1 of 5</p>
+  <h2 class="animate">Two routing paths — matched to client type</h2>
+  <div class="copper-line animate"></div>
+  <p class="animate" style="color: var(--text-secondary); max-width: 60ch; font-size:0.95rem;">
+    Every non-retail trip now follows one of two assignment strategies, based on how price-sensitive the client is. The dividing line is the client's <strong style="color:var(--text-primary);">effective discount</strong> — calculated as the higher of their stated discount or the implicit discount their custom rate represents against the standard rack rate.
+  </p>
+
+  <div class="path-grid animate">
+    <div class="path-card premium">
+      <span class="path-label">Quality-Optimized Path</span>
+      <h3>For clients with &lt; 30% discount</h3>
+      <div class="h-divider"></div>
+      <p>The system prioritizes quality vendors first — TC Preferred, then Savoya Preferred — then finds the lowest-cost option within that quality band.</p>
+      <br>
+      <p><strong style="color: var(--text-primary);">Vendor order:</strong> TC Preferred → Savoya Preferred → Best quality/cost balance</p>
+      <br>
+      <p><strong style="color: var(--text-primary);">Who this is:</strong> Most business clients — matched with reliable, high-scoring vendors.</p>
+    </div>
+    <div class="path-card cost">
+      <span class="path-label">Price-Optimized Path</span>
+      <h3>For clients with ≥ 30% discount</h3>
+      <div class="h-divider"></div>
+      <p>The system skips preferred vendors entirely and finds the lowest-cost eligible vendor, ranked by actual vendor quote.</p>
+      <br>
+      <p><strong style="color: var(--text-primary);">Vendor order:</strong> All eligible vendors, ranked cheapest first. No preference tiers.</p>
+      <br>
+      <p><strong style="color: var(--text-primary);">Who this is:</strong> Price-sensitive accounts. Lower margin, so we optimize for cost to protect the trip.</p>
+    </div>
+  </div>
+
+  <div class="highlight-box animate" style="margin-top:1.25rem; font-size:0.85rem;">
+    <strong>Override available (Admin &amp; Manager roles only):</strong> The routing path can be overridden at the Company, TC, or Passenger level using a 3-option dropdown: "Default" (discount decides), "Always prioritize low cost vendors", or "Always prioritize best score vendors." Sales/CSM cannot modify this setting directly.
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 7 — CHANGE 2: REAL QUOTES
+══════════════════════════════════════════════════ -->
+<section class="slide" id="slide-7">
+  <p class="eyebrow animate">Change 2 of 5</p>
+  <h2 class="animate">Real vendor quotes now drive ranking</h2>
+  <div class="copper-line animate"></div>
+
+  <div class="two-col animate">
+    <div>
+      <p style="color: var(--text-secondary); font-size:0.95rem; margin-bottom:1.25rem;">
+        Previously, the assignment engine compared vendors using a simplified base rate — not the actual quote the vendor would receive. This caused mismatches between which vendor looked cheapest and which actually was cheapest.
+      </p>
+      <p style="color: var(--text-secondary); font-size:0.95rem; margin-bottom:1.25rem;">
+        Now, the ranking cost is built from the <em>actual vendor quote</em>, including all cost components.
+      </p>
+
+      <div class="card-grid" style="grid-template-columns:1fr; gap:0.75rem; margin-top:0;">
+        <div class="card" style="padding:1rem 1.25rem;">
+          <h3 style="font-size:0.9rem; margin-bottom:0.2rem;">✅ Base rate</h3>
+          <p style="font-size:0.82rem;">Already included before — no change here.</p>
+        </div>
+        <div class="card" style="padding:1rem 1.25rem; border-left: 2px solid var(--green);">
+          <h3 style="font-size:0.9rem; margin-bottom:0.2rem;"><span class="badge badge-new" style="font-size:0.5rem; vertical-align:middle;">New</span> Trial discount</h3>
+          <p style="font-size:0.82rem;">Vendors in trial mode get a configurable discount applied during ranking — so trial vendors compete fairly on actual cost.</p>
+        </div>
+        <div class="card" style="padding:1rem 1.25rem; border-left: 2px solid var(--green);">
+          <h3 style="font-size:0.9rem; margin-bottom:0.2rem;"><span class="badge badge-new" style="font-size:0.5rem; vertical-align:middle;">New</span> Fuel surcharge</h3>
+          <p style="font-size:0.82rem;">Each vendor's fuel surcharge is now factored into ranking, not just the final invoice.</p>
+        </div>
+        <div class="card" style="padding:1rem 1.25rem; border-left: 2px solid var(--green);">
+          <h3 style="font-size:0.9rem; margin-bottom:0.2rem;"><span class="badge badge-new" style="font-size:0.5rem; vertical-align:middle;">New</span> Garage travel time</h3>
+          <p style="font-size:0.82rem;">Time billed for the vendor driving to and from their garage is now included in the ranking cost.</p>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card" style="padding:1.5rem; border-color: var(--copper);">
+        <h3 style="color: var(--copper-light); margin-bottom:0.75rem;">What does this mean in practice?</h3>
+        <p style="font-size:0.88rem; margin-bottom:0.75rem;">The vendor selected by auto-assign may be <em>different</em> than what the old logic would have picked — even for the same trip.</p>
+        <p style="font-size:0.88rem; margin-bottom:0.75rem;">The "right" vendor is now the one with the lowest <strong style="color:var(--text-primary);">total real cost</strong>, not the lowest base rate. This means more accurate margin calculations and fewer surprises on invoices.</p>
+        <p style="font-size:0.88rem;">You can verify this in the Audit Trail tab — it shows exactly what cost was used to rank each vendor.</p>
+      </div>
+
+      <div class="card" style="padding:1.25rem; margin-top:1rem;">
+        <h3 style="font-size:0.9rem; margin-bottom:0.5rem;">Custom rate clients <span class="badge badge-change">Updated</span></h3>
+        <p style="font-size:0.82rem; color: var(--text-secondary);">Clients on custom pricing are now evaluated differently. The system calculates what effective discount their custom rate represents and uses the higher of that or their explicit discount to determine which path they follow. A client with a 5% explicit discount but a 40% custom rate discount will now correctly route to the price-optimized path.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 8 — CHANGE 3: BETA VENDORS
+══════════════════════════════════════════════════ -->
+<section class="slide" id="slide-8">
+  <p class="eyebrow animate">Change 3 of 5</p>
+  <h2 class="animate">Beta vendors now participate in auto-assignment <span class="badge badge-new" style="vertical-align:middle; font-size:0.55rem;">New vendor types</span></h2>
+  <div class="copper-line animate"></div>
+
+  <div class="two-col-wide animate">
+    <div>
+      <p style="color: var(--text-secondary); font-size:0.95rem; margin-bottom:1.25rem;">
+        Vendors previously labeled "ASAP Garage" have been renamed to <strong style="color: var(--text-primary);">Beta Garage</strong>. A new type, <strong style="color: var(--text-primary);">Beta I/O</strong>, has also been introduced. These vendors now participate in auto-assignment — a major change from before.
+      </p>
+
+      <div class="card-grid" style="grid-template-columns:1fr 1fr; margin-top:0;">
+        <div class="card" style="border-top:2px solid var(--copper);">
+          <h3>Beta Garage</h3>
+          <p style="font-size:0.85rem;">Renamed from "ASAP Garage." Behaves identically to a standard Garage in scoring, robocalling, and communications. The only difference: assignment eligibility is now toggled per client.</p>
+        </div>
+        <div class="card" style="border-top:2px solid var(--copper-light);">
+          <h3>Beta I/O</h3>
+          <p style="font-size:0.85rem;">New vendor type. Behaves like a standard Independent Operator. Same scoring, same communications. Eligibility controlled by the same per-client toggle.</p>
+        </div>
+      </div>
+
+      <div class="highlight-box" style="margin-top:1.25rem;">
+        <strong>Per-client toggle (Beta Eligibility):</strong> Whether Beta vendors appear in auto-assignment is controlled at the Company, TC, and Passenger level. Admin/Manager roles only can change this. <strong>No Beta vendors are enabled at the moment</strong> — we will gradually onboard them into the auto-assignment pool market by market.
+      </div>
+    </div>
+
+    <div>
+      <div class="card" style="padding:1.5rem;">
+        <h3 style="margin-bottom:0.75rem; font-size:0.95rem;">What you'll see</h3>
+        <ul style="list-style:none; display:flex; flex-direction:column; gap:0.6rem;">
+          <li style="font-size:0.85rem; padding-left:1.2rem; position:relative;">
+            <span style="position:absolute; left:0; color:var(--copper);">→</span>
+            Beta vendors appearing in the "Available for Auto-assignment" bucket in the Reassign modal
+          </li>
+          <li style="font-size:0.85rem; padding-left:1.2rem; position:relative;">
+            <span style="position:absolute; left:0; color:var(--copper);">→</span>
+            If Beta is disabled for a client, these vendors appear in "Available (No Auto-assignment)" with reason: <em>"Beta vendor not enabled for this client"</em>
+          </li>
+          <li style="font-size:0.85rem; padding-left:1.2rem; position:relative;">
+            <span style="position:absolute; left:0; color:var(--copper);">→</span>
+            Beta vendors competing on cost or quality alongside standard vendors — no separate bucket
+          </li>
+          <li style="font-size:0.85rem; padding-left:1.2rem; position:relative;">
+            <span style="position:absolute; left:0; color:var(--copper);">→</span>
+            The old "ASAP" bucket in the Reassign modal is gone
+          </li>
+        </ul>
+      </div>
+
+      <div class="card" style="padding:1.1rem 1.25rem; margin-top:1rem;">
+        <p style="font-size:0.82rem; color:var(--text-secondary);">
+          <strong style="color:var(--text-primary);">Note for Vendor Ops:</strong> Existing ASAP Garage vendors were renamed automatically. No vendor re-enrollment needed. Scoring, communications, and robocall behavior are unchanged.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 9 — CHANGE 4: RETAIL TRIPS
+══════════════════════════════════════════════════ -->
+<section class="slide" id="slide-9">
+  <p class="eyebrow animate">Change 4 of 5</p>
+  <h2 class="animate">Retail trips now route smarter</h2>
+  <div class="copper-line animate"></div>
+  <p class="animate" style="color: var(--text-secondary); max-width:60ch; font-size:0.95rem;">
+    Retail clients (those who booked through the consumer portal) are now treated differently based on their email domain and how many trips they've taken.
+  </p>
+
+  <div class="card-grid animate" style="grid-template-columns: 1fr 1fr 1fr; margin-top:1.5rem;">
+    <div class="card" style="border-top:2px solid var(--copper);">
+      <span class="card-icon">🏢</span>
+      <h3>Business email · First 3 trips</h3>
+      <p style="font-size:0.85rem;">Clients who signed up with a corporate email (not Gmail, Yahoo, etc.) get quality-optimized routing for their first 3 trips — to capture value from potentially high-value business accounts.</p>
+      <br>
+      <p style="font-size:0.82rem; color:var(--copper-light);">Preferred vendors: Excluded. Best quality/cost match selected.</p>
+    </div>
+    <div class="card" style="border-top:2px solid var(--green);">
+      <span class="card-icon">🔄</span>
+      <h3>Business email · 4th trip onward</h3>
+      <p style="font-size:0.85rem;">After 3 completed trips on file, business-email retail clients move permanently to price-optimized routing — same as personal email clients.</p>
+      <br>
+      <p style="font-size:0.82rem; color:var(--green);">Preferred vendors: Excluded. Beta vendors: Controlled by toggle.</p>
+    </div>
+    <div class="card" style="border-top:2px solid var(--text-muted);">
+      <span class="card-icon">📧</span>
+      <h3>Personal email · All trips</h3>
+      <p style="font-size:0.85rem;">Clients with Gmail, Yahoo, iCloud, Outlook, and other personal email domains always route price-optimized. No trial window. No preferred vendors in the pool.</p>
+      <br>
+      <p style="font-size:0.82rem; color:var(--text-muted);">Always price-optimized from trip 1. No exceptions.</p>
+    </div>
+  </div>
+
+  <div class="highlight-box animate" style="margin-top:1.25rem; font-size:0.85rem;">
+    <strong>Conversion rule:</strong> If a retail TC is later linked to a Company (converted to non-retail), all <em>new</em> trips from that point follow the standard non-retail logic. Trips already booked before conversion are unaffected.
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 10 — CHANGE 5: VENDOR EXCLUSIONS
+══════════════════════════════════════════════════ -->
+<section class="slide" id="slide-10">
+  <p class="eyebrow animate">Change 5 of 5</p>
+  <h2 class="animate">Vendors without pricing are excluded from auto-assign</h2>
+  <div class="copper-line animate"></div>
+
+  <div class="two-col animate">
+    <div>
+      <p style="color: var(--text-secondary); font-size:0.95rem; margin-bottom:1rem;">
+        Previously, a vendor with no cost on file could still win auto-assignment — they'd just appear at the end of the list. This led to assignments where we didn't know what the trip would cost until after it was confirmed.
+      </p>
+      <p style="color: var(--text-secondary); font-size:0.95rem; margin-bottom:1.25rem;">
+        Now, any vendor without pricing data on file is <strong style="color:var(--text-primary);">completely excluded from auto-assignment</strong> — on both the quality-optimized and the price-optimized paths.
+      </p>
+
+      <div class="card" style="padding:1.25rem;">
+        <h3 style="margin-bottom:0.5rem;">What happens to these vendors?</h3>
+        <p style="font-size:0.85rem; margin-bottom:0.75rem;">They don't disappear — they show up in the Reassign modal under <em>"Available (No Auto-assignment)"</em> with the reason: <strong style="color:var(--amber);">No cost on file.</strong></p>
+        <p style="font-size:0.85rem;">Ops can still manually assign them from there if needed — the system just won't auto-assign them. This also surfaces which vendors need rate entry — converting a risk into a known quantity.</p>
+      </div>
+    </div>
+
+    <div>
+      <div class="card" style="padding:1.5rem; height:auto;">
+        <h3 style="margin-bottom:0.75rem; color:var(--copper-light);">Also excluded from the Price-Optimized Path</h3>
+        <p style="font-size:0.85rem; margin-bottom:0.75rem; color:var(--text-secondary);">Preferred vendors (both Savoya Preferred and Client Preferred) are excluded when a trip routes through the price-optimized path. This is intentional — on this path we're optimizing for lowest price, not preference.</p>
+        <p style="font-size:0.85rem; color:var(--text-secondary);">These vendors appear in <em>"Available (No Auto-assignment)"</em> in the modal with reason: <strong style="color:var(--amber);">Preferred — skipped.</strong></p>
+      </div>
+
+      <div class="highlight-box" style="margin-top:1rem; font-size:0.85rem;">
+        <strong>Why this matters:</strong> Even one costless vendor assignment per week at an inflated rate could offset thousands in algorithm savings. This is a risk-elimination feature.
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 11 — REASSIGN MODAL
+══════════════════════════════════════════════════ -->
+<section class="slide" id="slide-11">
+  <p class="eyebrow animate">New in the UI</p>
+  <h2 class="animate">Redesigned Reassign Vendor Modal</h2>
+  <div class="copper-line animate"></div>
+  <p class="animate" style="color: var(--text-secondary); font-size:0.9rem; max-width:65ch;">
+    The biggest day-to-day UI change for ops. The modal now has four clear buckets, more vendor detail, and explicit reasons for every exclusion.
+  </p>
+
+  <div class="bucket-grid animate">
+    <div class="bucket-item bucket-auto">
+      <div class="bucket-name">✅ Available for Auto-assignment</div>
+      <p>Vendors the system would actually send this trip to, listed in the exact order they'd be offered. Includes vendors whose offer was declined or expired — they stay here with their offer status shown.</p>
+    </div>
+    <div class="bucket-item bucket-no-auto">
+      <div class="bucket-name">⚠ Available — No Auto-assignment</div>
+      <p>Vendors that could serve this trip but are being deliberately skipped by the new rules. Each one shows a reason:<br>
+      <em>"No cost on file"</em> · <em>"Beta vendor not enabled for this client"</em> · <em>"Preferred — skipped"</em><br>
+      Ops can still manually assign from here.</p>
+    </div>
+    <div class="bucket-item bucket-lowmargin">
+      <div class="bucket-name">📉 Low Margin</div>
+      <p>Same as before — vendors that exceed the 90% margin ceiling. No change to this bucket.</p>
+    </div>
+    <div class="bucket-item bucket-unavail">
+      <div class="bucket-name">🚫 Unavailable</div>
+      <p>Vendors that fail a genuine filter — vehicle type mismatch, blackout, conflicting trip, vaccination requirements, etc. Now expanded to show <em>all</em> active vendors in the service area, with a plain-English reason for each exclusion.</p>
+    </div>
+  </div>
+
+  <div class="animate" style="margin-top:1.25rem;">
+    <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.5rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase;">New columns in the modal</p>
+    <div class="tag-row">
+      <span class="tag">💰 Vendor Quote</span>
+      <span class="tag">📊 Score</span>
+      <span class="tag">💵 Algo Cost</span>
+      <span class="tag">🔢 Scoring Detail</span>
+      <span class="tag">⭐ Preference (SV / CP)</span>
+      <span class="tag">📋 Decline Reason</span>
+      <span class="tag">❓ Exclusion Reason</span>
+      <span class="tag">🔗 Vendor Profile Link</span>
+    </div>
+  </div>
+
+  <div class="highlight-box animate" style="margin-top:1rem; font-size:0.83rem;">
+    <strong>Key change:</strong> The old "ASAP" bucket is gone. Beta vendors are now part of the main assignment pool. The "Decline Reason" column (Offer Sent / Declined / Expired) is separate from the "Reason" column (why a vendor is excluded) — these mean different things.
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 12 — AUDIT TRAIL
+══════════════════════════════════════════════════ -->
+<section class="slide" id="slide-12">
+  <p class="eyebrow animate">New in the UI</p>
+  <h2 class="animate">Vendor Assignment Trail</h2>
+  <div class="copper-line animate"></div>
+  <p class="animate" style="color:var(--text-secondary); font-size:0.9rem; max-width:60ch;">
+    A new tab on the reservation page — <strong style="color:var(--text-primary);">"VENDOR ASSIGNMENT TRAIL"</strong> — that logs every decision the system made for each assignment event. Visible to <strong style="color:var(--copper);">Admin and Manager roles only.</strong>
+  </p>
+
+  <div class="card-grid animate" style="grid-template-columns: repeat(3, 1fr); gap:1rem; margin-top:1.5rem;">
+    <div class="card">
+      <span class="card-icon">👤</span>
+      <h3>Client Section</h3>
+      <p style="font-size:0.82rem;">Shows: TC name, Retail or Non-Retail status, discount level applied, and which routing path (quality-optimized or price-optimized) was used for this trip.</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">🔽</span>
+      <h3>Filter Funnel</h3>
+      <p style="font-size:0.82rem;">Step-by-step view of how the vendor pool was narrowed — how many vendors passed each filter stage and which specific vendors were removed at each step.</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">📋</span>
+      <h3>Eligible Vendors</h3>
+      <p style="font-size:0.82rem;">Full ranked list of vendors that made it through all filters — with their score, cost used for ranking, and actual quote. The winning vendor is highlighted.</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">🧭</span>
+      <h3>Decision Path</h3>
+      <p style="font-size:0.82rem;">Bullet list of each logic decision: which path was taken, whether preferred vendors were matched, and what triggered the routing choice.</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">💲</span>
+      <h3>Client Quote</h3>
+      <p style="font-size:0.82rem;">The client-facing quote at assignment time — base rate, discount, margin threshold, and adjusted total.</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">🏆</span>
+      <h3>Result</h3>
+      <p style="font-size:0.82rem;">The final outcome: which vendor was assigned, their score, and the cost that drove the decision.</p>
+    </div>
+  </div>
+
+  <div class="highlight-box animate" style="margin-top:1.25rem; font-size:0.83rem;">
+    Each assignment and reassignment creates a separate entry in the trail, so you can see the full history of a reservation's vendor decisions in one place. The logging feature flag is currently off by default and enabled on-demand to avoid performance impact.
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 13 — IMPACT ANALYSIS
+══════════════════════════════════════════════════ -->
+<section class="slide" id="slide-13">
+  <p class="eyebrow animate">Measured Impact</p>
+  <h2 class="animate">What the data shows</h2>
+  <div class="copper-line animate"></div>
+  <p class="animate" style="color:var(--text-secondary); font-size:0.9rem; max-width:65ch; margin-bottom:0.5rem;">
+    We simulated 305 past reservations from Feb–Apr 2026 across 5 major markets, recreated them in pre-prod with the new algorithm. Based on historical trip data, the second-ranked vendor on average ends up servicing the trip, so these figures use the second-pick vendor's quote.
+  </p>
+
+  <div class="stat-row animate">
+    <div class="stat-item">
+      <div class="stat-number">18.1%</div>
+      <div class="stat-label">Average savings per trip vs. previous algorithm</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">$58</div>
+      <div class="stat-label">Average savings per trip (second-pick vendor)</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">~$1.0M</div>
+      <div class="stat-label">Projected annual savings (conservative, 50% realization)</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">+1.7pp</div>
+      <div class="stat-label">Projected margin lift on ~$60M annual revenue</div>
+    </div>
+  </div>
+
+  <div class="animate" style="margin-top:1.5rem;">
+    <div class="card" style="padding:1.25rem; overflow-x:auto;">
+      <p style="font-size:0.75rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--copper); margin-bottom:0.75rem;">Savings by market</p>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Market</th>
+            <th>Sample</th>
+            <th>Savings Rate</th>
+            <th>Annual Volume</th>
+            <th>Projected Annual Savings</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>NYC</td><td>150</td><td>21.2%</td><td>16,200</td><td>~$511K</td></tr>
+          <tr><td>SF</td><td>51</td><td>18.5%</td><td>6,251</td><td>~$216K</td></tr>
+          <tr><td>Chicago</td><td>28</td><td>19.5%</td><td>5,125</td><td>~$154K</td></tr>
+          <tr><td>LA</td><td>40</td><td>17.5%</td><td>3,842</td><td>~$140K</td></tr>
+          <tr><td>DFW</td><td>36</td><td>2.0%</td><td>4,072</td><td>~$11K</td></tr>
+          <tr><td style="color:var(--copper);">Total (5 markets)</td><td style="color:var(--copper);">305</td><td style="color:var(--copper);">18.1%</td><td style="color:var(--copper);">35,490</td><td style="color:var(--copper);">~$1.03M</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="highlight-box animate" style="margin-top:1rem; font-size:0.83rem;">
+    <strong>DFW note:</strong> The weak DFW result is driven by a single high-cost/high-score vendor. This is the exact vendor profile the rate balance factor is designed to suppress — tuning that market's factor or flagging the vendor for rate review resolves this.
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 14 — SAFETY NET
+══════════════════════════════════════════════════ -->
+<section class="slide" id="slide-14">
+  <p class="eyebrow animate">Safety Net</p>
+  <h2 class="animate">Every change is behind a feature flag</h2>
+  <div class="copper-line animate"></div>
+  <p class="animate" style="color:var(--text-secondary); max-width:58ch; font-size:0.95rem;">
+    None of these changes are all-or-nothing. Each piece of logic is controlled by a feature flag — a toggle that can be turned on or off per client, per market, or globally — without a code deployment.
+  </p>
+
+  <div class="card-grid animate" style="grid-template-columns:repeat(2,1fr); margin-top:1.5rem;">
+    <div class="card" style="border-left:3px solid var(--copper);">
+      <h3>Vendor Offering Override</h3>
+      <p style="font-size:0.85rem;">The 3-option dropdown (Quality-Optimized / Price-Optimized / Default) at Company/TC/Passenger is independently configurable. If a specific account needs to be locked to one path, this can be set without affecting other accounts.</p>
+    </div>
+    <div class="card" style="border-left:3px solid var(--copper);">
+      <h3>Beta Vendor Eligibility</h3>
+      <p style="font-size:0.85rem;">Beta vendors can be toggled off per Company/TC/Passenger. If a client shouldn't see Beta vendors, flip the switch. Default is ON for all new clients.</p>
+    </div>
+    <div class="card" style="border-left:3px solid var(--copper);">
+      <h3>Retail First-3-Trip Window</h3>
+      <p style="font-size:0.85rem;">The logic that gives business-email retail clients quality-optimized routing for their first 3 trips is controlled separately and can be toggled without affecting corporate clients.</p>
+    </div>
+  </div>
+
+  <div class="highlight-box animate" style="margin-top:1.25rem;">
+    <strong>Launch defaults:</strong> At go-live, all routing overrides are set to "Default" (discount-based logic applies for everyone). No accounts are forced onto a new path immediately — behavior changes gradually as the system uses real quotes. This gives us a clean baseline to measure from.
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 15 — WHAT THIS MEANS FOR YOUR TEAM
+══════════════════════════════════════════════════ -->
+<section class="slide" id="slide-15">
+  <p class="eyebrow animate">For Your Team</p>
+  <h2 class="animate">What this means — by role</h2>
+  <div class="copper-line animate"></div>
+
+  <div class="card-grid animate" style="grid-template-columns: repeat(3, 1fr); gap:1.25rem; margin-top:1.5rem;">
+    <div class="role-card">
+      <h3>Sales &amp; CSM</h3>
+      <ul>
+        <li>Premium clients are now matched with higher-quality vendors by default — no manual intervention needed</li>
+        <li>The Vendor Offering override lets you request specific routing for key accounts (Admin/Manager sets it)</li>
+        <li>Clients on custom rates (e.g., Bridgewater) may now route differently — the system calculates their effective discount against the standard rack rate, and uses the higher of that or their explicit discount. This means some custom-rate clients will shift to the price-optimized path</li>
+        <li>The audit trail provides backup when clients ask "why this vendor?"</li>
+      </ul>
+    </div>
+    <div class="role-card">
+      <h3>Operations &amp; Coordinators</h3>
+      <ul>
+        <li>The Reassign modal now shows <em>why</em> each vendor was excluded — no more guessing</li>
+        <li>The Unavailable bucket shows all vendors in the market, enabling faster fulfilment when the top pick declines</li>
+        <li>Costless vendors are flagged — reach out to get their rates entered to increase the eligible pool</li>
+        <li>Beta vendors now compete alongside standard vendors — the old ASAP bucket is gone</li>
+      </ul>
+    </div>
+    <div class="role-card">
+      <h3>Leadership &amp; Management</h3>
+      <ul>
+        <li>Conservative estimate: ~$1.0M annual savings across 5 analyzed markets (36.7% of total volume)</li>
+        <li>Every change is feature-flagged — rollback is per-client, not all-or-nothing</li>
+        <li>The rate balance factor is a new per-market lever for tuning vendor cost vs. quality tradeoffs</li>
+        <li>30-day review cadence recommended to monitor per-market performance and optimize settings</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card-grid animate" style="grid-template-columns: repeat(2, 1fr); gap:1.25rem; margin-top:1.25rem;">
+    <div class="role-card">
+      <h3>Vendor Team</h3>
+      <ul>
+        <li>Existing ASAP vendors were renamed to Beta automatically — no re-enrollment needed</li>
+        <li>Costless vendors are now surfaced in the Reassign modal — opportunity to get rates entered and increase their trip volume</li>
+        <li>Beta vendors entering the pool means more competition in each market — monitor pricing trends</li>
+        <li>Preferred vendor lists are worth reviewing: high-cost preferred vendors reduce algorithm savings</li>
+      </ul>
+    </div>
+    <div class="role-card">
+      <h3>Reporting &amp; Finance</h3>
+      <ul>
+        <li>The audit trail creates a data source for per-market, per-vendor cost analysis</li>
+        <li>Rate balance factor tuning (per market) is the primary lever for optimizing quality vs. cost tradeoff</li>
+        <li>A 30-day review cadence is recommended: flag markets with high negative-savings rates, vendors consistently above market cost, and override patterns</li>
+        <li>Savings are positive across every discount bracket (0% through 30%+) — the algorithm works regardless of client pricing tier</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 16 — CONTACTS & CLOSE
+══════════════════════════════════════════════════ -->
+<section class="slide" id="slide-16">
+  <p class="eyebrow animate">Questions &amp; Next Steps</p>
+  <div class="big-text animate">Have questions?<br><span>Reach out.</span></div>
+
+  <p class="animate" style="color:var(--text-secondary); font-size:0.95rem; max-width:55ch; margin-top:1.25rem;">
+    If you notice anything unexpected with assignment behavior, include: <strong style="color:var(--text-primary);">Reservation ID</strong> + <strong style="color:var(--text-primary);">what you expected</strong> + <strong style="color:var(--text-primary);">what you saw.</strong> Screenshots of the Reassign modal or Audit Trail tab are especially helpful.
+  </p>
+
+  <div class="contact-grid animate" style="margin-top:1.75rem;">
+    <div class="contact-card">
+      <div class="contact-avatar">👨‍💼</div>
+      <div class="contact-name">Dom</div>
+      <div class="contact-role">Project Owner</div>
+      <div class="contact-for">Business decisions</div>
+    </div>
+    <div class="contact-card">
+      <div class="contact-avatar">📐</div>
+      <div class="contact-name">Ayush</div>
+      <div class="contact-role">Product</div>
+      <div class="contact-for">Scoping questions</div>
+    </div>
+    <div class="contact-card">
+      <div class="contact-avatar">🏗️</div>
+      <div class="contact-name">Dan</div>
+      <div class="contact-role">Business Partner</div>
+      <div class="contact-for">Ops workflow</div>
+    </div>
+  </div>
+
+  <div class="highlight-box animate" style="margin-top:1.25rem; font-size:0.83rem;">
+    <strong>Remember:</strong> Every change is behind a feature flag. If something looks wrong for a specific client, we can adjust their routing immediately while we investigate — no code deployment needed.
+  </div>
+</section>
+
+
+<script>
+(function () {
+  const slides = document.querySelectorAll('.slide');
+  const counter = document.getElementById('slideCounter');
+  const progressBar = document.getElementById('progressBar');
+  const navDotsContainer = document.getElementById('navDots');
+  const total = slides.length;
+  let current = 0;
+
+  // Create nav dots
+  slides.forEach((_, i) => {
+    const dot = document.createElement('button');
+    dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+    dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+    dot.addEventListener('click', () => goTo(i));
+    navDotsContainer.appendChild(dot);
+  });
+
+  const dots = navDotsContainer.querySelectorAll('.nav-dot');
+
+  function getActiveSlide() {
+    let best = 0;
+    let bestRatio = 0;
+    slides.forEach((slide, i) => {
+      const rect = slide.getBoundingClientRect();
+      const visible = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
+      const ratio = visible / window.innerHeight;
+      if (ratio > bestRatio) { bestRatio = ratio; best = i; }
+    });
+    return best;
+  }
+
+  function updateUI(idx) {
+    slides.forEach((s, i) => {
+      s.classList.toggle('active', i === idx);
+    });
+    dots.forEach((d, i) => {
+      d.classList.toggle('active', i === idx);
+    });
+    counter.textContent = `${idx + 1} / ${total}`;
+    const pct = total > 1 ? (idx / (total - 1)) * 100 : 100;
+    progressBar.style.width = pct + '%';
+    current = idx;
+  }
+
+  function goTo(idx) {
+    idx = Math.max(0, Math.min(total - 1, idx));
+    slides[idx].scrollIntoView({ behavior: 'smooth' });
+  }
+
+  let scrollTimer;
+  window.addEventListener('scroll', () => {
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(() => {
+      const idx = getActiveSlide();
+      updateUI(idx);
+    }, 50);
+  }, { passive: true });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ') {
+      e.preventDefault();
+      goTo(current + 1);
+    } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+      e.preventDefault();
+      goTo(current - 1);
+    } else if (e.key === 'Home') {
+      goTo(0);
+    } else if (e.key === 'End') {
+      goTo(total - 1);
+    }
+  });
+
+  updateUI(0);
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.intersectionRatio > 0.3) {
+        entry.target.classList.add('active');
+      }
+    });
+  }, { threshold: 0.3 });
+
+  slides.forEach(slide => observer.observe(slide));
+})();
+</script>
+</body>
+</html>
