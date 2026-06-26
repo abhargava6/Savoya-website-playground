@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Assignment Logic — Post-Release Impact Analysis</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
+    body,table,td,a{-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%}
+    table,td{mso-table-lspace:0;mso-table-rspace:0}
+    img{border:0;height:auto;line-height:100%;outline:none;text-decoration:none}
+    body{margin:0;padding:0;width:100%!important;background-color:#0F0F0F}
+    a{color:#B87333;text-decoration:none}
+    @media only screen and (max-width:620px){
+      .email-container{width:100%!important}
+      .fluid{max-width:100%!important;height:auto!important}
+      .stack-col{display:block!important;width:100%!important;max-width:100%!important;padding-right:0!important;padding-bottom:12px!important}
+      .hide-mobile{display:none!important}
+    }
+  </style>
+</head>
+<body style="margin:0;padding:0;background-color:#0F0F0F;font-family:'DM Sans',Arial,Helvetica,sans-serif;">
+
+<div style="display:none;font-size:1px;color:#0F0F0F;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;">
+  Assignment Logic v2 is live. 18% vendor cost reduction based on second-vendor pick across 305 simulated trips. Projected ~$1.0M conservative annual savings in top 5 markets.
+</div>
+
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#0F0F0F;">
+<tr><td align="center" style="padding:20px 0;">
+
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" class="email-container" style="max-width:600px;margin:0 auto;">
+
+<!-- ═══ SAVOYA LOGO ═══ -->
+<tr><td align="center" style="padding:40px 24px 32px;">
+  <img src="https://res.cloudinary.com/dctq8l4sp/image/upload/v1776808626/savoya-logo_dlhiha.png" width="142" height="32" alt="Savoya" style="display:block;width:142px;height:32px;">
+</td></tr>
+
+<!-- ═══ HEADER ═══ -->
+<tr><td align="center" style="padding:0 24px 12px;">
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+    <td style="font-family:'DM Sans',Arial,sans-serif;font-size:10px;font-weight:600;color:#B87333;text-transform:uppercase;letter-spacing:0.15em;padding:4px 14px;border:1px solid rgba(184,115,51,0.2);border-radius:20px;">Post-Release Impact</td>
+  </tr></table>
+</td></tr>
+
+<tr><td align="center" style="padding:0 24px 8px;font-family:Georgia,'Times New Roman',serif;font-size:34px;font-weight:400;color:#FAF8F5;line-height:1.2;letter-spacing:-0.02em;">Assignment Logic v2</td></tr>
+
+<tr><td align="center" style="padding:0 36px 28px;font-family:'DM Sans',Arial,sans-serif;font-size:15px;color:#A09890;line-height:1.6;">The new vendor assignment algorithm is live. We simulated 305 past reservations across 5 major markets. Based on historical trip data, the second-ranked vendor on average ends up servicing the trip, so we use second-pick quotes to derive a realistic savings estimate.</td></tr>
+
+<!-- ═══ HEADLINE METRIC ═══ -->
+<tr><td style="padding:0 24px 24px;">
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
+    <td style="background:linear-gradient(135deg,#B87333,#8B4513);border-radius:14px;padding:28px 24px;text-align:center;">
+      <div style="font-family:Georgia,'Times New Roman',serif;font-size:48px;font-weight:400;color:#FAF8F5;line-height:1;">18%</div>
+      <div style="font-family:'DM Sans',Arial,sans-serif;font-size:14px;color:rgba(250,248,245,0.8);margin-top:6px;">vendor cost reduction (second vendor pick)</div>
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:16px auto 0;"><tr>
+        <td style="padding:0 12px;text-align:center;">
+          <div style="font-family:Georgia,serif;font-size:24px;color:#FAF8F5;">$17.8K</div>
+          <div style="font-family:'DM Sans',Arial,sans-serif;font-size:10px;color:rgba(250,248,245,0.6);text-transform:uppercase;letter-spacing:0.1em;">saved on 305 trips</div>
+        </td>
+        <td style="width:1px;background:rgba(250,248,245,0.2);font-size:1px;">&nbsp;</td>
+        <td style="padding:0 12px;text-align:center;">
+          <div style="font-family:Georgia,serif;font-size:24px;color:#FAF8F5;">$58.33</div>
+          <div style="font-family:'DM Sans',Arial,sans-serif;font-size:10px;color:rgba(250,248,245,0.6);text-transform:uppercase;letter-spacing:0.1em;">avg savings per trip</div>
+        </td>
+        <td style="width:1px;background:rgba(250,248,245,0.2);font-size:1px;">&nbsp;</td>
+        <td style="padding:0 12px;text-align:center;">
+          <div style="font-family:Georgia,serif;font-size:24px;color:#FAF8F5;">86.6%</div>
+          <div style="font-family:'DM Sans',Arial,sans-serif;font-size:10px;color:rgba(250,248,245,0.6);text-transform:uppercase;letter-spacing:0.1em;">trips with savings</div>
+        </td>
+      </tr></table>
+    </td>
+  </tr></table>
+</td></tr>
+
+<!-- ═══ ANNUALIZED PROJECTION ═══ -->
+<tr><td style="padding:0 24px 24px;">
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
+    <td style="background-color:#1A1A1A;border-radius:14px;border:1px solid #2A2A2A;padding:20px 24px;">
+      <div style="font-family:'DM Sans',Arial,sans-serif;font-size:10px;font-weight:600;color:#B87333;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:12px;">Conservative Annualized Projection &#8594; Analysis Markets</div>
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+        <tr>
+          <td width="33%" style="text-align:center;padding:8px 0;">
+            <div style="font-family:Georgia,serif;font-size:28px;color:#FAF8F5;">~$1.0M</div>
+            <div style="font-family:'DM Sans',Arial,sans-serif;font-size:11px;color:#A09890;margin-top:4px;">annual savings</div>
+          </td>
+          <td width="33%" style="text-align:center;padding:8px 0;border-left:1px solid #2A2A2A;border-right:1px solid #2A2A2A;">
+            <div style="font-family:Georgia,serif;font-size:28px;color:#FAF8F5;">+1.7pp</div>
+            <div style="font-family:'DM Sans',Arial,sans-serif;font-size:11px;color:#A09890;margin-top:4px;">margin lift</div>
+          </td>
+          <td width="33%" style="text-align:center;padding:8px 0;">
+            <div style="font-family:Georgia,serif;font-size:28px;color:#FAF8F5;">1.7%</div>
+            <div style="font-family:'DM Sans',Arial,sans-serif;font-size:11px;color:#A09890;margin-top:4px;">of revenue</div>
+          </td>
+        </tr>
+      </table>
+      <div style="font-family:'DM Sans',Arial,sans-serif;font-size:11px;color:#6B6560;margin-top:12px;padding-top:12px;border-top:1px solid #2A2A2A;line-height:1.5;">Conservative estimate (50% realization factor) based on second-vendor pick savings across 35,490 annual trips in 5 analysis markets. Accounts for manual overrides, vendor acceptance variability, and sales configuring the Vendor Offering Feature Flag for premium clients. Moderate scenario: ~$1.2M (60% realization). Based on 2025 trip volumes &#8212; does not include forecasted growth.</div>
+    </td>
+  </tr></table>
+</td></tr>
+
+<!-- ═══ DIVIDER ═══ -->
+<tr><td style="padding:20px 60px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td style="height:1px;background:linear-gradient(90deg,transparent,rgba(184,115,51,0.25),transparent);font-size:1px;line-height:1px;">&nbsp;</td></tr></table></td></tr>
+
+<!-- ═══ HOW WE TESTED ═══ -->
+<tr><td align="center" style="padding:20px 24px 12px;">
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+    <td style="font-family:'DM Sans',Arial,sans-serif;font-size:10px;font-weight:600;color:#A09890;text-transform:uppercase;letter-spacing:0.15em;padding:4px 14px;border:1px solid #2A2A2A;border-radius:20px;">Methodology</td>
+  </tr></table>
+</td></tr>
+
+<tr><td style="padding:0 24px 24px;">
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
+    <td style="background-color:#1A1A1A;border-radius:14px;border:1px solid #2A2A2A;padding:20px 24px;">
+      <div style="font-family:'DM Sans',Arial,sans-serif;font-size:13px;color:#A09890;line-height:1.7;">
+        We randomly selected 305 reservations from Feb&#8211;Apr 2026 across 5 major markets. Recreated them in pre-prod (mirrored prod data + new code) as August trips with no special events. Based on historical data, the second-ranked vendor on average ends up servicing the trip, so we use second-pick quotes as the basis for this analysis rather than always taking first, third, etc.
+      </div>
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top:14px;">
+        <tr>
+          <td width="50%" valign="top" style="padding-right:8px;">
+            <div style="font-family:'DM Sans',Arial,sans-serif;font-size:12px;color:#A09890;line-height:1.8;">
+              <span style="color:#B87333;">&#9679;</span> Sample: 305 trips (~1% of annual market volume)<br>
+              <span style="color:#B87333;">&#9679;</span> Markets: NYC, SF, DFW, LA, Chicago<br>
+              <span style="color:#B87333;">&#9679;</span> Score balance factor: 1.5 (prev. 0 or 0.5)
+            </div>
+          </td>
+          <td width="50%" valign="top" style="padding-left:8px;">
+            <div style="font-family:'DM Sans',Arial,sans-serif;font-size:12px;color:#A09890;line-height:1.8;">
+              <span style="color:#B87333;">&#9679;</span> Measures second vendor pick savings<br>
+              <span style="color:#B87333;">&#9679;</span> Does not capture: manual overrides<br>
+              <span style="color:#B87333;">&#9679;</span> Annual revenue: ~$60M, margin: ~49%
+            </div>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr></table>
+</td></tr>
+
+<!-- ═══ DIVIDER ═══ -->
+<tr><td style="padding:20px 60px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td style="height:1px;background:linear-gradient(90deg,transparent,rgba(184,115,51,0.25),transparent);font-size:1px;line-height:1px;">&nbsp;</td></tr></table></td></tr>
+
+<!-- ═══ TWO KEY FEATURES ═══ -->
+<tr><td align="center" style="padding:20px 24px 12px;">
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+    <td style="font-family:'DM Sans',Arial,sans-serif;font-size:10px;font-weight:600;color:#B87333;text-transform:uppercase;letter-spacing:0.15em;padding:4px 14px;border:1px solid rgba(184,115,51,0.2);border-radius:20px;">Measured Impact</td>
+  </tr></table>
+</td></tr>
+
+<tr><td align="center" style="padding:0 24px 20px;font-family:Georgia,'Times New Roman',serif;font-size:28px;font-weight:400;color:#FAF8F5;line-height:1.2;">Savings from New Assignment Routing</td></tr>
+
+<!-- Strategy path card -->
+<tr><td style="padding:0 24px 16px;">
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
+    <td style="background-color:#1A1A1A;border-radius:14px;border:1px solid #2A2A2A;padding:20px;">
+      <div style="font-family:'DM Sans',Arial,sans-serif;font-size:10px;font-weight:600;color:#B87333;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:14px;">Quality-Optimized vs. Price-Optimized</div>
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+        <tr>
+          <td width="50%" valign="top" style="padding-right:10px;">
+            <div style="padding:14px;background:rgba(184,115,51,0.05);border:1px solid rgba(184,115,51,0.13);border-radius:10px;">
+              <div style="font-family:'DM Sans',Arial,sans-serif;font-size:10px;font-weight:600;color:#D4956B;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;">Quality-Optimized</div>
+              <div style="font-family:'DM Sans',Arial,sans-serif;font-size:11px;color:#6B6560;margin-bottom:4px;">Clients &lt;30% discount</div>
+              <div style="font-family:Georgia,serif;font-size:28px;color:#FAF8F5;margin-bottom:4px;">17.9%</div>
+              <div style="font-family:'DM Sans',Arial,sans-serif;font-size:11px;color:#A09890;">savings on 252 trips</div>
+              <div style="font-family:'DM Sans',Arial,sans-serif;font-size:11px;color:#A09890;">$14,903 total saved</div>
+            </div>
+          </td>
+          <td width="50%" valign="top" style="padding-left:10px;">
+            <div style="padding:14px;background:rgba(74,222,128,0.05);border:1px solid rgba(74,222,128,0.15);border-radius:10px;">
+              <div style="font-family:'DM Sans',Arial,sans-serif;font-size:10px;font-weight:600;color:#4ADE80;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;">Price-Optimized</div>
+              <div style="font-family:'DM Sans',Arial,sans-serif;font-size:11px;color:#6B6560;margin-bottom:4px;">Clients &#8805;30% discount</div>
+              <div style="font-family:Georgia,serif;font-size:28px;color:#FAF8F5;margin-bottom:4px;">19.3%</div>
+              <div style="font-family:'DM Sans',Arial,sans-serif;font-size:11px;color:#A09890;">savings on 53 trips</div>
+              <div style="font-family:'DM Sans',Arial,sans-serif;font-size:11px;color:#A09890;">$2,889 total saved</div>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <div style="font-family:'DM Sans',Arial,sans-serif;font-size:12px;color:#A09890;margin-top:14px;line-height:1.6;">Both paths deliver meaningful savings. The reason both paths show strong results is the per-service-area score balance factor (AKA margin optimization factor), set to 1.5 in these markets. This factor penalizes vendors whose rates are disproportionately high relative to their quality score. Increasing the factor to 2.0 would further increase savings under the quality-optimized path. Savings are positive across every discount bracket.</div>
+    </td>
+  </tr></table>
+</td></tr>
+
+<!-- Score balance factor card -->
+<tr><td style="padding:0 24px 16px;">
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
+    <td style="background-color:#1A1A1A;border-radius:14px;border:1px solid #2A2A2A;padding:20px;">
+      <div style="font-family:'DM Sans',Arial,sans-serif;font-size:10px;font-weight:600;color:#B87333;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:14px;">Score Balance Factor (set to 1.5)</div>
+      <div style="font-family:'DM Sans',Arial,sans-serif;font-size:13px;color:#A09890;line-height:1.7;margin-bottom:14px;">Previously set at 0 or 0.5, the score balance factor at 1.5 filters out vendors who score well but charge unreasonably high rates. On quality-optimized trips, the algorithm agrees with the price-optimized path 45.7% of the time &#8212; it naturally avoids overpaying.</div>
+      <div style="font-family:'DM Sans',Arial,sans-serif;font-size:12px;color:#A09890;line-height:1.8;">
+        <span style="color:#B87333;">&#9679;</span> When the two paths diverge (54.3% of trips): picks vendors with avg score 20.97 vs. 17.18 at a modest $37/trip premium<br>
+        <span style="color:#B87333;">&#9679;</span> That premium buys meaningfully better quality and margin for Savoya<br>
+        <span style="color:#B87333;">&#9679;</span> Tunable per service area &#8212; markets with cost outliers (see Dallas) can be adjusted independently
+      </div>
+    </td>
+  </tr></table>
+</td></tr>
+
+<!-- ═══ MARKET BREAKDOWN ═══ -->
+<tr><td style="padding:0 24px 16px;">
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
+    <td style="background-color:#1A1A1A;border-radius:14px;border:1px solid #2A2A2A;padding:20px;">
+      <div style="font-family:'DM Sans',Arial,sans-serif;font-size:10px;font-weight:600;color:#B87333;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:14px;">Results by Market</div>
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+        <!-- Header -->
+        <tr>
+          <td style="font-family:'DM Sans',Arial,sans-serif;font-size:10px;font-weight:600;color:#6B6560;text-transform:uppercase;letter-spacing:0.08em;padding:0 0 8px;border-bottom:1px solid #2A2A2A;">Market</td>
+          <td align="center" style="font-family:'DM Sans',Arial,sans-serif;font-size:10px;font-weight:600;color:#6B6560;text-transform:uppercase;letter-spacing:0.08em;padding:0 0 8px;border-bottom:1px solid #2A2A2A;">Sample</td>
+          <td align="right" style="font-family:'DM Sans',Arial,sans-serif;font-size:10px;font-weight:600;color:#6B6560;text-transform:uppercase;letter-spacing:0.08em;padding:0 0 8px;border-bottom:1px solid #2A2A2A;">Saved</td>
+          <td align="right" style="font-family:'DM Sans',Arial,sans-serif;font-size:10px;font-weight:600;color:#6B6560;text-transform:uppercase;letter-spacing:0.08em;padding:0 0 8px;border-bottom:1px solid #2A2A2A;">Rate</td>
+          <td align="right" style="font-family:'DM Sans',Arial,sans-serif;font-size:10px;font-weight:600;color:#6B6560;text-transform:uppercase;letter-spacing:0.08em;padding:0 0 8px;border-bottom:1px solid #2A2A2A;">Annual Vol.</td>
+          <td align="right" style="font-family:'DM Sans',Arial,sans-serif;font-size:10px;font-weight:600;color:#6B6560;text-transform:uppercase;letter-spacing:0.08em;padding:0 0 8px;border-bottom:1px solid #2A2A2A;">Proj. Savings*</td>
+        </tr>
+        <!-- NYC -->
+        <tr>
+          <td style="font-family:'DM Sans',Arial,sans-serif;font-size:13px;font-weight:500;color:#FAF8F5;padding:10px 0 0;">New York City</td>
+          <td align="center" style="font-family:'DM Sans',Arial,sans-serif;font-size:13px;color:#A09890;padding:10px 0 0;">150</td>
+          <td align="right" style="font-family:'DM Sans',Arial,sans-serif;font-size:13px;color:#4ADE80;padding:10px 0 0;">$9,467</td>
+          <td align="right" style="font-family:Georgia,serif;font-size:14px;color:#FAF8F5;padding:10px 0 0;">21.2%</td>
+          <td align="right" style="font-family:'DM Sans',Arial,sans-serif;font-size:13px;color:#A09890;padding:10px 0 0;">16,200</td>
+          <td align="right" style="font-family:Georgia,serif;font-size:14px;color:#4ADE80;padding:10px 0 0;">~$511K</td>
+        </tr>
+        <!-- SF -->
+        <tr>
+          <td style="font-family:'DM Sans',Arial,sans-serif;font-size:13px;font-weight:500;color:#FAF8F5;padding:10px 0 0;">San Francisco</td>
+          <td align="center" style="font-family:'DM Sans',Arial,sans-serif;font-size:13px;color:#A09890;padding:10px 0 0;">51</td>
+          <td align="right" style="font-family:'DM Sans',Arial,sans-serif;font-size:13px;color:#4ADE80;padding:10px 0 0;">$3,525</td>
+          <td align="right" style="font-family:Georgia,serif;font-size:14px;color:#FAF8F5;padding:10px 0 0;">18.5%</td>
+          <td align="right" style="font-family:'DM Sans',Arial,sans-serif;font-size:13px;color:#A09890;padding:10px 0 0;">6,251</td>
+          <td align="right" style="font-family:Georgia,serif;font-size:14px;color:#4ADE80;padding:10px 0 0;">~$216K</td>
+        </tr>
+        <!-- Chicago -->
+        <tr>
+          <td style="font-family:'DM Sans',Arial,sans-serif;font-size:13px;font-weight:500;color:#FAF8F5;padding:10px 0 0;">Chicago</td>
+          <td align="center" style="font-family:'DM Sans',Arial,sans-serif;font-size:13px;color:#A09890;padding:10px 0 0;">28</td>
+          <td align="right" style="font-family:'DM Sans',Arial,sans-serif;font-size:13px;color:#4ADE80;padding:10px 0 0;">$1,688</td>
+          <td align="right" style="font-family:Georgia,serif;font-size:14px;color:#FAF8F5;padding:10px 0 0;">19.5%</td>
+          <td align="right" style="font-family:'DM Sans',Arial,sans-serif;font-size:13px;color:#A09890;padding:10px 0 0;">5,125</td>
+          <td align="right" style="font-family:Georgia,serif;font-size:14px;color:#4ADE80;padding:10px 0 0;">~$154K</td>
+        </tr>
+        <!-- LA -->
+        <tr>
+          <td style="font-family:'DM Sans',Arial,sans-serif;font-size:13px;font-weight:500;color:#FAF8F5;padding:10px 0 0;">Los Angeles</td>
+          <td align="center" style="font-family:'DM Sans',Arial,sans-serif;font-size:13px;color:#A09890;padding:10px 0 0;">40</td>
+          <td align="right" style="font-family:'DM Sans',Arial,sans-serif;font-size:13px;color:#4ADE80;padding:10px 0 0;">$2,924</td>
+          <td align="right" style="font-family:Georgia,serif;font-size:14px;color:#FAF8F5;padding:10px 0 0;">17.5%</td>
+          <td align="right" style="font-family:'DM Sans',Arial,sans-serif;font-size:13px;color:#A09890;padding:10px 0 0;">3,842</td>
+          <td align="right" style="font-family:Georgia,serif;font-size:14px;color:#4ADE80;padding:10px 0 0;">~$140K</td>
+        </tr>
+        <!-- DFW -->
+        <tr>
+          <td style="font-family:'DM Sans',Arial,sans-serif;font-size:13px;font-weight:500;color:#FAF8F5;padding:10px 0 0;">Dallas/Fort Worth</td>
+          <td align="center" style="font-family:'DM Sans',Arial,sans-serif;font-size:13px;color:#A09890;padding:10px 0 0;">36</td>
+          <td align="right" style="font-family:'DM Sans',Arial,sans-serif;font-size:13px;color:#F59E0B;padding:10px 0 0;">$188</td>
+          <td align="right" style="font-family:Georgia,serif;font-size:14px;color:#F59E0B;padding:10px 0 0;">2.0%</td>
+          <td align="right" style="font-family:'DM Sans',Arial,sans-serif;font-size:13px;color:#A09890;padding:10px 0 0;">4,072</td>
+          <td align="right" style="font-family:Georgia,serif;font-size:14px;color:#F59E0B;padding:10px 0 0;">~$11K</td>
+        </tr>
+        <!-- Total -->
+        <tr>
+          <td style="font-family:'DM Sans',Arial,sans-serif;font-size:13px;font-weight:600;color:#FAF8F5;padding:12px 0 0;border-top:1px solid #2A2A2A;">Total</td>
+          <td align="center" style="font-family:'DM Sans',Arial,sans-serif;font-size:13px;font-weight:600;color:#A09890;padding:12px 0 0;border-top:1px solid #2A2A2A;">305</td>
+          <td align="right" style="font-family:'DM Sans',Arial,sans-serif;font-size:13px;font-weight:600;color:#4ADE80;padding:12px 0 0;border-top:1px solid #2A2A2A;">$17,791</td>
+          <td align="right" style="font-family:Georgia,serif;font-size:14px;font-weight:600;color:#FAF8F5;padding:12px 0 0;border-top:1px solid #2A2A2A;">18.1%</td>
+          <td align="right" style="font-family:'DM Sans',Arial,sans-serif;font-size:13px;font-weight:600;color:#A09890;padding:12px 0 0;border-top:1px solid #2A2A2A;">35,490</td>
+          <td align="right" style="font-family:Georgia,serif;font-size:14px;font-weight:600;color:#4ADE80;padding:12px 0 0;border-top:1px solid #2A2A2A;">~$1.03M</td>
+        </tr>
+      </table>
+      <!-- Footnote -->
+      <div style="font-family:'DM Sans',Arial,sans-serif;font-size:11px;color:#6B6560;margin-top:12px;padding-top:10px;border-top:1px solid #2A2A2A;line-height:1.5;">*Projected savings at 50% realization factor (savings-per-trip &#215; annual volume &#215; 0.5). Annual volumes are based on 2025 actuals and do not factor in forecasted growth. With high growth projected for 2026+, actual savings should scale proportionally.</div>
+      <!-- Dallas callout -->
+      <div style="margin-top:14px;padding:12px 14px;background:rgba(245,158,11,0.05);border:1px solid rgba(245,158,11,0.13);border-radius:8px;">
+        <div style="font-family:'DM Sans',Arial,sans-serif;font-size:12px;color:#F59E0B;line-height:1.6;"><span style="font-weight:600;">Dallas note:</span> <span style="color:#A09890;">Weak result driven by a single vendor (Dauntless Transportation) with a high score (20.81) but rates 30&#8211;50% above market. This is the exact vendor profile the score balance factor is designed to suppress. Tuning DFW&#8217;s factor higher or flagging for rate review resolves this.</span></div>
+      </div>
+    </td>
+  </tr></table>
+</td></tr>
+
+<!-- Why second pick note -->
+<tr><td style="padding:0 24px 24px;">
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
+    <td style="background-color:#1A1A1A;border-radius:14px;border:1px solid #2A2A2A;padding:16px 20px;">
+      <div style="font-family:'DM Sans',Arial,sans-serif;font-size:12px;color:#A09890;line-height:1.6;"><span style="color:#B87333;">&#9679;</span> <span style="color:#FAF8F5;font-weight:500;">Why second vendor pick?</span> Based on historical trip data, the second-ranked vendor on average ends up servicing the trip. Rather than always taking the first, third, or another pick, we average to the second pick and use its associated quote to derive the analysis. This gives a more realistic savings estimate than best-case first-pick numbers.</div>
+    </td>
+  </tr></table>
+</td></tr>
+
+<!-- ═══ DIVIDER ═══ -->
+<tr><td style="padding:20px 60px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td style="height:1px;background:linear-gradient(90deg,transparent,rgba(184,115,51,0.25),transparent);font-size:1px;line-height:1px;">&nbsp;</td></tr></table></td></tr>
+
+<!-- ═══ OTHER FEATURES ═══ -->
+<tr><td align="center" style="padding:20px 24px 12px;">
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+    <td style="font-family:'DM Sans',Arial,sans-serif;font-size:10px;font-weight:600;color:#F59E0B;text-transform:uppercase;letter-spacing:0.15em;padding:4px 14px;border:1px solid rgba(245,158,11,0.2);border-radius:20px;">Also Shipped</td>
+  </tr></table>
+</td></tr>
+
+<tr><td align="center" style="padding:0 24px 20px;font-family:Georgia,'Times New Roman',serif;font-size:28px;font-weight:400;color:#FAF8F5;line-height:1.2;">Features Beyond the Simulation</td></tr>
+
+<tr><td align="center" style="padding:0 36px 24px;font-family:'DM Sans',Arial,sans-serif;font-size:13px;color:#A09890;line-height:1.6;">The simulation measures vendor pick savings only. These features are live and deliver impact that isn&#8217;t captured in the numbers above.</td></tr>
+
+<!-- Costless vendors -->
+<tr><td style="padding:0 24px 12px;">
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
+    <td style="background-color:#1A1A1A;border-radius:12px;border:1px solid #2A2A2A;padding:16px 20px;">
+      <div style="font-family:'DM Sans',Arial,sans-serif;font-size:14px;font-weight:500;color:#FAF8F5;margin-bottom:6px;"><span style="color:#F59E0B;">&#9670;</span> Costless Vendor Removal</div>
+      <div style="font-family:'DM Sans',Arial,sans-serif;font-size:12px;color:#A09890;line-height:1.6;">Vendors with no cost data are excluded from auto-assignment entirely. Previously, these vendors could be assigned trips at unknown cost. They&#8217;re now flagged in the Reassign Modal so ops can proactively add their rates &#8212; converting them from a blind risk into a known, competing vendor.</div>
+    </td>
+  </tr></table>
+</td></tr>
+
+<!-- Unavailable bucket -->
+<tr><td style="padding:0 24px 12px;">
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
+    <td style="background-color:#1A1A1A;border-radius:12px;border:1px solid #2A2A2A;padding:16px 20px;">
+      <div style="font-family:'DM Sans',Arial,sans-serif;font-size:14px;font-weight:500;color:#FAF8F5;margin-bottom:6px;"><span style="color:#F59E0B;">&#9670;</span> Unavailable Bucket in Reassign Modal</div>
+      <div style="font-family:'DM Sans',Arial,sans-serif;font-size:12px;color:#A09890;line-height:1.6;">The redesigned modal now shows ALL vendors in a market across four buckets: Available, Available-No-Auto, Low Margin, and Unavailable. Ops can scan the full market in seconds instead of checking vendors individually. Also surfaces why a vendor is unavailable &#8212; enabling proactive capacity planning.</div>
+    </td>
+  </tr></table>
+</td></tr>
+
+<!-- Beta vendors -->
+<tr><td style="padding:0 24px 12px;">
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
+    <td style="background-color:#1A1A1A;border-radius:12px;border:1px solid #2A2A2A;padding:16px 20px;">
+      <div style="font-family:'DM Sans',Arial,sans-serif;font-size:14px;font-weight:500;color:#FAF8F5;margin-bottom:6px;"><span style="color:#F59E0B;">&#9670;</span> Beta Vendor Types <span style="font-size:10px;color:#6B6560;font-weight:400;">(Infrastructure live, not yet enabled)</span></div>
+      <div style="font-family:'DM Sans',Arial,sans-serif;font-size:12px;color:#A09890;line-height:1.6;">New Beta Garage and Beta I/O vendor types are in the system, gated by the Beta Eligibility Flag. When enabled, these vendors enter the auto-assign pool &#8212; directly increasing supply in every market. More supply means more competition and better pricing. Enabling in 2&#8211;3 pilot markets is a configuration change, not a code deploy.</div>
+    </td>
+  </tr></table>
+</td></tr>
+
+<!-- Custom rate discount -->
+<tr><td style="padding:0 24px 12px;">
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
+    <td style="background-color:#1A1A1A;border-radius:12px;border:1px solid #2A2A2A;padding:16px 20px;">
+      <div style="font-family:'DM Sans',Arial,sans-serif;font-size:14px;font-weight:500;color:#FAF8F5;margin-bottom:6px;"><span style="color:#F59E0B;">&#9670;</span> Custom Rate Discount Evaluation</div>
+      <div style="font-family:'DM Sans',Arial,sans-serif;font-size:12px;color:#A09890;line-height:1.6;">The system now uses effective discount = max(explicit discount, custom rate discount) to determine routing. Previously, a client with a 5% explicit discount but a 40% custom rate discount would be quality-optimized &#8212; the wrong path. Now they&#8217;re correctly routed to price-optimized.</div>
+    </td>
+  </tr></table>
+</td></tr>
+
+<!-- Audit trail -->
+<tr><td style="padding:0 24px 12px;">
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
+    <td style="background-color:#1A1A1A;border-radius:12px;border:1px solid #2A2A2A;padding:16px 20px;">
+      <div style="font-family:'DM Sans',Arial,sans-serif;font-size:14px;font-weight:500;color:#FAF8F5;margin-bottom:6px;"><span style="color:#F59E0B;">&#9670;</span> Assignment Audit Trail</div>
+      <div style="font-family:'DM Sans',Arial,sans-serif;font-size:12px;color:#A09890;line-height:1.6;">Every assignment now logs: score balance factor used, effective discount, decision path summary, and a 23-step vendor filter funnel with counts. This turns optimization from guesswork into a data-driven feedback loop &#8212; when a market underperforms, we can see exactly why.</div>
+    </td>
+  </tr></table>
+</td></tr>
+
+<!-- ═══ FF CALLOUT ═══ -->
+<tr><td style="padding:12px 24px 24px;">
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
+    <td style="background:rgba(184,115,51,0.08);border:1px solid rgba(184,115,51,0.15);border-radius:14px;padding:20px 24px;">
+      <div style="font-family:'DM Sans',Arial,sans-serif;font-size:10px;font-weight:600;color:#B87333;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px;">&#9432; Feature Flag Control</div>
+      <div style="font-family:'DM Sans',Arial,sans-serif;font-size:14px;font-weight:500;color:#FAF8F5;margin-bottom:8px;">Vendor Offering Feature Flag &#8212; TC and PAX Level</div>
+      <div style="font-family:'DM Sans',Arial,sans-serif;font-size:12px;color:#A09890;line-height:1.6;margin-bottom:12px;">The Vendor Offering Feature Flag now supports three options: &#8220;Trip effective discount decides Low cost or Best score&#8221; (default), &#8220;Always prioritize low cost vendors&#8221;, or &#8220;Always prioritize best score vendors&#8221;. Configurable at Company, TC, and PAX level.</div>
+      <div style="font-family:'DM Sans',Arial,sans-serif;font-size:12px;color:#A09890;line-height:1.6;">This gives sales and account management precise control over client routing. Premium clients can be set to &#8220;Always prioritize best score vendors&#8221; to ensure the highest-quality vendor match regardless of discount level. The infrastructure is live and ready for configuration.</div>
+    </td>
+  </tr></table>
+</td></tr>
+
+<!-- ═══ DIVIDER ═══ -->
+<tr><td style="padding:20px 60px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td style="height:1px;background:linear-gradient(90deg,transparent,rgba(184,115,51,0.25),transparent);font-size:1px;line-height:1px;">&nbsp;</td></tr></table></td></tr>
+
+<!-- ═══ RECOMMENDATIONS ═══ -->
+<tr><td align="center" style="padding:20px 24px 12px;">
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+    <td style="font-family:'DM Sans',Arial,sans-serif;font-size:10px;font-weight:600;color:#4ADE80;text-transform:uppercase;letter-spacing:0.15em;padding:4px 14px;border:1px solid rgba(74,222,128,0.2);border-radius:20px;">Recommended Next Steps</td>
+  </tr></table>
+</td></tr>
+
+<tr><td align="center" style="padding:0 24px 20px;font-family:Georgia,'Times New Roman',serif;font-size:28px;font-weight:400;color:#FAF8F5;line-height:1.2;">Where We Go From Here</td></tr>
+
+<!-- Rec 1: Tune score balance factors (Vendor + Reporting) -->
+<tr><td style="padding:0 24px 12px;">
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
+    <td style="background-color:#1A1A1A;border-radius:12px;border:1px solid #2A2A2A;padding:16px 20px;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
+        <td width="36" valign="top">
+          <div style="font-family:Georgia,serif;font-size:22px;font-weight:400;color:#4ADE80;line-height:1;">1</div>
+        </td>
+        <td valign="top">
+          <div style="font-family:'DM Sans',Arial,sans-serif;font-size:14px;font-weight:500;color:#FAF8F5;margin-bottom:6px;">Evaluate and set score balance factors per market</div>
+          <div style="margin-bottom:8px;"><span style="display:inline-block;font-family:'DM Sans',Arial,sans-serif;font-size:9px;font-weight:700;color:#FAF8F5;text-transform:uppercase;letter-spacing:0.08em;padding:3px 10px;border-radius:4px;background:#F59E0B;">Vendor</span> <span style="display:inline-block;font-family:'DM Sans',Arial,sans-serif;font-size:9px;font-weight:700;color:#1A1A1A;text-transform:uppercase;letter-spacing:0.08em;padding:3px 10px;border-radius:4px;background:#2DD4BF;">Reporting</span></div>
+          <div style="font-family:'DM Sans',Arial,sans-serif;font-size:12px;color:#A09890;line-height:1.5;">The 1.5 score balance factor shows strong projections in high-volume markets, but we still need to evaluate and decide what to set in each individual market to maximize return. To do this, we need to pull reports on vendor score and cost in each market and gauge the right factor. DFW is a clear starting point &#8212; a single high-cost/high-score vendor (Dauntless) is suppressing savings there.</div>
+        </td>
+      </tr></table>
+    </td>
+  </tr></table>
+</td></tr>
+
+<!-- Rec 2: Audit Preferred vendors (Vendor + CSM + Sales) -->
+<tr><td style="padding:0 24px 12px;">
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
+    <td style="background-color:#1A1A1A;border-radius:12px;border:1px solid #2A2A2A;padding:16px 20px;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
+        <td width="36" valign="top">
+          <div style="font-family:Georgia,serif;font-size:22px;font-weight:400;color:#4ADE80;line-height:1;">2</div>
+        </td>
+        <td valign="top">
+          <div style="font-family:'DM Sans',Arial,sans-serif;font-size:14px;font-weight:500;color:#FAF8F5;margin-bottom:6px;">Audit Savoya Preferred and Client Preferred vendors</div>
+          <div style="margin-bottom:8px;"><span style="display:inline-block;font-family:'DM Sans',Arial,sans-serif;font-size:9px;font-weight:700;color:#FAF8F5;text-transform:uppercase;letter-spacing:0.08em;padding:3px 10px;border-radius:4px;background:#F59E0B;">Vendor</span> <span style="display:inline-block;font-family:'DM Sans',Arial,sans-serif;font-size:9px;font-weight:700;color:#FAF8F5;text-transform:uppercase;letter-spacing:0.08em;padding:3px 10px;border-radius:4px;background:#60A5FA;">CSM</span> <span style="display:inline-block;font-family:'DM Sans',Arial,sans-serif;font-size:9px;font-weight:700;color:#FAF8F5;text-transform:uppercase;letter-spacing:0.08em;padding:3px 10px;border-radius:4px;background:#F472B6;">Sales</span></div>
+          <div style="font-family:'DM Sans',Arial,sans-serif;font-size:12px;color:#A09890;line-height:1.5;">Worth reviewing the Savoya Preferred list for vendors whose costs are disproportionately high or who no longer warrant the designation. For high-cost vendors worth retaining, rate renegotiation could unlock meaningful savings. For Client Preferred vendors, the top vendors by volume have incentive to offer better pricing &#8212; a good starting point for conversations.</div>
+        </td>
+      </tr></table>
+    </td>
+  </tr></table>
+</td></tr>
+
+<!-- Rec 3: Configure Vendor Offering Feature Flag (CSM + Sales) -->
+<tr><td style="padding:0 24px 12px;">
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
+    <td style="background-color:#1A1A1A;border-radius:12px;border:1px solid #2A2A2A;padding:16px 20px;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
+        <td width="36" valign="top">
+          <div style="font-family:Georgia,serif;font-size:22px;font-weight:400;color:#4ADE80;line-height:1;">3</div>
+        </td>
+        <td valign="top">
+          <div style="font-family:'DM Sans',Arial,sans-serif;font-size:14px;font-weight:500;color:#FAF8F5;margin-bottom:6px;">Configure the Vendor Offering Feature Flag for key clients</div>
+          <div style="margin-bottom:8px;"><span style="display:inline-block;font-family:'DM Sans',Arial,sans-serif;font-size:9px;font-weight:700;color:#FAF8F5;text-transform:uppercase;letter-spacing:0.08em;padding:3px 10px;border-radius:4px;background:#60A5FA;">CSM</span> <span style="display:inline-block;font-family:'DM Sans',Arial,sans-serif;font-size:9px;font-weight:700;color:#FAF8F5;text-transform:uppercase;letter-spacing:0.08em;padding:3px 10px;border-radius:4px;background:#F472B6;">Sales</span></div>
+          <div style="font-family:'DM Sans',Arial,sans-serif;font-size:12px;color:#A09890;line-height:1.5;"><span style="color:#FAF8F5;font-weight:500;">Short term:</span> Identify select passengers who should always receive the best vendors (including preferred or highest-score vendors) and set their flag to &#8220;Always prioritize best score vendors.&#8221;<br><span style="color:#FAF8F5;font-weight:500;">Long term:</span> Begin identifying which clients should receive this treatment at the Company or TC level. If teams want to enable it for their clients, they can make the case.</div>
+        </td>
+      </tr></table>
+    </td>
+  </tr></table>
+</td></tr>
+
+<!-- Rec 4: Train Ops on unavailable bucket (Ops) -->
+<tr><td style="padding:0 24px 12px;">
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
+    <td style="background-color:#1A1A1A;border-radius:12px;border:1px solid #2A2A2A;padding:16px 20px;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
+        <td width="36" valign="top">
+          <div style="font-family:Georgia,serif;font-size:22px;font-weight:400;color:#4ADE80;line-height:1;">4</div>
+        </td>
+        <td valign="top">
+          <div style="font-family:'DM Sans',Arial,sans-serif;font-size:14px;font-weight:500;color:#FAF8F5;margin-bottom:6px;">Train team on using the Unavailable bucket for faster fulfilment</div>
+          <div style="margin-bottom:8px;"><span style="display:inline-block;font-family:'DM Sans',Arial,sans-serif;font-size:9px;font-weight:700;color:#FAF8F5;text-transform:uppercase;letter-spacing:0.08em;padding:3px 10px;border-radius:4px;background:#A78BFA;">Ops</span></div>
+          <div style="font-family:'DM Sans',Arial,sans-serif;font-size:12px;color:#A09890;line-height:1.5;">The Unavailable bucket in the reassign modal contains vendors excluded from auto-assignment for specific reasons &#8212; vehicle type mismatch, Groundwork-only, etc. These vendors can be manually assigned to find fulfilment faster, but proper due diligence is needed before sending a trip their way. The team should understand when it&#8217;s appropriate to reach into this bucket and what to verify before doing so.</div>
+        </td>
+      </tr></table>
+    </td>
+  </tr></table>
+</td></tr>
+
+<!-- Rec 5: 30-day review cadence (Reporting) -->
+<tr><td style="padding:0 24px 12px;">
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
+    <td style="background-color:#1A1A1A;border-radius:12px;border:1px solid #2A2A2A;padding:16px 20px;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
+        <td width="36" valign="top">
+          <div style="font-family:Georgia,serif;font-size:22px;font-weight:400;color:#4ADE80;line-height:1;">5</div>
+        </td>
+        <td valign="top">
+          <div style="font-family:'DM Sans',Arial,sans-serif;font-size:14px;font-weight:500;color:#FAF8F5;margin-bottom:6px;">Establish a 30-day review cadence</div>
+          <div style="margin-bottom:8px;"><span style="display:inline-block;font-family:'DM Sans',Arial,sans-serif;font-size:9px;font-weight:700;color:#1A1A1A;text-transform:uppercase;letter-spacing:0.08em;padding:3px 10px;border-radius:4px;background:#2DD4BF;">Reporting</span></div>
+          <div style="font-family:'DM Sans',Arial,sans-serif;font-size:12px;color:#A09890;line-height:1.5;">The solution provides the data to monitor per-market performance. A recurring report could flag markets with high negative-savings rates, vendors consistently chosen at above-market cost, and flag override patterns worth reviewing.</div>
+        </td>
+      </tr></table>
+    </td>
+  </tr></table>
+</td></tr>
+
+<!-- Rec 6: Add costs for costless vendors (Vendor) -->
+<tr><td style="padding:0 24px 12px;">
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
+    <td style="background-color:#1A1A1A;border-radius:12px;border:1px solid #2A2A2A;padding:16px 20px;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
+        <td width="36" valign="top">
+          <div style="font-family:Georgia,serif;font-size:22px;font-weight:400;color:#4ADE80;line-height:1;">6</div>
+        </td>
+        <td valign="top">
+          <div style="font-family:'DM Sans',Arial,sans-serif;font-size:14px;font-weight:500;color:#FAF8F5;margin-bottom:6px;">Add costs for flagged costless vendors</div>
+          <div style="margin-bottom:8px;"><span style="display:inline-block;font-family:'DM Sans',Arial,sans-serif;font-size:9px;font-weight:700;color:#FAF8F5;text-transform:uppercase;letter-spacing:0.08em;padding:3px 10px;border-radius:4px;background:#F59E0B;">Vendor</span></div>
+          <div style="font-family:'DM Sans',Arial,sans-serif;font-size:12px;color:#A09890;line-height:1.5;">The reassign modal now surfaces these vendors with a flag. Getting their rates into the system converts them from excluded to competing &#8212; increasing supply and competitive pressure in their markets.</div>
+        </td>
+      </tr></table>
+    </td>
+  </tr></table>
+</td></tr>
+
+<!-- Rec 7: Enable Beta vendors (Leadership) -->
+<tr><td style="padding:0 24px 12px;">
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
+    <td style="background-color:#1A1A1A;border-radius:12px;border:1px solid #2A2A2A;padding:16px 20px;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
+        <td width="36" valign="top">
+          <div style="font-family:Georgia,serif;font-size:22px;font-weight:400;color:#4ADE80;line-height:1;">7</div>
+        </td>
+        <td valign="top">
+          <div style="font-family:'DM Sans',Arial,sans-serif;font-size:14px;font-weight:500;color:#FAF8F5;margin-bottom:6px;">Consider enabling Beta vendors in pilot markets</div>
+          <div style="margin-bottom:8px;"><span style="display:inline-block;font-family:'DM Sans',Arial,sans-serif;font-size:9px;font-weight:700;color:#1A1A1A;text-transform:uppercase;letter-spacing:0.08em;padding:3px 10px;border-radius:4px;background:#4ADE80;">Leadership</span></div>
+          <div style="font-family:'DM Sans',Arial,sans-serif;font-size:12px;color:#A09890;line-height:1.5;">Markets with limited vendor supply or high concentration in a single vendor would benefit most. The infrastructure is ready &#8212; this is a configuration change, not a code deploy.</div>
+        </td>
+      </tr></table>
+    </td>
+  </tr></table>
+</td></tr>
+
+<!-- Product Team footnote -->
+<tr><td style="padding:0 24px 24px;">
+  <div style="font-family:'DM Sans',Arial,sans-serif;font-size:12px;color:#6B6560;line-height:1.5;padding:12px 20px;border-top:1px solid #2A2A2A;"><span style="display:inline-block;font-family:'DM Sans',Arial,sans-serif;font-size:9px;font-weight:700;color:#FAF8F5;text-transform:uppercase;letter-spacing:0.08em;padding:3px 10px;border-radius:4px;background:#B87333;vertical-align:middle;">Product</span><span style="vertical-align:middle;margin-left:8px;"> For help with any of the action items above, reach out to Ayush.</span></div>
+</td></tr>
+
+<!-- ═══ DIVIDER ═══ -->
+<tr><td style="padding:20px 60px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td style="height:1px;background:linear-gradient(90deg,transparent,rgba(184,115,51,0.25),transparent);font-size:1px;line-height:1px;">&nbsp;</td></tr></table></td></tr>
+
+<!-- ═══ CAVEATS ═══ -->
+<tr><td style="padding:0 24px 24px;">
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
+    <td style="background-color:#1A1A1A;border-radius:12px;border:1px solid #2A2A2A;padding:16px 20px;">
+      <div style="font-family:'DM Sans',Arial,sans-serif;font-size:10px;font-weight:600;color:#6B6560;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px;">Important Caveats</div>
+      <div style="font-family:'DM Sans',Arial,sans-serif;font-size:12px;color:#A09890;line-height:1.8;">
+        <span style="color:#6B6560;">&#9679;</span> The 18% is based on second-vendor pick quotes. Based on historical data, the second-ranked vendor on average ends up servicing the trip &#8212; more realistic than best-case first-pick numbers.<br>
+        <span style="color:#6B6560;">&#9679;</span> Conservative projection uses a 50% realization factor to account for manual overrides, market dynamics, and sales configuring the Vendor Offering Feature Flag for premium clients.<br>
+        <span style="color:#6B6560;">&#9679;</span> Sample is 305 trips with second-pick data from a ~35K annual pool. Directionally strong but not statistically definitive at market level.<br>
+        <span style="color:#6B6560;">&#9679;</span> Score balance factor of 1.5 was used; increasing to 2.0 per market would further increase quality-optimized path savings.<br>
+        <span style="color:#6B6560;">&#9679;</span> Savoya Preferred vendors were not considered in this simulation &#8212; trip offers went to vendors without factoring in preference status. Actual results will differ where preferred vendors are assigned.<br>
+        <span style="color:#F59E0B;">&#9679;</span> <span style="color:#F59E0B;font-weight:600;">Savings apply only to trips booked after go-live.</span> Already booked and assigned trips will not be affected by the new routing logic.<br>
+        <span style="color:#6B6560;">&#9679;</span> Every change is toggleable via feature flags per Company/TC/PAX. No code deploy needed to adjust.
+      </div>
+    </td>
+  </tr></table>
+</td></tr>
+
+<!-- ═══ ENABLEMENT GUIDE CTA ═══ -->
+<tr><td style="padding:0 24px 16px;">
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
+    <td style="background:linear-gradient(135deg,rgba(184,115,51,0.12),rgba(184,115,51,0.04));border:1px solid rgba(184,115,51,0.2);border-radius:14px;padding:20px 24px;text-align:center;">
+      <div style="font-family:'DM Sans',Arial,sans-serif;font-size:10px;font-weight:600;color:#B87333;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:8px;">Project Enablement Guide</div>
+      <div style="font-family:'DM Sans',Arial,sans-serif;font-size:14px;font-weight:500;color:#FAF8F5;margin-bottom:6px;">What changed and how it works</div>
+      <div style="font-family:'DM Sans',Arial,sans-serif;font-size:12px;color:#A09890;margin-bottom:14px;line-height:1.5;">Detailed walkthrough of every feature, how the routing logic works, feature flag configuration, and what each team needs to know.</div>
+      <a href="https://abhargava6.github.io/Savoya-website-playground/assignment-logic-whats-new.html" style="display:inline-block;font-family:'DM Sans',Arial,sans-serif;font-size:13px;font-weight:600;color:#FAF8F5;background:linear-gradient(135deg,#B87333,#8B4513);padding:10px 24px;border-radius:8px;text-decoration:none;">Read the full guide &#8594;</a>
+    </td>
+  </tr></table>
+</td></tr>
+
+<!-- ═══ RAW DATA CTA ═══ -->
+<tr><td style="padding:0 24px 24px;">
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
+    <td style="background-color:#1A1A1A;border-radius:14px;border:1px solid #2A2A2A;padding:20px 24px;text-align:center;">
+      <div style="font-family:'DM Sans',Arial,sans-serif;font-size:10px;font-weight:600;color:#6B6560;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:8px;">Raw Data</div>
+      <div style="font-family:'DM Sans',Arial,sans-serif;font-size:14px;font-weight:500;color:#FAF8F5;margin-bottom:6px;">View the simulation data</div>
+      <div style="font-family:'DM Sans',Arial,sans-serif;font-size:12px;color:#A09890;margin-bottom:14px;line-height:1.5;">All 305 simulated trips with original and new algorithm vendor picks, quotes, savings, strategy path, and discount data.</div>
+      <a href="https://docs.google.com/spreadsheets/d/14Ge8w4WoMP1ZcJD7clspfU6Ex9Bt0muaQfkpxoE1wA0/edit?gid=1377215995#gid=1377215995" style="display:inline-block;font-family:'DM Sans',Arial,sans-serif;font-size:13px;font-weight:600;color:#B87333;background:transparent;padding:10px 24px;border-radius:8px;text-decoration:none;border:1px solid rgba(184,115,51,0.3);">Open in Google Sheets &#8594;</a>
+    </td>
+  </tr></table>
+</td></tr>
+
+<!-- ═══ DIVIDER ═══ -->
+<tr><td style="padding:0px 60px 20px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td style="height:1px;background:linear-gradient(90deg,transparent,rgba(184,115,51,0.25),transparent);font-size:1px;line-height:1px;">&nbsp;</td></tr></table></td></tr>
+
+<!-- ═══ SPECIAL THANKS ═══ -->
+<tr><td align="center" style="padding:0 24px 20px;font-family:'DM Sans',Arial,sans-serif;font-size:10px;font-weight:600;color:#B87333;text-transform:uppercase;letter-spacing:0.12em;">Special Thanks</td></tr>
+
+<tr><td align="center" style="padding:0 24px 12px;">
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+    <td align="center" style="padding:0 16px;">
+      <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#B87333,#8B4513);text-align:center;line-height:48px;font-family:'DM Sans',Arial,sans-serif;font-size:14px;font-weight:600;color:#FAF8F5;border:1.5px solid rgba(184,115,51,0.4);">D</div>
+      <div style="font-family:'DM Sans',Arial,sans-serif;font-size:13px;font-weight:500;color:#FAF8F5;margin-top:8px;">Dom</div>
+      <div style="font-family:'DM Sans',Arial,sans-serif;font-size:10px;color:#A09890;">Project Owner</div>
+    </td>
+    <td align="center" style="padding:0 16px;">
+      <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#4A4540,#2A2520);text-align:center;line-height:48px;font-family:'DM Sans',Arial,sans-serif;font-size:14px;font-weight:600;color:#FAF8F5;border:1.5px solid #2A2A2A;">D</div>
+      <div style="font-family:'DM Sans',Arial,sans-serif;font-size:13px;font-weight:500;color:#FAF8F5;margin-top:8px;">Dan</div>
+      <div style="font-family:'DM Sans',Arial,sans-serif;font-size:10px;color:#A09890;">Business Partner</div>
+    </td>
+    <td align="center" style="padding:0 16px;">
+      <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#4A4540,#2A2520);text-align:center;line-height:48px;font-family:'DM Sans',Arial,sans-serif;font-size:14px;font-weight:600;color:#FAF8F5;border:1.5px solid #2A2A2A;">E</div>
+      <div style="font-family:'DM Sans',Arial,sans-serif;font-size:13px;font-weight:500;color:#FAF8F5;margin-top:8px;">Ethan</div>
+      <div style="font-family:'DM Sans',Arial,sans-serif;font-size:10px;color:#A09890;">Engineering</div>
+    </td>
+    <td align="center" style="padding:0 16px;">
+      <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#4A4540,#2A2520);text-align:center;line-height:48px;font-family:'DM Sans',Arial,sans-serif;font-size:14px;font-weight:600;color:#FAF8F5;border:1.5px solid #2A2A2A;">H</div>
+      <div style="font-family:'DM Sans',Arial,sans-serif;font-size:13px;font-weight:500;color:#FAF8F5;margin-top:8px;">Himanshu</div>
+      <div style="font-family:'DM Sans',Arial,sans-serif;font-size:10px;color:#A09890;">Engineering</div>
+    </td>
+  </tr></table>
+</td></tr>
+
+<!-- ═══ FOOTER ═══ -->
+<tr><td style="padding:40px 60px 12px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td style="height:1px;background:linear-gradient(90deg,transparent,rgba(184,115,51,0.15),transparent);font-size:1px;line-height:1px;">&nbsp;</td></tr></table></td></tr>
+
+<tr><td align="center" style="padding:12px 24px 40px;font-family:'DM Sans',Arial,sans-serif;font-size:12px;color:#6B6560;font-style:italic;">Guided by principle. Grateful to serve.</td></tr>
+
+</table>
+</td></tr>
+</table>
+
+</body>
+</html>
