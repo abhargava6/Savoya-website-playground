@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GroundSpan Integration — Path Forward</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@300;400;600;700&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --color-primary: #1E2761;
+      --color-secondary: #CADCFC;
+      --color-accent: #4F8EF7;
+      --color-bg: #FFFFFF;
+      --color-bg-dark: #1E2761;
+      --color-text: #1A1A2E;
+      --color-text-light: #FFFFFF;
+      --color-text-muted: #64748B;
+      --color-surface: #F1F5F9;
+      --color-border: #E2E8F0;
+      --color-success: #22C55E;
+      --color-warning: #F59E0B;
+      --color-danger: #EF4444;
+
+      --font-heading: 'Playfair Display', serif;
+      --font-body: 'Source Sans 3', sans-serif;
+
+      --text-hero: clamp(2.8rem, 5.5vw, 4.5rem);
+      --text-title: clamp(1.8rem, 3.5vw, 3rem);
+      --text-subtitle: clamp(1.2rem, 2vw, 1.6rem);
+      --text-body: clamp(1rem, 1.4vw, 1.25rem);
+      --text-small: clamp(0.85rem, 1vw, 1rem);
+      --text-caption: clamp(0.75rem, 0.9vw, 0.85rem);
+
+      --space-xs: 0.5rem;
+      --space-sm: 1rem;
+      --space-md: 2rem;
+      --space-lg: 3.5rem;
+      --space-xl: 6rem;
+      --slide-padding: 5vw 6vw;
+
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+      --duration-fast: 0.3s;
+      --duration-normal: 0.6s;
+      --duration-slow: 1s;
+
+      --slide-max-width: 1100px;
+      --border-radius-sm: 8px;
+      --border-radius-md: 16px;
+      --border-radius-lg: 24px;
+    }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      color: var(--color-text);
+      background: var(--color-bg);
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .slides-container {
+      width: 100vw;
+      height: 100vh;
+      overflow-y: auto;
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+    }
+
+    .slide {
+      width: 100vw;
+      height: 100vh;
+      min-height: 100vh;
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: var(--slide-padding);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slide-content {
+      max-width: var(--slide-max-width);
+      margin: 0 auto;
+      width: 100%;
+      position: relative;
+      z-index: 2;
+    }
+
+    .progress-bar {
+      position: fixed; top: 0; left: 0; height: 3px;
+      background: var(--color-accent);
+      transition: width var(--duration-fast) var(--ease-out-expo);
+      z-index: 100;
+    }
+
+    .slide-counter {
+      position: fixed; bottom: 2rem; right: 2rem;
+      font-family: var(--font-body);
+      font-size: var(--text-caption);
+      color: var(--color-text-muted);
+      z-index: 100;
+      opacity: 0.7;
+      transition: color 0.3s;
+    }
+
+    .slide-counter.on-dark { color: rgba(255,255,255,0.45); }
+
+    /* === Animation === */
+    .animate-in {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .slide.active .animate-in {
+        animation: slideUp var(--duration-normal) var(--ease-out-expo) both;
+      }
+      .slide.active .animate-in:nth-child(2) { animation-delay: 0.1s; }
+      .slide.active .animate-in:nth-child(3) { animation-delay: 0.2s; }
+      .slide.active .animate-in:nth-child(4) { animation-delay: 0.3s; }
+      .slide.active .animate-in:nth-child(5) { animation-delay: 0.4s; }
+      .slide.active .animate-in:nth-child(6) { animation-delay: 0.5s; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .animate-in { opacity: 1; transform: none; }
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* === SLIDE 1: Title === */
+    .slide-hero { background: var(--color-bg-dark); color: var(--color-text-light); }
+    .hero-bg-shapes { position: absolute; inset: 0; overflow: hidden; z-index: 0; }
+    .hero-circle {
+      position: absolute; width: 55vw; height: 55vw; border-radius: 50%;
+      background: radial-gradient(circle, rgba(79,142,247,0.08) 0%, transparent 70%);
+      top: -15vw; right: -18vw;
+    }
+    .hero-circle-2 {
+      position: absolute; width: 35vw; height: 35vw; border-radius: 50%;
+      background: radial-gradient(circle, rgba(79,142,247,0.05) 0%, transparent 70%);
+      bottom: -10vw; left: -12vw;
+    }
+    .hero-title {
+      font-family: var(--font-heading); font-size: var(--text-hero);
+      font-weight: 900; line-height: 1.1; margin-bottom: var(--space-sm);
+      letter-spacing: -0.02em;
+    }
+    .hero-subtitle {
+      font-size: var(--text-subtitle); font-weight: 300; opacity: 0.75;
+      margin-bottom: var(--space-xs);
+    }
+    .hero-date { font-size: var(--text-small); opacity: 0.4; }
+    .hero-tag {
+      display: inline-block; background: rgba(79,142,247,0.2); color: var(--color-accent);
+      padding: 0.3rem 1rem; border-radius: 999px; font-size: var(--text-caption);
+      font-weight: 600; margin-bottom: var(--space-md); letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    /* === Slide titles === */
+    .slide-light { background: var(--color-bg); color: var(--color-text); }
+    .slide-title {
+      font-family: var(--font-heading); font-size: var(--text-title);
+      font-weight: 700; margin-bottom: var(--space-lg); color: var(--color-primary);
+      line-height: 1.2;
+    }
+    .slide-title-accent {
+      display: block; width: 3rem; height: 3px;
+      background: var(--color-accent); margin-bottom: var(--space-sm);
+      border-radius: 2px;
+    }
+
+    /* === SLIDE 2: Big Picture === */
+    .big-picture { margin-top: var(--space-md); }
+    .bp-row {
+      display: flex; align-items: center; justify-content: center;
+      gap: var(--space-sm); flex-wrap: wrap;
+    }
+    .bp-block {
+      flex: 1; min-width: 200px; max-width: 300px;
+      padding: var(--space-md); border-radius: var(--border-radius-md);
+      text-align: center; position: relative;
+    }
+    .bp-done { background: rgba(34,197,94,0.08); border: 2px solid rgba(34,197,94,0.3); }
+    .bp-pending { background: var(--color-surface); border: 2px dashed var(--color-border); }
+    .bp-future { background: rgba(79,142,247,0.06); border: 2px solid rgba(79,142,247,0.2); }
+    .bp-label {
+      font-family: var(--font-heading); font-weight: 700;
+      font-size: var(--text-subtitle); color: var(--color-primary);
+      margin-bottom: var(--space-xs);
+    }
+    .bp-desc { font-size: var(--text-small); color: var(--color-text-muted); margin-bottom: var(--space-xs); }
+    .bp-status-tag {
+      display: inline-block; padding: 0.15rem 0.6rem; border-radius: 999px;
+      font-size: var(--text-caption); font-weight: 600;
+    }
+    .bp-tag-done { background: rgba(34,197,94,0.15); color: #16a34a; }
+    .bp-tag-pending { background: var(--color-border); color: var(--color-text-muted); }
+    .bp-tag-future { background: rgba(79,142,247,0.12); color: var(--color-accent); }
+    .bp-arrow {
+      font-size: 1.8rem; color: var(--color-text-muted); opacity: 0.4;
+      flex-shrink: 0;
+    }
+    .bp-context {
+      margin-top: var(--space-lg); font-size: var(--text-body);
+      line-height: 1.7; color: var(--color-text);
+      max-width: 90%;
+    }
+    .bp-context strong { color: var(--color-primary); }
+
+    /* === Current Process (Timeline) === */
+    .process-flow {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: var(--space-sm); margin-top: var(--space-md);
+    }
+    .process-step {
+      display: flex; align-items: flex-start; gap: var(--space-sm);
+      padding: var(--space-sm); background: var(--color-surface);
+      border-radius: var(--border-radius-sm);
+      border-left: 3px solid var(--color-border);
+    }
+    .process-step.manual { border-left-color: var(--color-warning); }
+    .step-num {
+      flex-shrink: 0; width: 1.8rem; height: 1.8rem; border-radius: 50%;
+      background: var(--color-primary); color: var(--color-text-light);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: var(--text-caption);
+    }
+    .step-num.manual-num { background: var(--color-warning); }
+    .step-text { font-size: var(--text-small); line-height: 1.5; }
+    .step-text strong { color: var(--color-primary); }
+    .process-legend {
+      margin-top: var(--space-md); display: flex; gap: var(--space-md);
+      font-size: var(--text-caption); color: var(--color-text-muted);
+    }
+    .legend-item { display: flex; align-items: center; gap: 0.4rem; }
+    .legend-dot {
+      width: 10px; height: 10px; border-radius: 2px;
+    }
+    .legend-dot.auto { background: var(--color-border); }
+    .legend-dot.manual { background: var(--color-warning); }
+
+    /* === SLIDE 3: What We Built === */
+    .built-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-sm); margin-top: var(--space-md);
+    }
+    .built-card {
+      background: var(--color-surface); border-radius: var(--border-radius-md);
+      padding: var(--space-md); border-top: 3px solid var(--color-accent);
+      transition: transform var(--duration-fast) var(--ease-out-expo),
+                  box-shadow var(--duration-fast) var(--ease-out-expo);
+    }
+    .built-card:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(0,0,0,0.08); }
+    .built-card h3 {
+      font-family: var(--font-heading); font-size: calc(var(--text-body) * 1.05);
+      font-weight: 700; color: var(--color-primary); margin-bottom: var(--space-xs);
+    }
+    .built-card p { font-size: var(--text-small); color: var(--color-text-muted); line-height: 1.6; }
+    .built-status {
+      display: inline-block; padding: 0.2rem 0.6rem; border-radius: 999px;
+      font-size: var(--text-caption); font-weight: 600; margin-bottom: var(--space-xs);
+    }
+    .status-done { background: rgba(34,197,94,0.12); color: #16a34a; }
+    .status-review { background: rgba(79,142,247,0.12); color: var(--color-accent); }
+    .built-summary {
+      margin-top: var(--space-md); padding: var(--space-sm) var(--space-md);
+      background: rgba(79,142,247,0.06); border-radius: var(--border-radius-sm);
+      border-left: 3px solid var(--color-accent);
+      font-size: var(--text-small); color: var(--color-text); line-height: 1.6;
+    }
+
+    /* === SLIDE 4: Challenges === */
+    .challenges-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-sm); margin-top: var(--space-md);
+    }
+    .challenge-card {
+      background: var(--color-surface); border-radius: var(--border-radius-md);
+      padding: var(--space-md); position: relative;
+      border-left: 3px solid var(--color-danger);
+    }
+    .challenge-card h3 {
+      font-family: var(--font-heading); font-size: calc(var(--text-body) * 1.0);
+      font-weight: 700; color: var(--color-primary); margin-bottom: var(--space-xs);
+    }
+    .challenge-card p { font-size: var(--text-small); color: var(--color-text-muted); line-height: 1.55; }
+    .challenge-tag {
+      display: inline-block; padding: 0.15rem 0.5rem; border-radius: 999px;
+      font-size: 0.7rem; font-weight: 600; margin-bottom: var(--space-xs);
+    }
+    .tag-data { background: rgba(239,68,68,0.1); color: var(--color-danger); }
+    .tag-process { background: rgba(245,158,11,0.1); color: var(--color-warning); }
+    .challenge-footer {
+      margin-top: var(--space-md); font-size: var(--text-small);
+      color: var(--color-text-muted); line-height: 1.6;
+      padding: var(--space-sm) var(--space-md);
+      background: var(--color-surface); border-radius: var(--border-radius-sm);
+    }
+
+    /* === SLIDE 5: Two Paths === */
+    .slide-section { background: var(--color-primary); color: var(--color-text-light); }
+    .section-number {
+      position: absolute; top: 8%; right: 6%;
+      font-family: var(--font-heading); font-size: clamp(5rem, 10vw, 9rem);
+      font-weight: 900; opacity: 0.06; line-height: 1;
+    }
+    .section-title {
+      font-family: var(--font-heading); font-size: var(--text-title);
+      font-weight: 700; margin-bottom: var(--space-sm);
+    }
+    .section-desc { font-size: var(--text-body); opacity: 0.7; max-width: 65%; line-height: 1.6; }
+
+    /* === SLIDE 6: Comparison === */
+    .comparison {
+      display: grid; grid-template-columns: 1fr auto 1fr;
+      gap: var(--space-md); align-items: stretch; margin-top: var(--space-md);
+    }
+    .compare-card {
+      background: var(--color-surface); border-radius: var(--border-radius-md);
+      padding: var(--space-md); border: 2px solid var(--color-border); position: relative;
+    }
+    .compare-winner { border-color: var(--color-accent); }
+    .winner-badge {
+      position: absolute; top: -0.7rem; right: var(--space-sm);
+      background: var(--color-accent); color: var(--color-text-light);
+      padding: 0.2rem 0.7rem; border-radius: 999px;
+      font-size: var(--text-caption); font-weight: 600;
+    }
+    .compare-vs {
+      display: flex; align-items: center;
+      font-family: var(--font-heading); font-size: var(--text-subtitle);
+      font-weight: 700; color: var(--color-text-muted); opacity: 0.3;
+    }
+    .compare-card h3 {
+      font-family: var(--font-heading); font-size: var(--text-subtitle);
+      font-weight: 700; color: var(--color-primary); margin-bottom: var(--space-sm);
+    }
+    .compare-card ul { list-style: none; padding: 0; }
+    .compare-card li {
+      padding: 0.55rem 0; border-bottom: 1px solid var(--color-border);
+      font-size: var(--text-small); line-height: 1.5; display: flex; align-items: flex-start; gap: 0.5rem;
+    }
+    .compare-card li:last-child { border-bottom: none; }
+    .li-icon { flex-shrink: 0; margin-top: 2px; }
+    .pro { color: var(--color-success); }
+    .con { color: var(--color-danger); }
+    .li-highlight {
+      background: rgba(79,142,247,0.08); border-radius: var(--border-radius-sm);
+      padding-left: 0.5rem !important; padding-right: 0.5rem !important;
+      border-bottom-color: rgba(79,142,247,0.15) !important;
+    }
+
+    /* === SLIDE 7: Why Path 1 === */
+    .rationale-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: var(--space-md); margin-top: var(--space-md);
+    }
+    .rationale-card {
+      background: var(--color-surface); border-radius: var(--border-radius-md);
+      padding: var(--space-md); border-top: 3px solid var(--color-accent);
+    }
+    .rationale-card h3 {
+      font-family: var(--font-heading); font-size: calc(var(--text-body) * 1.05);
+      font-weight: 700; color: var(--color-primary); margin-bottom: var(--space-xs);
+    }
+    .rationale-card p { font-size: var(--text-small); color: var(--color-text-muted); line-height: 1.6; }
+
+    /* === SLIDE 9: Asks === */
+    .asks-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: var(--space-md); margin-top: var(--space-md);
+    }
+    .asks-card {
+      background: var(--color-surface); border-radius: var(--border-radius-md);
+      padding: var(--space-md); border: 2px solid var(--color-border);
+    }
+    .asks-card-primary { border-color: var(--color-accent); }
+    .asks-path-label {
+      display: inline-block; padding: 0.25rem 0.8rem; border-radius: 999px;
+      font-size: var(--text-caption); font-weight: 700;
+      margin-bottom: var(--space-md); text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .asks-path-1 { background: rgba(79,142,247,0.12); color: var(--color-accent); }
+    .asks-path-2 { background: var(--color-border); color: var(--color-text-muted); }
+    .asks-list { display: flex; flex-direction: column; gap: var(--space-sm); }
+    .ask-item {
+      display: flex; align-items: flex-start; gap: var(--space-sm);
+    }
+    .ask-num {
+      flex-shrink: 0; width: 1.6rem; height: 1.6rem; border-radius: 50%;
+      background: var(--color-primary); color: var(--color-text-light);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: var(--text-caption); margin-top: 2px;
+    }
+    .asks-card-primary .ask-num { background: var(--color-accent); }
+    .ask-text { font-size: var(--text-small); line-height: 1.6; }
+    .ask-text strong { color: var(--color-primary); }
+
+    /* === SLIDE 9: Closing / Decision Ask === */
+    .slide-takeaway { background: var(--color-bg-dark); color: var(--color-text-light); }
+    .takeaway-shape {
+      position: absolute; width: 50vw; height: 50vw; border-radius: 50%;
+      background: rgba(79,142,247,0.06); right: -15vw; top: -10vw;
+    }
+    .takeaway-label {
+      font-size: var(--text-small); text-transform: uppercase;
+      letter-spacing: 0.2em; color: var(--color-accent); margin-bottom: var(--space-md);
+    }
+    .takeaway-message {
+      font-family: var(--font-heading); font-size: var(--text-title);
+      font-weight: 700; line-height: 1.3; max-width: 85%; margin: 0 auto var(--space-md);
+    }
+    .takeaway-support {
+      font-size: var(--text-body); opacity: 0.6; max-width: 65%; margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* === Responsive === */
+    @media (max-width: 768px) {
+      :root { --slide-padding: 6vw 5vw; }
+      .process-flow, .built-grid, .challenges-grid, .rationale-grid, .asks-grid { grid-template-columns: 1fr; }
+      .bp-row { flex-direction: column; }
+      .bp-arrow { transform: rotate(90deg); }
+      .comparison { grid-template-columns: 1fr; }
+      .compare-vs { justify-content: center; padding: var(--space-xs) 0; }
+      .section-desc { max-width: 100%; }
+    }
+
+    /* === Print === */
+    @media print {
+      .slides-container { overflow: visible; scroll-snap-type: none; }
+      .slide { page-break-after: always; height: auto; min-height: 100vh; scroll-snap-align: unset; }
+      .slide-counter, .progress-bar { display: none; }
+      * { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="progress-bar" style="width: 0%"></div>
+  <div class="slide-counter">1 / 10</div>
+
+  <div class="slides-container">
+
+    <!-- SLIDE 1: Title -->
+    <section class="slide slide-hero" id="slide-1">
+      <div class="hero-bg-shapes">
+        <div class="hero-circle"></div>
+        <div class="hero-circle-2"></div>
+      </div>
+      <div class="slide-content" style="text-align: center;">
+        <div class="hero-tag animate-in">Leadership Alignment</div>
+        <h1 class="hero-title animate-in">GroundSpan Integration</h1>
+        <p class="hero-subtitle animate-in">Forward flow is built — should we ship it now or wait?</p>
+        <p class="hero-date animate-in">July 2026</p>
+      </div>
+    </section>
+
+    <!-- SLIDE 2: Big Picture -->
+    <section class="slide slide-light" id="slide-2">
+      <div class="slide-content">
+        <div class="slide-title-accent animate-in"></div>
+        <h2 class="slide-title animate-in">The End Goal</h2>
+        <div class="big-picture animate-in">
+          <div class="bp-row">
+            <div class="bp-block bp-done">
+              <div class="bp-label">Forward Flow</div>
+              <div class="bp-desc">GS &rarr; Savoya</div>
+              <div class="bp-status-tag bp-tag-done">Built</div>
+            </div>
+            <div class="bp-arrow">&rarr;</div>
+            <div class="bp-block bp-pending">
+              <div class="bp-label">Backward Flow</div>
+              <div class="bp-desc">Savoya &rarr; GS</div>
+              <div class="bp-status-tag bp-tag-pending">Not Started</div>
+            </div>
+            <div class="bp-arrow">&rarr;</div>
+            <div class="bp-block bp-future">
+              <div class="bp-label">Full Sync</div>
+              <div class="bp-desc">Both systems in sync, fully automated</div>
+              <div class="bp-status-tag bp-tag-future">End State</div>
+            </div>
+          </div>
+        </div>
+        <div class="bp-context animate-in">
+          <p><strong>Full integration</strong> means both forward flow (pricing, booking, cancellation, modification from Concur into Savoya) and backward flow (driver info, status updates, closeout data pushed back to GroundSpan) — so both systems stay in sync at all times.</p>
+          <p style="margin-top: var(--space-sm);"><strong>Where we are now:</strong> The forward flow is built and can replace the current manual CSV and email-based process. The question today is whether we should start using it now or wait until the full integration is complete.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 3: Current Manual Process -->
+    <section class="slide slide-light" id="slide-3">
+      <div class="slide-content">
+        <div class="slide-title-accent animate-in"></div>
+        <h2 class="slide-title animate-in">How It Works Today</h2>
+        <div class="process-flow">
+          <div class="process-step animate-in">
+            <div class="step-num">1</div>
+            <div class="step-text"><strong>Sales onboards client</strong> on GroundSpan platform</div>
+          </div>
+          <div class="process-step manual animate-in">
+            <div class="step-num manual-num">2</div>
+            <div class="step-text"><strong>Sales provides CSV</strong> with client-specific rates to GroundSpan — manual handoff</div>
+          </div>
+          <div class="process-step animate-in">
+            <div class="step-num">3</div>
+            <div class="step-text"><strong>Client sees Savoya</strong> as a provider option in their Concur system</div>
+          </div>
+          <div class="process-step animate-in">
+            <div class="step-num">4</div>
+            <div class="step-text"><strong>Client requests pricing</strong> — GS returns rates from the CSV Savoya provided</div>
+          </div>
+          <div class="process-step animate-in">
+            <div class="step-num">5</div>
+            <div class="step-text"><strong>Client books</strong> after reviewing Savoya rates in Concur</div>
+          </div>
+          <div class="process-step manual animate-in">
+            <div class="step-num manual-num">6</div>
+            <div class="step-text"><strong>GS sends email alert</strong> to Savoya team — booking, modification, or cancellation</div>
+          </div>
+          <div class="process-step manual animate-in">
+            <div class="step-num manual-num">7</div>
+            <div class="step-text"><strong>Savoya team logs into GS portal</strong> and manually re-enters reservation details into Core</div>
+          </div>
+          <div class="process-step animate-in">
+            <div class="step-num">8</div>
+            <div class="step-text"><strong>Savoya system takes over</strong> — client gets updates from our platform from here on</div>
+          </div>
+        </div>
+        <div class="process-legend animate-in">
+          <div class="legend-item"><div class="legend-dot auto"></div> Automated</div>
+          <div class="legend-item"><div class="legend-dot manual"></div> Manual / email-based</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 4: What We Built -->
+    <section class="slide slide-light" id="slide-4">
+      <div class="slide-content">
+        <div class="slide-title-accent animate-in"></div>
+        <h2 class="slide-title animate-in">What We've Built So Far — Forward Flow</h2>
+        <div class="built-grid">
+          <div class="built-card animate-in">
+            <div class="built-status status-review">In Review</div>
+            <h3>Live Pricing</h3>
+            <p>GroundSpan calls Savoya directly for real-time rates. Replaces static CSV with dynamic pricing from our engine — including special events.</p>
+          </div>
+          <div class="built-card animate-in">
+            <div class="built-status status-review">In Review</div>
+            <h3>Automated Booking</h3>
+            <p>Reservations from Concur flow directly into Savoya Core. No email alerts, no portal logins, no manual re-entry.</p>
+          </div>
+          <div class="built-card animate-in">
+            <div class="built-status status-review">In Review</div>
+            <h3>Cancellation</h3>
+            <p>Cancellations from Concur are processed automatically in our system with proper validation and structured responses.</p>
+          </div>
+          <div class="built-card animate-in">
+            <div class="built-status status-review">In Review</div>
+            <h3>Modification</h3>
+            <p>When clients modify a reservation in Concur, the changes flow into Savoya automatically — updating the existing reservation in our system.</p>
+          </div>
+        </div>
+        <div class="built-summary animate-in">
+          <strong>Bottom line:</strong> The forward flow replaces the manual CSV rate process and the email-based booking process. Happy path validated against GroundSpan staging. Edge-case hardening in progress.
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 5: Open Challenges -->
+    <section class="slide slide-light" id="slide-5">
+      <div class="slide-content">
+        <div class="slide-title-accent animate-in"></div>
+        <h2 class="slide-title animate-in">Challenges Before Go-Live</h2>
+        <div class="challenges-grid">
+          <div class="challenge-card animate-in">
+            <div class="challenge-tag tag-data">Data Mismatch</div>
+            <h3>Trip Type Definition</h3>
+            <p>GS asks users to choose Hourly vs. Transfer upfront. Savoya determines this from the itinerary automatically. Presenting the right rate to the user when their system's definitions don't match ours is the core pricing challenge.</p>
+          </div>
+          <div class="challenge-card animate-in">
+            <div class="challenge-tag tag-data">Data Quality</div>
+            <h3>Address &amp; Airport Edge Cases</h3>
+            <p>Airports or cities that don't exist in our system will cause failures. We need safeguards and fallback processes for mismatches in location data.</p>
+          </div>
+          <div class="challenge-card animate-in">
+            <div class="challenge-tag tag-process">Process Gap</div>
+            <h3>TC &amp; Passenger Detection</h3>
+            <p>Mapping the Travel Coordinator and passenger profile from Concur data to our system's contact model requires client-specific configuration and testing.</p>
+          </div>
+          <div class="challenge-card animate-in">
+            <div class="challenge-tag tag-process">Process Gap</div>
+            <h3>QA &amp; Flight Validation</h3>
+            <p>Our standard QA and flight validation workflows need to be adapted for automated bookings that bypass the current manual intake.</p>
+          </div>
+          <div class="challenge-card animate-in">
+            <div class="challenge-tag tag-data">Coverage Gap</div>
+            <h3>No Service Market</h3>
+            <p>If a client books a reservation in a market we don't serve, the integration will fail. We need safeguards to gracefully decline and communicate why the booking can't be fulfilled.</p>
+          </div>
+          <div class="challenge-card animate-in">
+            <div class="challenge-tag tag-process">Availability</div>
+            <h3>Pending / Limited Availability</h3>
+            <p>When a client books a trip that's due soon or in a tight window, we may not be able to confirm immediately. We need a way to notify clients that their booking is not yet confirmed and is pending availability.</p>
+          </div>
+        </div>
+        <div class="challenge-footer animate-in">
+          These are solvable — but each requires input from some combination of clients, GroundSpan, and our internal teams.
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 6: Section Divider -->
+    <section class="slide slide-section" id="slide-6">
+      <div class="section-number">?</div>
+      <div class="slide-content">
+        <h2 class="section-title animate-in">Two Paths Forward</h2>
+        <p class="section-desc animate-in">We can solve these challenges iteratively while shipping, or comprehensively before shipping. Both get us to the same destination — the question is speed vs. upfront completeness.</p>
+      </div>
+    </section>
+
+    <!-- SLIDE 7: Comparison -->
+    <section class="slide slide-light" id="slide-7">
+      <div class="slide-content">
+        <div class="slide-title-accent animate-in"></div>
+        <h2 class="slide-title animate-in">Path Comparison</h2>
+        <div class="comparison">
+          <div class="compare-card compare-winner animate-in">
+            <div class="winner-badge">Recommended</div>
+            <h3>Path 1: Ship &amp; Iterate</h3>
+            <ul>
+              <li><span class="li-icon pro">+</span> Immediately replaces manual CSV and email process</li>
+              <li><span class="li-icon pro">+</span> Real-time pricing with special events from day one</li>
+              <li><span class="li-icon pro">+</span> Feedback loop with clients and GS starts immediately</li>
+              <li><span class="li-icon pro">+</span> Unlocks onboarding pipeline clients sooner</li>
+              <li><span class="li-icon pro">+</span> Backward flow development runs in parallel</li>
+              <li><span class="li-icon pro">+</span> Real usage starts generating inputs for backward flow design</li>
+              <li class="li-highlight"><span class="li-icon pro">+</span> <strong>Naturally engages clients during onboarding — we learn their actual workflows and pain points firsthand</strong></li>
+              <li><span class="li-icon con">&ndash;</span> Initial edge cases need monitoring and manual fallbacks</li>
+              <li><span class="li-icon con">&ndash;</span> Requires agreed interim solutions per challenge</li>
+            </ul>
+          </div>
+          <div class="compare-vs animate-in">VS</div>
+          <div class="compare-card animate-in">
+            <h3>Path 2: Solve Everything First</h3>
+            <ul>
+              <li><span class="li-icon pro">+</span> More polished experience at launch</li>
+              <li><span class="li-icon pro">+</span> Fewer edge cases in production</li>
+              <li><span class="li-icon con">&ndash;</span> Requires extensive multi-party coordination upfront</li>
+              <li><span class="li-icon con">&ndash;</span> Manual CSV and email process continues indefinitely</li>
+              <li><span class="li-icon con">&ndash;</span> Timeline uncertain — depends on GS and client availability</li>
+              <li><span class="li-icon con">&ndash;</span> Delays onboarding new clients in the pipeline</li>
+              <li><span class="li-icon con">&ndash;</span> No real-world feedback until everything is solved</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 8: Why Path 1 -->
+    <section class="slide slide-light" id="slide-8">
+      <div class="slide-content">
+        <div class="slide-title-accent animate-in"></div>
+        <h2 class="slide-title animate-in">Why We Recommend Ship &amp; Iterate</h2>
+        <div class="rationale-grid">
+          <div class="rationale-card animate-in">
+            <h3>Immediate Value</h3>
+            <p>Eliminates the manual CSV rate handoff and email-based booking process today. The ops team stops logging into the GS portal to re-enter data.</p>
+          </div>
+          <div class="rationale-card animate-in">
+            <h3>Accurate Pricing</h3>
+            <p>Clients get real-time rates from our pricing engine instead of stale CSV data. Special event rates, dynamic pricing — all live from day one.</p>
+          </div>
+          <div class="rationale-card animate-in">
+            <h3>Faster Learning</h3>
+            <p>Real-world usage will surface the edge cases that matter most. Talking to clients and GS with production data makes those conversations concrete and productive.</p>
+          </div>
+          <div class="rationale-card animate-in">
+            <h3>Pipeline Acceleration</h3>
+            <p>An automated integration — even with known limitations — is more compelling to prospects than a manual email process. Moves pipeline clients forward.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 9: Asks From Leadership -->
+    <section class="slide slide-light" id="slide-9">
+      <div class="slide-content">
+        <div class="slide-title-accent animate-in"></div>
+        <h2 class="slide-title animate-in">What We Need From Leadership</h2>
+        <div class="asks-grid">
+          <div class="asks-card asks-card-primary animate-in">
+            <div class="asks-path-label asks-path-1">If Path 1 — Ship &amp; Iterate</div>
+            <div class="asks-list">
+              <div class="ask-item">
+                <div class="ask-num">1</div>
+                <div class="ask-text"><strong>Include Ayush &amp; Himanshu in onboarding calls</strong> so we can understand client setup and catch integration issues early</div>
+              </div>
+              <div class="ask-item">
+                <div class="ask-num">2</div>
+                <div class="ask-text"><strong>Help us work closely with one already-onboarded client</strong> for 2-3 of their trips — to validate the integration end-to-end in a controlled setting</div>
+              </div>
+              <div class="ask-item">
+                <div class="ask-num">3</div>
+                <div class="ask-text"><strong>Review and decide on the interim solutions</strong> we propose for each challenge — we'll bring options, we need sign-off to move forward</div>
+              </div>
+            </div>
+          </div>
+          <div class="asks-card animate-in">
+            <div class="asks-path-label asks-path-2">If Path 2 — Solve Everything First</div>
+            <div class="asks-list">
+              <div class="ask-item">
+                <div class="ask-num">1</div>
+                <div class="ask-text"><strong>Help us get sessions with all currently onboarded clients</strong> to understand their workflows and pain points upfront</div>
+              </div>
+              <div class="ask-item">
+                <div class="ask-num">2</div>
+                <div class="ask-text"><strong>Include Ayush &amp; Himanshu in all future onboarding calls</strong> — not just selectively, but every new client going forward</div>
+              </div>
+              <div class="ask-item">
+                <div class="ask-num">3</div>
+                <div class="ask-text"><strong>Facilitate a joint session with our leadership, GroundSpan, and a client rep</strong> to align all parties on requirements and design decisions together</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 10: Decision Ask -->
+    <section class="slide slide-takeaway" id="slide-10">
+      <div class="takeaway-shape"></div>
+      <div class="slide-content" style="text-align: center;">
+        <p class="takeaway-label animate-in">Decision Needed</p>
+        <h2 class="takeaway-message animate-in">Do we ship what we've built with agreed interim solutions, or wait until every challenge is fully resolved?</h2>
+        <p class="takeaway-support animate-in">Our recommendation: Ship &amp; Iterate. Replace the manual process now, learn from production, and refine with real feedback from clients and GroundSpan.</p>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    (function() {
+      const slides = document.querySelectorAll('.slide');
+      const counter = document.querySelector('.slide-counter');
+      const progressBar = document.querySelector('.progress-bar');
+      let current = 0;
+
+      function goToSlide(index) {
+        if (index < 0 || index >= slides.length) return;
+        current = index;
+        slides[current].scrollIntoView({ behavior: 'smooth' });
+        updateUI();
+      }
+
+      function updateUI() {
+        if (counter) {
+          counter.textContent = current + 1 + ' / ' + slides.length;
+          const isDark = slides[current].classList.contains('slide-hero') ||
+                         slides[current].classList.contains('slide-section') ||
+                         slides[current].classList.contains('slide-takeaway');
+          counter.classList.toggle('on-dark', isDark);
+        }
+        if (progressBar) progressBar.style.width = ((current + 1) / slides.length * 100) + '%';
+        slides.forEach(function(s, i) { s.classList.toggle('active', i === current); });
+      }
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+          e.preventDefault();
+          goToSlide(current + 1);
+        }
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          goToSlide(current - 1);
+        }
+        if (e.key === 'Home') goToSlide(0);
+        if (e.key === 'End') goToSlide(slides.length - 1);
+      });
+
+      var container = document.querySelector('.slides-container');
+      if (container) {
+        var scrollTimeout;
+        container.addEventListener('scroll', function() {
+          clearTimeout(scrollTimeout);
+          scrollTimeout = setTimeout(function() {
+            var scrollTop = container.scrollTop;
+            var slideHeight = window.innerHeight;
+            var newIndex = Math.round(scrollTop / slideHeight);
+            if (newIndex !== current && newIndex >= 0 && newIndex < slides.length) {
+              current = newIndex;
+              updateUI();
+            }
+          }, 100);
+        });
+      }
+
+      var touchStartY = 0;
+      document.addEventListener('touchstart', function(e) { touchStartY = e.touches[0].clientY; });
+      document.addEventListener('touchend', function(e) {
+        var diff = touchStartY - e.changedTouches[0].clientY;
+        if (Math.abs(diff) > 50) {
+          if (diff > 0) goToSlide(current + 1);
+          else goToSlide(current - 1);
+        }
+      });
+
+      updateUI();
+      slides[0].classList.add('active');
+    })();
+  </script>
+</body>
+</html>
