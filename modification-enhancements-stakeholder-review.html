@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modification Enhancements — Stakeholder Review</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=DM+Sans:wght@400;500;600&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --color-primary: #065A82;
+      --color-secondary: #1C7293;
+      --color-accent: #02C39A;
+      --color-bg: #F7FBFF;
+      --color-bg-dark: #0D1B2A;
+      --color-text: #0D1B2A;
+      --color-text-light: #E0F2FE;
+      --color-text-muted: #64748B;
+      --color-surface: #EFF6FF;
+      --color-border: #DBEAFE;
+      --color-danger: #DC2626;
+      --color-warning: #F59E0B;
+      --color-success: #02C39A;
+
+      --font-heading: 'Space Grotesk', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+
+      --text-hero: clamp(2.8rem, 5.5vw, 4.5rem);
+      --text-title: clamp(1.8rem, 3.5vw, 3rem);
+      --text-subtitle: clamp(1.2rem, 2vw, 1.7rem);
+      --text-body: clamp(1rem, 1.4vw, 1.25rem);
+      --text-small: clamp(0.85rem, 1vw, 1rem);
+      --text-caption: clamp(0.75rem, 0.9vw, 0.85rem);
+
+      --space-xs: 0.5rem;
+      --space-sm: 1rem;
+      --space-md: 2rem;
+      --space-lg: 3.5rem;
+      --space-xl: 5rem;
+      --slide-padding: 5vw 6vw;
+
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+      --duration-fast: 0.3s;
+      --duration-normal: 0.6s;
+      --duration-slow: 1s;
+
+      --slide-max-width: 1100px;
+      --border-radius-sm: 8px;
+      --border-radius-md: 14px;
+      --border-radius-lg: 20px;
+    }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      color: var(--color-text);
+      background: var(--color-bg);
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .slides-container {
+      width: 100vw;
+      height: 100vh;
+      overflow-y: auto;
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+    }
+
+    .slide {
+      width: 100vw;
+      height: 100vh;
+      min-height: 100vh;
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: var(--slide-padding);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slide-content {
+      max-width: var(--slide-max-width);
+      margin: 0 auto;
+      width: 100%;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* === Progress & Counter === */
+    .progress-bar {
+      position: fixed; top: 0; left: 0; height: 3px;
+      background: var(--color-accent);
+      transition: width var(--duration-fast) var(--ease-out-expo);
+      z-index: 100;
+    }
+    .slide-counter {
+      position: fixed; bottom: 2rem; right: 2rem;
+      font-family: var(--font-body);
+      font-size: var(--text-caption);
+      color: var(--color-text-muted);
+      z-index: 100;
+      opacity: 0.7;
+    }
+
+    /* === Shared Styles === */
+    .slide-light { background: var(--color-bg); color: var(--color-text); }
+    .slide-dark { background: var(--color-bg-dark); color: var(--color-text-light); }
+    .slide-dark .slide-counter { color: rgba(255,255,255,0.4); }
+
+    .slide-title {
+      font-family: var(--font-heading);
+      font-size: var(--text-title);
+      font-weight: 700;
+      margin-bottom: var(--space-lg);
+      color: var(--color-primary);
+    }
+    .slide-dark .slide-title { color: var(--color-accent); }
+
+    /* === Motif: left accent border on key containers === */
+    .accent-border {
+      border-left: 4px solid var(--color-accent);
+      padding-left: var(--space-md);
+    }
+
+    /* === Animations === */
+    @media (prefers-reduced-motion: no-preference) {
+      .slide.active .animate-in {
+        animation: slideUp var(--duration-normal) var(--ease-out-expo) both;
+      }
+      .slide.active .animate-in:nth-child(2) { animation-delay: 0.1s; }
+      .slide.active .animate-in:nth-child(3) { animation-delay: 0.2s; }
+      .slide.active .animate-in:nth-child(4) { animation-delay: 0.3s; }
+      .slide.active .animate-in:nth-child(5) { animation-delay: 0.4s; }
+      .slide.active .animate-in:nth-child(6) { animation-delay: 0.5s; }
+      .slide.active .animate-in:nth-child(7) { animation-delay: 0.6s; }
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* ============================================
+       SLIDE 1 — TITLE
+       ============================================ */
+    .slide-hero { background: var(--color-bg-dark); color: var(--color-text-light); }
+
+    .hero-bg-shapes { position: absolute; inset: 0; overflow: hidden; z-index: 0; }
+    .hero-circle {
+      position: absolute; width: 45vw; height: 45vw; border-radius: 50%;
+      background: radial-gradient(circle, rgba(2,195,154,0.08) 0%, transparent 70%);
+      top: -12vw; right: -10vw;
+    }
+    .hero-circle-2 {
+      position: absolute; width: 30vw; height: 30vw; border-radius: 50%;
+      background: radial-gradient(circle, rgba(6,90,130,0.1) 0%, transparent 70%);
+      bottom: -10vw; left: -8vw;
+    }
+
+    .hero-title {
+      font-family: var(--font-heading);
+      font-size: var(--text-hero);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: var(--space-md);
+      letter-spacing: -0.02em;
+    }
+    .hero-subtitle {
+      font-size: var(--text-subtitle);
+      font-weight: 400;
+      opacity: 0.7;
+      margin-bottom: var(--space-sm);
+    }
+    .hero-date {
+      font-size: var(--text-small);
+      opacity: 0.4;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: var(--color-accent);
+      color: var(--color-bg-dark);
+      padding: 0.3rem 1rem;
+      border-radius: 999px;
+      font-size: var(--text-caption);
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: var(--space-md);
+    }
+
+    /* ============================================
+       SLIDE 2 — THE PROBLEM (pain points)
+       ============================================ */
+    .pain-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+    .pain-item {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-sm);
+      padding: var(--space-sm) var(--space-md);
+      background: #FEF2F2;
+      border-radius: var(--border-radius-sm);
+      border-left: 4px solid var(--color-danger);
+    }
+    .pain-icon {
+      flex-shrink: 0;
+      width: 1.8rem; height: 1.8rem;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      margin-top: 0.1rem;
+    }
+    .pain-text {
+      font-size: var(--text-body);
+      line-height: 1.5;
+      color: var(--color-text);
+    }
+    .pain-text strong { color: var(--color-danger); font-weight: 600; }
+
+    /* ============================================
+       SLIDE 3 — THREE CHANGES (cards)
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-md);
+    }
+    .card {
+      background: var(--color-surface);
+      border-radius: var(--border-radius-md);
+      padding: var(--space-md);
+      transition: transform var(--duration-fast) var(--ease-out-expo),
+                  box-shadow var(--duration-fast) var(--ease-out-expo);
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+    }
+    .card-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 2.2rem; height: 2.2rem;
+      background: var(--color-primary);
+      color: var(--color-text-light);
+      border-radius: var(--border-radius-sm);
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: var(--text-body);
+      margin-bottom: var(--space-sm);
+    }
+    .card h3 {
+      font-family: var(--font-heading);
+      font-size: calc(var(--text-body) * 1.1);
+      font-weight: 700;
+      color: var(--color-primary);
+      margin-bottom: var(--space-xs);
+    }
+    .card p {
+      font-size: var(--text-small);
+      line-height: 1.6;
+      color: var(--color-text-muted);
+    }
+
+    /* ============================================
+       SLIDE 4 — BEFORE VS AFTER
+       ============================================ */
+    .comparison {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: var(--space-md);
+      align-items: stretch;
+    }
+    .compare-card {
+      background: var(--color-surface);
+      border-radius: var(--border-radius-md);
+      padding: var(--space-md);
+      border: 2px solid var(--color-border);
+    }
+    .compare-card.compare-before { border-color: var(--color-danger); background: #FEF2F2; }
+    .compare-card.compare-after { border-color: var(--color-accent); background: #ECFDF5; }
+    .compare-card h3 {
+      font-family: var(--font-heading);
+      font-size: var(--text-subtitle);
+      font-weight: 700;
+      margin-bottom: var(--space-sm);
+    }
+    .compare-before h3 { color: var(--color-danger); }
+    .compare-after h3 { color: #059669; }
+    .compare-card ul {
+      list-style: none; padding: 0;
+    }
+    .compare-card li {
+      padding: var(--space-xs) 0;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      font-size: var(--text-small);
+      line-height: 1.5;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+    .compare-card li:last-child { border-bottom: none; }
+    .compare-card li .icon { flex-shrink: 0; margin-top: 0.15rem; }
+    .compare-vs {
+      display: flex; align-items: center;
+      font-family: var(--font-heading);
+      font-size: var(--text-subtitle);
+      font-weight: 700;
+      color: var(--color-text-muted);
+      opacity: 0.3;
+    }
+
+    /* ============================================
+       SLIDE 5 — MOD PENDING LOGIC (flow)
+       ============================================ */
+    .flow-diagram {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-sm);
+      flex-wrap: wrap;
+    }
+    .flow-box {
+      background: var(--color-surface);
+      border: 2px solid var(--color-border);
+      border-radius: var(--border-radius-md);
+      padding: var(--space-sm) var(--space-md);
+      text-align: center;
+      font-size: var(--text-small);
+      font-weight: 500;
+      max-width: 200px;
+    }
+    .flow-box.flow-decision {
+      background: var(--color-primary);
+      color: var(--color-text-light);
+      border-color: var(--color-primary);
+      border-radius: var(--border-radius-sm);
+      transform: rotate(0deg);
+      font-weight: 600;
+    }
+    .flow-box.flow-yes {
+      background: #ECFDF5;
+      border-color: var(--color-accent);
+      color: #059669;
+    }
+    .flow-box.flow-no {
+      background: #FEF2F2;
+      border-color: var(--color-danger);
+      color: var(--color-danger);
+    }
+    .flow-arrow {
+      font-size: 1.5rem;
+      color: var(--color-text-muted);
+      opacity: 0.5;
+    }
+    .flow-label {
+      font-size: var(--text-caption);
+      color: var(--color-text-muted);
+      text-align: center;
+      font-weight: 500;
+    }
+    .flow-branch {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* ============================================
+       SLIDE 6 — CLIENT EMAIL
+       ============================================ */
+    .email-preview {
+      background: white;
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius-md);
+      padding: var(--space-md);
+      max-width: 600px;
+    }
+    .email-header {
+      border-bottom: 1px solid var(--color-border);
+      padding-bottom: var(--space-sm);
+      margin-bottom: var(--space-sm);
+    }
+    .email-subject {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: var(--text-body);
+      color: var(--color-primary);
+    }
+    .email-meta {
+      font-size: var(--text-caption);
+      color: var(--color-text-muted);
+      margin-top: 0.25rem;
+    }
+    .email-change-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--color-border);
+      font-size: var(--text-small);
+    }
+    .email-change-row:last-of-type { border-bottom: none; }
+    .change-field { font-weight: 600; color: var(--color-primary); }
+    .change-values { color: var(--color-text-muted); }
+    .change-old { text-decoration: line-through; opacity: 0.6; }
+    .change-new { color: var(--color-accent); font-weight: 500; }
+    .email-who {
+      margin-top: var(--space-sm);
+      padding-top: var(--space-sm);
+      border-top: 1px solid var(--color-border);
+      font-size: var(--text-caption);
+      color: var(--color-text-muted);
+    }
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-lg);
+      align-items: start;
+    }
+    .col-text h3 {
+      font-family: var(--font-heading);
+      font-size: var(--text-subtitle);
+      font-weight: 600;
+      color: var(--color-primary);
+      margin-bottom: var(--space-xs);
+    }
+    .col-text p, .col-text li {
+      font-size: var(--text-small);
+      line-height: 1.6;
+      color: var(--color-text-muted);
+    }
+    .col-text ul {
+      list-style: none; padding: 0; margin-top: var(--space-sm);
+    }
+    .col-text li {
+      padding: 0.4rem 0;
+      display: flex; align-items: flex-start; gap: 0.5rem;
+    }
+
+    /* ============================================
+       SLIDE 7 — VENDOR EMAIL (two types)
+       ============================================ */
+    .vendor-types {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-md);
+    }
+    .vendor-type-card {
+      background: var(--color-surface);
+      border-radius: var(--border-radius-md);
+      padding: var(--space-md);
+      border-top: 4px solid var(--color-accent);
+    }
+    .vendor-type-card.type-ar { border-top-color: var(--color-warning); }
+    .vendor-type-card h3 {
+      font-family: var(--font-heading);
+      font-size: var(--text-subtitle);
+      font-weight: 700;
+      color: var(--color-primary);
+      margin-bottom: var(--space-xs);
+    }
+    .vendor-type-card .when {
+      font-size: var(--text-caption);
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-sm);
+      padding-bottom: var(--space-sm);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .vendor-type-card p {
+      font-size: var(--text-small);
+      line-height: 1.6;
+      color: var(--color-text);
+    }
+    .vendor-btn {
+      display: inline-block;
+      padding: 0.4rem 1rem;
+      border-radius: var(--border-radius-sm);
+      font-size: var(--text-caption);
+      font-weight: 600;
+      margin-top: var(--space-sm);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .btn-ar { background: var(--color-warning); color: #7C2D12; }
+    .btn-ack { background: var(--color-accent); color: var(--color-bg-dark); }
+
+    /* ============================================
+       SLIDE 8 — THREE LISTS
+       ============================================ */
+    .list-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-md);
+    }
+    .list-card {
+      background: var(--color-surface);
+      border-radius: var(--border-radius-md);
+      padding: var(--space-md);
+      border-top: 4px solid var(--color-accent);
+    }
+    .list-card h3 {
+      font-family: var(--font-heading);
+      font-size: calc(var(--text-body) * 1.05);
+      font-weight: 700;
+      color: var(--color-primary);
+      margin-bottom: 0.3rem;
+    }
+    .list-card .list-controls {
+      font-size: var(--text-caption);
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-sm);
+      padding-bottom: var(--space-sm);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .list-card .field-count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--color-primary);
+      color: var(--color-text-light);
+      width: 2rem; height: 2rem;
+      border-radius: 50%;
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: var(--text-small);
+      margin-bottom: var(--space-xs);
+    }
+    .list-card .field-sample {
+      font-size: var(--text-caption);
+      color: var(--color-text-muted);
+      line-height: 1.6;
+    }
+
+    /* ============================================
+       SLIDE 9 — KEY TAKEAWAY
+       ============================================ */
+    .slide-takeaway { background: var(--color-bg-dark); color: var(--color-text-light); }
+    .takeaway-shape {
+      position: absolute;
+      width: 50vw; height: 50vw;
+      border-radius: 50%;
+      background: rgba(2,195,154,0.05);
+      right: -15vw; top: -10vw;
+    }
+    .takeaway-label {
+      font-size: var(--text-small);
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--color-accent);
+      margin-bottom: var(--space-md);
+    }
+    .takeaway-message {
+      font-family: var(--font-heading);
+      font-size: var(--text-title);
+      font-weight: 700;
+      line-height: 1.3;
+      max-width: 85%;
+      margin: 0 auto var(--space-md);
+    }
+    .takeaway-support {
+      font-size: var(--text-body);
+      opacity: 0.6;
+      max-width: 65%;
+      margin: 0 auto;
+    }
+
+    /* ============================================
+       SLIDE 10 — REVIEW CHECKLIST
+       ============================================ */
+    .checklist {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-sm);
+    }
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-sm);
+      padding: var(--space-sm) var(--space-md);
+      background: var(--color-surface);
+      border-radius: var(--border-radius-sm);
+      border-left: 4px solid var(--color-accent);
+    }
+    .check-icon {
+      flex-shrink: 0;
+      width: 1.6rem; height: 1.6rem;
+      border: 2px solid var(--color-accent);
+      border-radius: 4px;
+      margin-top: 0.15rem;
+    }
+    .check-text {
+      font-size: var(--text-small);
+      line-height: 1.5;
+    }
+    .check-text strong {
+      display: block;
+      font-weight: 600;
+      color: var(--color-primary);
+      margin-bottom: 0.15rem;
+    }
+
+    /* ============================================
+       SLIDE 11 — TEST RESOURCES
+       ============================================ */
+    .resource-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-md);
+    }
+    .resource-card {
+      background: var(--color-surface);
+      border-radius: var(--border-radius-md);
+      padding: var(--space-md);
+    }
+    .resource-card h3 {
+      font-family: var(--font-heading);
+      font-size: calc(var(--text-body) * 1.05);
+      font-weight: 700;
+      color: var(--color-primary);
+      margin-bottom: var(--space-sm);
+    }
+    .resource-link {
+      display: block;
+      color: var(--color-primary);
+      font-size: var(--text-small);
+      text-decoration: none;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--color-border);
+      transition: color var(--duration-fast);
+      word-break: break-all;
+    }
+    .resource-link:hover { color: var(--color-accent); }
+    .resource-link:last-child { border-bottom: none; }
+    .cred-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--color-border);
+      font-size: var(--text-small);
+    }
+    .cred-row:last-child { border-bottom: none; }
+    .cred-label { color: var(--color-text-muted); font-weight: 500; }
+    .cred-value {
+      font-family: 'Space Grotesk', monospace;
+      color: var(--color-primary);
+      font-weight: 600;
+    }
+
+    /* ============================================
+       SLIDE 12 — CLOSING
+       ============================================ */
+    .closing-steps {
+      display: flex;
+      gap: var(--space-md);
+      margin-top: var(--space-lg);
+    }
+    .closing-step {
+      flex: 1;
+      text-align: center;
+    }
+    .closing-step-num {
+      display: inline-flex;
+      align-items: center; justify-content: center;
+      width: 2.5rem; height: 2.5rem;
+      border-radius: 50%;
+      background: var(--color-accent);
+      color: var(--color-bg-dark);
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: var(--text-body);
+      margin-bottom: var(--space-sm);
+    }
+    .closing-step h3 {
+      font-family: var(--font-heading);
+      font-size: var(--text-body);
+      font-weight: 700;
+      color: var(--color-text-light);
+      margin-bottom: 0.3rem;
+    }
+    .closing-step p {
+      font-size: var(--text-caption);
+      opacity: 0.5;
+    }
+
+    /* === Responsive === */
+    @media (max-width: 1024px) {
+      :root { --slide-padding: 4vw 5vw; }
+    }
+    @media (max-width: 768px) {
+      :root { --slide-padding: 5vw 4vw; }
+      .two-col, .vendor-types, .checklist, .resource-grid { grid-template-columns: 1fr; }
+      .card-grid, .list-grid { grid-template-columns: 1fr; }
+      .comparison { grid-template-columns: 1fr; }
+      .compare-vs { display: none; }
+      .flow-diagram { flex-direction: column; }
+      .closing-steps { flex-direction: column; }
+    }
+
+    /* === Print === */
+    @media print {
+      .slides-container { overflow: visible; scroll-snap-type: none; }
+      .slide { page-break-after: always; height: auto; min-height: 100vh; }
+      .slide-counter, .progress-bar { display: none; }
+      * { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="progress-bar" style="width: 0%"></div>
+  <div class="slide-counter">1 / 12</div>
+
+  <div class="slides-container">
+
+    <!-- ====== SLIDE 1: TITLE ====== -->
+    <section class="slide slide-hero" id="slide-1">
+      <div class="hero-bg-shapes">
+        <div class="hero-circle"></div>
+        <div class="hero-circle-2"></div>
+      </div>
+      <div class="slide-content" style="text-align: center;">
+        <div class="hero-badge animate-in">UAT REVIEW</div>
+        <h1 class="hero-title animate-in">Modification<br>Enhancements</h1>
+        <p class="hero-subtitle animate-in">Stakeholder Review &amp; Validation</p>
+        <p class="hero-date animate-in">August 2026 &middot; Savoya</p>
+      </div>
+    </section>
+
+    <!-- ====== SLIDE 2: THE PROBLEM ====== -->
+    <section class="slide slide-light" id="slide-2">
+      <div class="slide-content">
+        <h2 class="slide-title animate-in">Today's modification handling is all-or-nothing</h2>
+        <div class="pain-list">
+          <div class="pain-item animate-in">
+            <div class="pain-icon">&#x1F512;</div>
+            <div class="pain-text"><strong>Mod Pending split is hardcoded.</strong> Some fields already skip Mod Pending, but the list can't be changed without a code deploy. Some fields are in a gray zone ("Sometimes").</div>
+          </div>
+          <div class="pain-item animate-in">
+            <div class="pain-icon">&#x1F6AB;</div>
+            <div class="pain-text"><strong>Non-Mod Pending changes are completely silent.</strong> When a field doesn't trigger Mod Pending, no email goes out at all. Clients and vendors don't know anything changed.</div>
+          </div>
+          <div class="pain-item animate-in">
+            <div class="pain-icon">&#x26A0;&#xFE0F;</div>
+            <div class="pain-text"><strong>Mod Pending emails have no content.</strong> Clients see "your reservation was modified" with no detail on what changed, who did it, or why. They call in.</div>
+          </div>
+          <div class="pain-item animate-in">
+            <div class="pain-icon">&#x1F4E9;</div>
+            <div class="pain-text"><strong>Vendors get Accept/Reject for everything.</strong> When Mod Pending fires, vendors receive Accept/Reject even for changes irrelevant to them. Sometimes forget to accept, blocking the reservation.</div>
+          </div>
+          <div class="pain-item animate-in">
+            <div class="pain-icon">&#x1F525;</div>
+            <div class="pain-text"><strong>No middle ground.</strong> It's either full Mod Pending + blank emails to everyone, or complete silence. No way to notify just the client, just the vendor, or show what actually changed.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== SLIDE 3: THREE CHANGES ====== -->
+    <section class="slide slide-light" id="slide-3">
+      <div class="slide-content">
+        <h2 class="slide-title animate-in">Three changes fix this</h2>
+        <div class="card-grid">
+          <div class="card animate-in">
+            <div class="card-num">1</div>
+            <h3>Configurable Mod Pending</h3>
+            <p>The Mod Pending split already exists, but it's hardcoded. Now the field list is configurable without a code deploy.</p>
+          </div>
+          <div class="card animate-in">
+            <div class="card-num">2</div>
+            <h3>Granular Email Routing</h3>
+            <p>Non-Mod Pending changes are no longer silent. Per-field control over who gets notified: client, vendor, both, or neither.</p>
+          </div>
+          <div class="card animate-in">
+            <div class="card-num">3</div>
+            <h3>Emails With Content</h3>
+            <p>All emails show old &#8594; new values. Client emails show who changed it and who requested it. Vendors get Accept/Reject or Acknowledge.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== SLIDE 4: BEFORE VS AFTER ====== -->
+    <section class="slide slide-light" id="slide-4">
+      <div class="slide-content">
+        <h2 class="slide-title animate-in">Before vs After</h2>
+        <div class="comparison">
+          <div class="compare-card compare-before animate-in">
+            <h3>Today</h3>
+            <ul>
+              <li><span class="icon">&#x274C;</span> Mod Pending split exists but is hardcoded</li>
+              <li><span class="icon">&#x274C;</span> Non-Mod Pending changes = total silence</li>
+              <li><span class="icon">&#x274C;</span> Mod Pending emails have no content</li>
+              <li><span class="icon">&#x274C;</span> Vendor always gets Accept/Reject</li>
+              <li><span class="icon">&#x274C;</span> No per-field email routing</li>
+            </ul>
+          </div>
+          <div class="compare-vs animate-in">VS</div>
+          <div class="compare-card compare-after animate-in">
+            <h3>After</h3>
+            <ul>
+              <li><span class="icon">&#x2705;</span> Configurable field lists, no code deploy</li>
+              <li><span class="icon">&#x2705;</span> 4 email paths: both, client-only, vendor-only, silent</li>
+              <li><span class="icon">&#x2705;</span> Emails show old &#8594; new values, who changed it</li>
+              <li><span class="icon">&#x2705;</span> Vendor gets Accept/Reject or Acknowledge</li>
+              <li><span class="icon">&#x2705;</span> "Changed by" and "Requested by" shown</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== SLIDE 5: MOD PENDING + EMAIL ROUTING ====== -->
+    <section class="slide slide-light" id="slide-5">
+      <div class="slide-content">
+        <h2 class="slide-title animate-in">Future state: Mod Pending + email routing</h2>
+        <div class="email-routing animate-in" style="margin-top: var(--space-md);">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md);">
+            <div style="background: #FEF2F2; border-radius: var(--border-radius-md); padding: var(--space-md); border-top: 4px solid var(--color-danger);">
+              <h3 style="font-family: var(--font-heading); font-weight: 700; color: var(--color-danger); margin-bottom: var(--space-xs); font-size: var(--text-subtitle);">Itinerary Impacting</h3>
+              <p style="font-size: var(--text-caption); color: var(--color-text-muted); margin-bottom: var(--space-sm);">Status &#8594; Mod Pending</p>
+              <p style="font-size: var(--text-small); color: var(--color-text); line-height: 1.6;">Client email + Vendor Accept/Reject email. Both show old &#8594; new values, who changed it.</p>
+            </div>
+            <div style="background: #ECFDF5; border-radius: var(--border-radius-md); padding: var(--space-md); border-top: 4px solid var(--color-accent);">
+              <h3 style="font-family: var(--font-heading); font-weight: 700; color: #059669; margin-bottom: var(--space-xs); font-size: var(--text-subtitle);">Non-Itinerary Impacting</h3>
+              <p style="font-size: var(--text-caption); color: var(--color-text-muted); margin-bottom: var(--space-sm);">Status stays as-is. Email depends on field lists:</p>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xs); font-size: var(--text-caption);">
+                <div style="background: rgba(255,255,255,0.7); border-radius: 6px; padding: 0.5rem; text-align: center;">
+                  <strong style="color: var(--color-primary); display: block;">Client + Vendor</strong>
+                  <span style="color: var(--color-text-muted);">Acknowledge email</span>
+                </div>
+                <div style="background: rgba(255,255,255,0.7); border-radius: 6px; padding: 0.5rem; text-align: center;">
+                  <strong style="color: var(--color-primary); display: block;">Client only</strong>
+                  <span style="color: var(--color-text-muted);">Field in no-vendor list</span>
+                </div>
+                <div style="background: rgba(255,255,255,0.7); border-radius: 6px; padding: 0.5rem; text-align: center;">
+                  <strong style="color: var(--color-primary); display: block;">Vendor only</strong>
+                  <span style="color: var(--color-text-muted);">Field in no-client list</span>
+                </div>
+                <div style="background: rgba(255,255,255,0.7); border-radius: 6px; padding: 0.5rem; text-align: center;">
+                  <strong style="color: var(--color-primary); display: block;">Silent</strong>
+                  <span style="color: var(--color-text-muted);">In both no-email lists</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="accent-border animate-in" style="margin-top: var(--space-md); max-width: 90%;">
+          <p style="font-size: var(--text-small); color: var(--color-text-muted); line-height: 1.6;">
+            <strong style="color: var(--color-primary);">All three lists are configurable</strong> without code changes. The Mod Pending list (25 fields), no-client-email list (2 fields), and no-vendor-email list (10 fields) operate independently to control status and email routing per field.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== SLIDE 6: CLIENT EMAIL ====== -->
+    <section class="slide slide-light" id="slide-6">
+      <div class="slide-content">
+        <h2 class="slide-title animate-in">Client emails now show what changed</h2>
+        <div class="two-col">
+          <div class="col-text animate-in">
+            <h3>Key rules</h3>
+            <ul>
+              <li>&#x2022; Email only if a field outside the "no client email" list changed</li>
+              <li>&#x2022; Shows old &#8594; new values for each changed field</li>
+              <li>&#x2022; Max 3 changes inline; beyond that, a CTA links to a PDF</li>
+              <li>&#x2022; Display order: Itinerary &#8594; Reservation Details &#8594; Billing &#8594; Notifications</li>
+              <li>&#x2022; "Changed by Savoya" or client's name</li>
+              <li>&#x2022; Optional "Requested by" tag from internal users</li>
+              <li>&#x2022; Override: "Do not send" checkbox</li>
+            </ul>
+          </div>
+          <div class="animate-in">
+            <div class="email-preview">
+              <div class="email-header">
+                <div class="email-subject">Modified Confirmed &middot; Acme Corp &middot; R-20845</div>
+                <div class="email-meta">Jane Smith &middot; Aug 15, 2026 3:00 PM</div>
+              </div>
+              <div class="email-change-row">
+                <span class="change-field">Pickup Time</span>
+                <span class="change-values"><span class="change-old">2:00 PM</span> &#8594; <span class="change-new">3:00 PM</span></span>
+              </div>
+              <div class="email-change-row">
+                <span class="change-field">Vehicle Type</span>
+                <span class="change-values"><span class="change-old">Sedan</span> &#8594; <span class="change-new">SUV</span></span>
+              </div>
+              <div class="email-who">Changed by <strong>Savoya</strong> &middot; Requested by <strong>Jane Smith (TC)</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== SLIDE 7: VENDOR EMAIL TYPES ====== -->
+    <section class="slide slide-light" id="slide-7">
+      <div class="slide-content">
+        <h2 class="slide-title animate-in">Two vendor email types</h2>
+        <div class="vendor-types">
+          <div class="vendor-type-card type-ar animate-in">
+            <h3>Accept / Reject</h3>
+            <div class="when">When: an itinerary-impacting field changes (reservation goes to Mod Pending)</div>
+            <p>Includes old &#8594; new values. Vendor must accept or reject. Reservation stays in Mod Pending until they respond.</p>
+            <p style="margin-top: var(--space-xs); font-size: var(--text-caption); color: var(--color-text-muted);">Shows: Itinerary + Reservation Details fields only</p>
+            <div class="vendor-btn btn-ar">ACCEPT / REJECT</div>
+          </div>
+          <div class="vendor-type-card animate-in">
+            <h3>Acknowledge</h3>
+            <div class="when">When: non-impacting field changes that still warrant notification</div>
+            <p>Includes old &#8594; new values. One-click acknowledge. Does not block the reservation.</p>
+            <p style="margin-top: var(--space-xs); font-size: var(--text-caption); color: var(--color-text-muted);">Shows: Itinerary + Reservation Details fields only</p>
+            <div class="vendor-btn btn-ack">ACKNOWLEDGE CHANGE</div>
+          </div>
+        </div>
+        <div class="accent-border animate-in" style="margin-top: var(--space-md);">
+          <p style="font-size: var(--text-caption); color: var(--color-text-muted);">Both types: max 3 changes inline, PDF overflow beyond 3. Only the most recent edit event is shown.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== SLIDE 8: THREE CONFIGURABLE LISTS ====== -->
+    <section class="slide slide-light" id="slide-8">
+      <div class="slide-content">
+        <h2 class="slide-title animate-in">Three independent, configurable lists</h2>
+        <div class="list-grid">
+          <div class="list-card animate-in">
+            <div class="field-count">25</div>
+            <h3>Non-Itinerary Impacting</h3>
+            <div class="list-controls">Controls: Mod Pending status</div>
+            <div class="field-sample">TC Name, Passenger Note, Reference Number, Signage, Travel Bank, Payment, Add to Group, Pickup Note, Dropoff Country, and more...</div>
+          </div>
+          <div class="list-card animate-in">
+            <div class="field-count">2</div>
+            <h3>No Client Email</h3>
+            <div class="list-controls">Controls: Client email send + field visibility in email</div>
+            <div class="field-sample">Reservation Note, Greeter Required for Pickup</div>
+          </div>
+          <div class="list-card animate-in">
+            <div class="field-count">10</div>
+            <h3>No Vendor Email</h3>
+            <div class="list-controls">Controls: Vendor email send + field visibility in email</div>
+            <div class="field-sample">TC Name, Additional Notifications, Passenger Notifications, Payment, Signage, Add to Group, Reference Number, Travel Bank, Reservation Note, Greeter Required for Pickup</div>
+          </div>
+        </div>
+        <div class="accent-border animate-in" style="margin-top: var(--space-md);">
+          <p style="font-size: var(--text-caption); color: var(--color-text-muted);"><strong style="color:var(--color-primary)">All three lists are independent.</strong> A field can be in one, two, or all three. Fields in both "no client email" and "no vendor email" lists are effectively silent.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== SLIDE 9: KEY TAKEAWAY ====== -->
+    <section class="slide slide-dark slide-takeaway" id="slide-9">
+      <div class="takeaway-shape"></div>
+      <div class="slide-content" style="text-align: center;">
+        <p class="takeaway-label animate-in">What We Need From You</p>
+        <h2 class="takeaway-message animate-in">Review the implementation, not the scoping docs.</h2>
+        <p class="takeaway-support animate-in">Implementation deviated from the original scoping due to technical constraints. The UAT catalog is the source of truth.</p>
+      </div>
+    </section>
+
+    <!-- ====== SLIDE 10: REVIEW CHECKLIST ====== -->
+    <section class="slide slide-light" id="slide-10">
+      <div class="slide-content">
+        <h2 class="slide-title animate-in">Your review checklist</h2>
+        <div class="checklist">
+          <div class="check-item animate-in">
+            <div class="check-icon"></div>
+            <div class="check-text"><strong>Non-Itinerary Impacting fields</strong>Review the 25 default fields. Any that should be added or removed?</div>
+          </div>
+          <div class="check-item animate-in">
+            <div class="check-icon"></div>
+            <div class="check-text"><strong>No Client Email fields</strong>Review the 2 default fields. Any changes needed?</div>
+          </div>
+          <div class="check-item animate-in">
+            <div class="check-icon"></div>
+            <div class="check-text"><strong>No Vendor Email fields</strong>Review the 10 default fields. Any changes needed?</div>
+          </div>
+          <div class="check-item animate-in">
+            <div class="check-icon"></div>
+            <div class="check-text"><strong>Client email format</strong>Does the email content, layout, and info make sense?</div>
+          </div>
+          <div class="check-item animate-in">
+            <div class="check-icon"></div>
+            <div class="check-text"><strong>Vendor email format</strong>Do Accept/Reject and Acknowledge emails make sense?</div>
+          </div>
+          <div class="check-item animate-in">
+            <div class="check-icon"></div>
+            <div class="check-text"><strong>Real business scenarios</strong>Try actual scenarios in dev. Do the results match expectations?</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== SLIDE 11: TEST RESOURCES ====== -->
+    <section class="slide slide-light" id="slide-11">
+      <div class="slide-content">
+        <h2 class="slide-title animate-in">Test resources</h2>
+        <div class="resource-grid">
+          <div class="resource-card animate-in">
+            <h3>Documents</h3>
+            <a class="resource-link" href="https://docs.google.com/spreadsheets/d/1lWTtLf6magCUEySRcJjJStjAXpZWAHL2T3Ccv21kqhw/edit?gid=0#gid=0" target="_blank">Field-level check (per-field behavior)</a>
+            <a class="resource-link" href="https://docs.google.com/spreadsheets/d/1lWTtLf6magCUEySRcJjJStjAXpZWAHL2T3Ccv21kqhw/edit?gid=1737275091#gid=1737275091" target="_blank">UAT test cases (74 scenarios)</a>
+          </div>
+          <div class="resource-card animate-in">
+            <h3>Dev Environment</h3>
+            <a class="resource-link" href="https://dev.savoya.net/" target="_blank">https://dev.savoya.net/</a>
+            <div class="cred-row">
+              <span class="cred-label">Username</span>
+              <span class="cred-value">abhargava+manager@savoya.com</span>
+            </div>
+            <div class="cred-row">
+              <span class="cred-label">Password</span>
+              <span class="cred-value">Ayosha.4143</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== SLIDE 12: CLOSING ====== -->
+    <section class="slide slide-dark slide-hero" id="slide-12">
+      <div class="hero-bg-shapes">
+        <div class="hero-circle"></div>
+      </div>
+      <div class="slide-content" style="text-align: center;">
+        <h2 class="hero-title animate-in" style="font-size: var(--text-title);">Next Steps</h2>
+        <p class="hero-subtitle animate-in">Complete your review and share feedback</p>
+        <div class="closing-steps animate-in">
+          <div class="closing-step">
+            <div class="closing-step-num">1</div>
+            <h3>Review field lists</h3>
+            <p>Confirm defaults or flag changes</p>
+          </div>
+          <div class="closing-step">
+            <div class="closing-step-num">2</div>
+            <h3>Test in dev</h3>
+            <p>Run real scenarios at dev.savoya.net</p>
+          </div>
+          <div class="closing-step">
+            <div class="closing-step-num">3</div>
+            <h3>Share feedback</h3>
+            <p>Flag issues or gaps by end of week</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    (function() {
+      const slides = document.querySelectorAll('.slide');
+      const counter = document.querySelector('.slide-counter');
+      const progressBar = document.querySelector('.progress-bar');
+      let current = 0;
+
+      function goToSlide(index) {
+        if (index < 0 || index >= slides.length) return;
+        current = index;
+        slides[current].scrollIntoView({ behavior: 'smooth' });
+        updateUI();
+        activateSlide(slides[current]);
+      }
+
+      function updateUI() {
+        if (counter) counter.textContent = (current + 1) + ' / ' + slides.length;
+        if (progressBar) progressBar.style.width = ((current + 1) / slides.length * 100) + '%';
+        slides.forEach(function(s, i) { s.classList.toggle('active', i === current); });
+        // Update counter color for dark slides
+        var isDark = slides[current].classList.contains('slide-dark') ||
+                     slides[current].classList.contains('slide-hero') ||
+                     slides[current].classList.contains('slide-takeaway');
+        if (counter) counter.style.color = isDark ? 'rgba(255,255,255,0.4)' : '';
+      }
+
+      function activateSlide(slide) {
+        // nothing extra needed — CSS handles animation via .active class
+      }
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+          e.preventDefault();
+          goToSlide(current + 1);
+        }
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          goToSlide(current - 1);
+        }
+        if (e.key === 'Home') goToSlide(0);
+        if (e.key === 'End') goToSlide(slides.length - 1);
+      });
+
+      // Scroll-snap sync
+      var container = document.querySelector('.slides-container');
+      if (container) {
+        var scrollTimeout;
+        container.addEventListener('scroll', function() {
+          clearTimeout(scrollTimeout);
+          scrollTimeout = setTimeout(function() {
+            var scrollTop = container.scrollTop;
+            var slideHeight = window.innerHeight;
+            var newIndex = Math.round(scrollTop / slideHeight);
+            if (newIndex !== current && newIndex >= 0 && newIndex < slides.length) {
+              current = newIndex;
+              updateUI();
+            }
+          }, 100);
+        });
+      }
+
+      // Touch support
+      var touchStartY = 0;
+      document.addEventListener('touchstart', function(e) { touchStartY = e.touches[0].clientY; });
+      document.addEventListener('touchend', function(e) {
+        var diff = touchStartY - e.changedTouches[0].clientY;
+        if (Math.abs(diff) > 50) {
+          if (diff > 0) goToSlide(current + 1);
+          else goToSlide(current - 1);
+        }
+      });
+
+      // Initialize
+      updateUI();
+      slides[0].classList.add('active');
+    })();
+  </script>
+</body>
+</html>
