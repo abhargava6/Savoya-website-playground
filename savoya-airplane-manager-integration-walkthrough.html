@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Savoya × Airplane Manager — Integration Walkthrough</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --ink:#14171C;
+  --ink-soft:#1D222A;
+  --paper:#FAF8F5;
+  --surface:#F2EFEA;
+  --copper:#B87333;
+  --copper-pale:#F3E4D3;
+  --slate:#5A6472;
+  --border:#DFD9D1;
+  --green:#4F7A52;
+  --green-pale:#E4EDE5;
+  --amber:#B08315;
+  --amber-pale:#FAF0D6;
+  --blue:#456A9E;
+  --blue-pale:#E7EDF5;
+
+  --font-heading:'Space Grotesk',sans-serif;
+  --font-body:'IBM Plex Sans',sans-serif;
+
+  --text-hero:clamp(2.6rem,5.4vw,4.6rem);
+  --text-title:clamp(1.7rem,3.1vw,2.7rem);
+  --text-sub:clamp(1.05rem,1.55vw,1.35rem);
+  --text-body:clamp(.88rem,1.05vw,1.02rem);
+  --text-small:clamp(.78rem,.92vw,.88rem);
+  --text-cap:clamp(.68rem,.8vw,.76rem);
+
+  --sp-xs:.5rem; --sp-sm:.9rem; --sp-md:1.6rem; --sp-lg:2.6rem;
+  --pad:5.5vh 6vw;
+  --maxw:1500px;
+  --r-sm:6px; --r-md:12px;
+  --dur:.6s; --ease:cubic-bezier(.16,1,.3,1);
+}
+
+html{font-size:16px}
+body{font-family:var(--font-body);color:var(--ink);background:var(--paper);overflow:hidden;-webkit-font-smoothing:antialiased}
+
+.slides-container{width:100vw;height:100vh;overflow-y:auto;scroll-snap-type:y mandatory;scroll-behavior:smooth}
+.slides-container::-webkit-scrollbar{width:0}
+
+.slide{width:100vw;height:100vh;min-height:100vh;scroll-snap-align:start;display:flex;flex-direction:column;justify-content:center;padding:var(--pad);position:relative;overflow:hidden}
+.slide-content{max-width:var(--maxw);margin:0 auto;width:100%;position:relative;z-index:2}
+.slide-dark{background:var(--ink);color:var(--paper)}
+
+/* motif: leg rule */
+.leg{display:flex;align-items:center;gap:.55rem;margin-bottom:var(--sp-md)}
+.leg i{display:block;width:7px;height:7px;border-radius:50%;background:var(--copper);flex:none}
+.leg span{height:1px;background:var(--border);flex:1;max-width:120px}
+.slide-dark .leg span{background:rgba(255,255,255,.18)}
+
+.eyebrow{font-size:var(--text-cap);text-transform:uppercase;letter-spacing:.18em;color:var(--copper);font-weight:600}
+
+.tag{display:inline-block;padding:.18rem .6rem;border-radius:999px;font-size:var(--text-cap);font-weight:600;letter-spacing:.03em;white-space:nowrap;font-style:normal}
+.tag-fact{background:var(--surface);color:var(--slate);border:1px solid var(--border)}
+.tag-prop{background:var(--copper-pale);color:var(--copper);border:1px solid #E4CDB2}
+.slide-dark .tag-fact{background:rgba(255,255,255,.07);color:rgba(250,248,245,.7);border-color:rgba(255,255,255,.14)}
+
+.toc{display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--sp-md);margin-top:var(--sp-sm)}
+.toc-col h3{font-size:calc(var(--text-body)*1.05);margin:.7rem 0 .1rem}
+.toc-col>p{font-size:var(--text-small);color:var(--slate);line-height:1.5;margin-bottom:.9rem}
+.toc-col ol{list-style:none}
+.toc-col li{position:relative;padding:.42rem 0 .42rem 1.1rem;font-size:var(--text-small);line-height:1.45;border-bottom:1px solid var(--border)}
+.toc-col li:last-child{border-bottom:none}
+.toc-col li::before{content:'';position:absolute;left:0;top:.95em;width:5px;height:1.5px;background:var(--copper)}
+.toc-col li b{display:block;color:var(--ink);font-weight:600}
+.toc-col li span{color:var(--slate)}
+
+h1,h2,h3{font-family:var(--font-heading);font-weight:700;letter-spacing:-.015em}
+.slide-title{font-size:var(--text-title);margin-bottom:var(--sp-sm);line-height:1.15}
+.slide-lede{font-size:var(--text-sub);color:var(--slate);font-weight:300;max-width:62ch;line-height:1.5;margin-bottom:var(--sp-lg)}
+.slide-dark .slide-lede{color:rgba(250,248,245,.7)}
+
+.progress-bar{position:fixed;top:0;left:0;height:2px;background:var(--copper);z-index:100;transition:width .4s var(--ease)}
+.slide-counter{position:fixed;bottom:1.6rem;right:2rem;font-size:var(--text-cap);color:var(--slate);z-index:100;opacity:.6;font-variant-numeric:tabular-nums}
+.nav-hint{position:fixed;bottom:1.6rem;left:2rem;font-size:var(--text-cap);color:var(--slate);z-index:100;opacity:.45}
+
+.animate-in{opacity:0;transform:translateY(22px)}
+@media (prefers-reduced-motion:no-preference){
+  .slide.active .animate-in{animation:up var(--dur) var(--ease) both}
+  .slide.active .animate-in:nth-child(2){animation-delay:.07s}
+  .slide.active .animate-in:nth-child(3){animation-delay:.14s}
+  .slide.active .animate-in:nth-child(4){animation-delay:.21s}
+  .slide.active .animate-in:nth-child(5){animation-delay:.28s}
+}
+@media (prefers-reduced-motion:reduce){.animate-in{opacity:1;transform:none}}
+@keyframes up{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+
+/* hero */
+.hero-glow{position:absolute;width:60vw;height:60vw;border-radius:50%;background:radial-gradient(circle,rgba(184,115,51,.13) 0%,transparent 65%);top:-22vw;right:-18vw;z-index:0}
+.hero-glow.two{width:34vw;height:34vw;top:auto;bottom:-14vw;left:-12vw;right:auto;background:radial-gradient(circle,rgba(255,255,255,.045) 0%,transparent 70%)}
+.hero-title{font-size:var(--text-hero);line-height:1.04;margin-bottom:var(--sp-md)}
+.hero-title em{font-style:normal;color:var(--copper)}
+.hero-meta{display:flex;gap:var(--sp-md);flex-wrap:wrap;font-size:var(--text-small);color:rgba(250,248,245,.55);margin-top:var(--sp-lg);padding-top:var(--sp-md);border-top:1px solid rgba(255,255,255,.12)}
+
+/* cards */
+.grid{display:grid;gap:var(--sp-sm)}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+.card{background:var(--surface);border-radius:var(--r-md);padding:var(--sp-md);border:1px solid var(--border)}
+.card h3{font-size:calc(var(--text-body)*1.12);margin-bottom:.4rem}
+.card p{font-size:var(--text-small);color:var(--slate);line-height:1.55}
+.card .num{font-family:var(--font-heading);font-size:1.5rem;color:var(--copper);line-height:1;margin-bottom:.55rem;display:block}
+
+/* table */
+table{width:100%;border-collapse:collapse;font-size:var(--text-small)}
+th{text-align:left;font-family:var(--font-heading);font-weight:500;font-size:var(--text-cap);text-transform:uppercase;letter-spacing:.08em;color:var(--slate);padding:.55rem .7rem;border-bottom:1.5px solid var(--border)}
+td{padding:.5rem .7rem;border-bottom:1px solid var(--border);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+td.num{font-variant-numeric:tabular-nums;color:var(--slate)}
+.pill{display:inline-block;padding:.12rem .5rem;border-radius:999px;font-size:var(--text-cap);font-weight:500}
+.pill.ok{background:var(--green-pale);color:var(--green)}
+.pill.warn{background:var(--amber-pale);color:var(--amber)}
+.pill.q{background:var(--copper-pale);color:var(--copper)}
+
+/* callout */
+.callout{border-left:2px solid var(--copper);padding:.15rem 0 .15rem var(--sp-sm);font-size:var(--text-small);color:var(--slate);line-height:1.6}
+.callout strong{color:var(--ink)}
+.slide-dark .callout strong{color:var(--paper)}
+
+figure{width:100%}
+svg.dia{width:100%;height:auto;display:block}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-lg);align-items:start}
+.two-col.wide-l{grid-template-columns:1.35fr 1fr}
+.stack>*+*{margin-top:var(--sp-sm)}
+
+ul.clean{list-style:none}
+ul.clean li{position:relative;padding-left:1.15rem;font-size:var(--text-body);line-height:1.65;margin-bottom:.5rem;color:var(--slate)}
+ul.clean li::before{content:'';position:absolute;left:0;top:.62em;width:5px;height:5px;border-radius:50%;background:var(--copper)}
+ul.clean li strong{color:var(--ink);font-weight:600}
+.slide-dark ul.clean li{color:rgba(250,248,245,.72)}
+.slide-dark ul.clean li strong{color:var(--paper)}
+
+.ask{display:flex;gap:.8rem;align-items:baseline;padding:.45rem 0;border-bottom:1px solid var(--border)}
+.ask:last-child{border-bottom:none}
+.ask b{font-family:var(--font-heading);color:var(--copper);font-size:var(--text-small);flex:none;width:1.4rem}
+.ask p{font-size:var(--text-small);line-height:1.55;color:var(--slate)}
+.ask p em{font-style:normal;color:var(--ink);font-weight:600}
+
+@media (max-width:900px){
+  .two-col,.two-col.wide-l{grid-template-columns:1fr;gap:var(--sp-md)}
+  .g3,.g4{grid-template-columns:1fr 1fr}
+  .g2{grid-template-columns:1fr}
+}
+@media print{
+  .slides-container{overflow:visible;scroll-snap-type:none}
+  .slide{page-break-after:always;height:100vh}
+  .progress-bar,.slide-counter,.nav-hint{display:none}
+  *{animation:none!important;transition:none!important}
+  .animate-in{opacity:1!important;transform:none!important}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<marker id="ar" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#5A6472" stroke-width="1.4"/></marker>
+<marker id="arc" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#B87333" stroke-width="1.4"/></marker>
+</defs></svg>
+
+<div class="progress-bar" style="width:0%"></div>
+<div class="slide-counter">1 / 12</div>
+<div class="nav-hint">↓ or → to advance</div>
+
+<div class="slides-container">
+
+<!-- 1 TITLE -->
+<section class="slide slide-dark" id="s1">
+  <div class="hero-glow"></div><div class="hero-glow two"></div>
+  <div class="slide-content">
+    <p class="eyebrow animate-in">Ahead of our call</p>
+    <h1 class="hero-title animate-in">Savoya <em>×</em> Airplane&nbsp;Manager<br>Integration walkthrough</h1>
+    <p class="slide-lede animate-in" style="margin-bottom:0">How our system actually works, what we are proposing, and the places we need you to tell us we have got your side wrong.</p>
+    <div class="hero-meta animate-in">
+      <span>Prepared for Aaron</span><span>Savoya Product &amp; Engineering</span><span>September 2026</span>
+    </div>
+  </div>
+</section>
+
+<!-- 2 CONTENTS -->
+<section class="slide" id="s2">
+  <div class="slide-content">
+    <div class="leg animate-in"><i></i><span></span></div>
+    <h2 class="slide-title animate-in">What is in here</h2>
+    <p class="slide-lede animate-in" style="margin-bottom:var(--sp-sm)">Three parts. The badge at the top of each slide tells you which kind of thing you are reading — it matters, because half of this is built and half of it is not.</p>
+    <div class="toc animate-in">
+      <div class="toc-col">
+        <span class="tag tag-fact">How Savoya works today</span>
+        <h3>Fact — this is how it is</h3>
+        <p>Describing what already runs. Nothing here is up for negotiation, though do tell us if it causes you a problem.</p>
+        <ol>
+          <li><b>Fulfilment</b><span>Why a vendor sits between us and the car</span></li>
+          <li><b>What you can book</b><span>Seven vehicle types, and where the API stops</span></li>
+          <li><b>How pricing works</b><span>Two rate structures, and how we pick</span></li>
+          <li><b>When a booking waits</b><span>The four limited-availability conditions</span></li>
+          <li><b>When a flight moves</b><span>Modify, and the two ways it can land</span></li>
+          <li><b>Our statuses</b><span>Ten client statuses onto your ten states</span></li>
+        </ol>
+      </div>
+      <div class="toc-col">
+        <span class="tag tag-prop">What we are proposing</span>
+        <h3>Proposal — none of it is built</h3>
+        <p>Our current thinking on the integration itself. We would much rather you picked holes in it now than agreed politely.</p>
+        <ol>
+          <li><b>Price, then book</b><span>The booking flow, and what comes back</span></li>
+          <li><b>Getting a flight department set up</b><span>Two options — and the one decision we need from you</span></li>
+        </ol>
+      </div>
+      <div class="toc-col">
+        <span class="tag" style="background:var(--ink);color:var(--paper)">Over to you</span>
+        <h3>Where we need you</h3>
+        <p>The part that makes the call worth having. Everything we have guessed, and everything we need back.</p>
+        <ol>
+          <li><b>What we assumed about your side</b><span>Ten guesses we have built on — please pull them apart</span></li>
+          <li><b>What we would like from you</b><span>Ten things, in the order they block us</span></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 FULFILMENT -->
+<section class="slide" id="s3">
+  <div class="slide-content">
+    <div class="leg animate-in"><i></i><span></span><em class="tag tag-fact">How Savoya works today</em></div>
+    <h2 class="slide-title animate-in">Savoya is a managed marketplace, not a fleet</h2>
+    <p class="slide-lede animate-in">We hold the client relationship, the rates and the quality bar. A vendor supplies the vehicle and the driver. Worth a minute because it explains two things later.</p>
+    <figure class="animate-in">
+      <svg class="dia" viewBox="0 0 1400 250" role="img" aria-label="Booker to Airplane Manager to Savoya to Vendor to Chauffeur">
+        <g font-family="IBM Plex Sans" text-anchor="middle">
+          <rect x="10" y="70" width="230" height="94" rx="10" fill="#E7EDF5" stroke="#456A9E" stroke-width="1.5"/>
+          <text x="125" y="108" font-size="17" font-weight="600" fill="#14171C">Booker</text>
+          <text x="125" y="132" font-size="12.5" fill="#5A6472">Scheduler, dispatcher</text>
+          <text x="125" y="149" font-size="12.5" fill="#5A6472">or chief pilot</text>
+
+          <rect x="300" y="70" width="230" height="94" rx="10" fill="#E7EDF5" stroke="#456A9E" stroke-width="1.5"/>
+          <text x="415" y="108" font-size="17" font-weight="600" fill="#14171C">Airplane Manager</text>
+          <text x="415" y="132" font-size="12.5" fill="#5A6472">Trip timeline</text>
+          <text x="415" y="149" font-size="12.5" fill="#5A6472">Books the car</text>
+
+          <rect x="590" y="70" width="230" height="94" rx="10" fill="#F3E4D3" stroke="#B87333" stroke-width="2.5"/>
+          <text x="705" y="108" font-size="17" font-weight="600" fill="#14171C">Savoya</text>
+          <text x="705" y="132" font-size="12.5" fill="#5A6472">Rates · contract</text>
+          <text x="705" y="149" font-size="12.5" fill="#5A6472">Quality · oversight</text>
+
+          <rect x="880" y="70" width="230" height="94" rx="10" fill="#F2EFEA" stroke="#5A6472" stroke-width="1.5"/>
+          <text x="995" y="108" font-size="17" font-weight="600" fill="#14171C">Vendor</text>
+          <text x="995" y="132" font-size="12.5" fill="#5A6472">Local chauffeur firm</text>
+          <text x="995" y="149" font-size="12.5" font-weight="600" fill="#B87333">Accepts the trip</text>
+
+          <rect x="1170" y="70" width="220" height="94" rx="10" fill="#F2EFEA" stroke="#5A6472" stroke-width="1.5"/>
+          <text x="1280" y="108" font-size="17" font-weight="600" fill="#14171C">Chauffeur</text>
+          <text x="1280" y="132" font-size="12.5" fill="#5A6472">Name, phone, plate</text>
+          <text x="1280" y="149" font-size="12.5" fill="#5A6472">— assigned later</text>
+
+          <line x1="242" y1="117" x2="296" y2="117" stroke="#5A6472" stroke-width="1.6" marker-end="url(#ar)"/>
+          <line x1="532" y1="117" x2="586" y2="117" stroke="#5A6472" stroke-width="1.6" marker-end="url(#ar)"/>
+          <line x1="822" y1="117" x2="876" y2="117" stroke="#B87333" stroke-width="1.6" marker-end="url(#arc)"/>
+          <line x1="1112" y1="117" x2="1166" y2="117" stroke="#5A6472" stroke-width="1.6" marker-end="url(#ar)"/>
+          <text x="559" y="108" font-size="11" fill="#5A6472">API</text>
+          <text x="849" y="108" font-size="11" fill="#B87333">offers</text>
+
+          <path d="M705 66 L705 34 L415 34 L415 64" fill="none" stroke="#B87333" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#arc)"/>
+          <text x="560" y="26" font-size="12" fill="#B87333">webhooks — every status change</text>
+        </g>
+      </svg>
+    </figure>
+    <div class="grid g2 animate-in" style="margin-top:var(--sp-md)">
+      <p class="callout"><strong>Nearly everything confirms immediately.</strong> We accept the booking and find the vendor in the background. A small set of conditions holds at pending until a vendor accepts — that is the only reason you will ever see a pending car.</p>
+      <p class="callout"><strong>Chauffeur details arrive later.</strong> Name, phone and plate do not exist at booking time. They appear when the vendor assigns a driver, which is why there is a separate driver-assigned event.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 4 VEHICLES -->
+<section class="slide" id="s4">
+  <div class="slide-content">
+    <div class="leg animate-in"><i></i><span></span><em class="tag tag-fact">How Savoya works today</em></div>
+    <h2 class="slide-title animate-in">What your users can book</h2>
+    <p class="slide-lede animate-in">Seven vehicle types — everything a client can self-serve through Savoya today. Capacity is a hard validation, not a suggestion.</p>
+    <div class="two-col wide-l">
+      <div class="animate-in">
+        <table>
+          <thead><tr><th>Vehicle type</th><th style="text-align:right">Max passengers</th><th>Note</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Sedan</strong></td><td class="num" style="text-align:right">3</td><td style="color:var(--slate)">The default</td></tr>
+            <tr><td><strong>Premium Sedan</strong></td><td class="num" style="text-align:right">3</td><td></td></tr>
+            <tr><td><strong>Premier European Touring</strong></td><td class="num" style="text-align:right">3</td><td></td></tr>
+            <tr><td><strong>SUV</strong></td><td class="num" style="text-align:right">6</td><td></td></tr>
+            <tr><td><strong>MPV</strong></td><td class="num" style="text-align:right">6</td><td></td></tr>
+            <tr><td><strong>Exec Van</strong></td><td class="num" style="text-align:right">14</td><td></td></tr>
+            <tr><td><strong>Mercedes Sprinter Van</strong></td><td class="num" style="text-align:right">13</td><td><span class="pill warn">always pending</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="stack animate-in">
+        <p class="callout"><strong>You send passenger count; we filter.</strong> Only types that fit come back, so you never hold a capacity table.</p>
+        <p class="callout"><strong>Nothing above 14 passengers is API-bookable.</strong> Mini Bus and Coach are not client self-serve today, so a full crew-plus-passengers movement off a large aircraft stays a phone call. Realistically your users book sedans and SUVs — but worth knowing rather than discovering.</p>
+        <p class="callout"><strong>You keep your own vocabulary.</strong> Send us the vehicle names your product uses and we hold the map. You never see our internal identifiers.</p>
+        <p class="callout"><strong>Greeters are a phase two idea.</strong> Meet-and-assist at an FBO is a real service we sell but do not expose. Worth naming now.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 PRICING -->
+<section class="slide" id="s5">
+  <div class="slide-content">
+    <div class="leg animate-in"><i></i><span></span><em class="tag tag-fact">How Savoya works today</em></div>
+    <h2 class="slide-title animate-in">How pricing works</h2>
+    <p class="slide-lede animate-in">There is no trip classification. Every trip is just a trip — what varies is which rate applies, and we work that out from the route.</p>
+    <div class="grid g2 animate-in" style="margin-bottom:var(--sp-md)">
+      <div class="card"><h3>Transfer rate</h3><p>Point-to-point flat rate, and generally the cheaper option. Route-specific — we configure them where the economics work. <strong style="color:var(--ink)">We have them for most airport-to-city transfers, which is exactly your traffic.</strong></p></div>
+      <div class="card"><h3>Hourly rate</h3><p>Time-based, with minimums — a 30-minute run against a two-hour minimum prices at the minimum. Applies wherever no transfer rate exists.</p></div>
+    </div>
+    <div class="grid g3 animate-in">
+      <p class="callout"><strong>You do not tell us which to use.</strong> There is no hourly-or-transfer field to send. We pick it from the route.</p>
+      <p class="callout"><strong>Adding a stop changes the rate.</strong> A transfer rate is priced point-to-point; add an intermediate stop and it falls back to hourly. Airport → office → hotel is a normal pattern, so this will come up.</p>
+      <p class="callout"><strong>Rates are per company.</strong> Rack rate by default. Negotiated rates come from a conversation with our sales during onboarding — which is the real reason a flight department connects.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 7 LIMITED AVAILABILITY -->
+<section class="slide" id="s6">
+  <div class="slide-content">
+    <div class="leg animate-in"><i></i><span></span><em class="tag tag-fact">How Savoya works today</em></div>
+    <h2 class="slide-title animate-in">When a booking does not confirm straight away</h2>
+    <p class="slide-lede animate-in">Four conditions. Everything else confirms immediately.</p>
+    <div class="two-col wide-l">
+      <figure class="animate-in">
+        <svg class="dia" viewBox="0 0 800 330" role="img" aria-label="Four limited availability triggers leading to pending then confirmed">
+          <g font-family="IBM Plex Sans">
+            <g>
+              <rect x="5" y="15" width="235" height="52" rx="8" fill="#FAF0D6" stroke="#B08315" stroke-width="1.4"/>
+              <text x="20" y="38" font-size="13" font-weight="600" fill="#14171C">Booked last minute</text>
+              <text x="20" y="56" font-size="11" fill="#5A6472">inside the pickup cutoff</text>
+
+              <rect x="5" y="80" width="235" height="52" rx="8" fill="#FAF0D6" stroke="#B08315" stroke-width="1.4"/>
+              <text x="20" y="103" font-size="13" font-weight="600" fill="#14171C">Limited-supply market</text>
+              <text x="20" y="121" font-size="11" fill="#5A6472">thin vendor coverage</text>
+
+              <rect x="5" y="145" width="235" height="52" rx="8" fill="#FAF0D6" stroke="#B08315" stroke-width="1.4"/>
+              <text x="20" y="168" font-size="13" font-weight="600" fill="#14171C">Special event on</text>
+              <text x="20" y="186" font-size="11" fill="#5A6472">demand spike in the market</text>
+
+              <rect x="5" y="210" width="235" height="52" rx="8" fill="#FAF0D6" stroke="#B08315" stroke-width="1.4"/>
+              <text x="20" y="233" font-size="13" font-weight="600" fill="#14171C">Scarce vehicle type</text>
+              <text x="20" y="251" font-size="11" fill="#5A6472">e.g. Sprinter Van</text>
+            </g>
+            <path d="M250 41 L286 41 L286 139 M250 106 L286 106 M250 171 L286 171 M250 236 L286 236 L286 139" fill="none" stroke="#B08315" stroke-width="1.3"/>
+            <line x1="286" y1="139" x2="330" y2="139" stroke="#B08315" stroke-width="1.5" marker-end="url(#ar)"/>
+            <g text-anchor="middle">
+              <rect x="340" y="35" width="200" height="60" rx="8" fill="#E4EDE5" stroke="#4F7A52" stroke-width="1.8"/>
+              <text x="440" y="60" font-size="14" font-weight="600" fill="#14171C">Confirmed</text>
+              <text x="440" y="80" font-size="11" fill="#5A6472">the normal case</text>
+
+              <rect x="340" y="185" width="200" height="60" rx="8" fill="#FAF0D6" stroke="#B08315" stroke-width="1.8"/>
+              <text x="440" y="210" font-size="14" font-weight="600" fill="#14171C">Pending availability</text>
+              <text x="440" y="230" font-size="11" fill="#5A6472">what your user sees</text>
+
+              <rect x="580" y="185" width="200" height="60" rx="8" fill="#E4EDE5" stroke="#4F7A52" stroke-width="1.8"/>
+              <text x="680" y="210" font-size="14" font-weight="600" fill="#14171C">Confirmed</text>
+              <text x="680" y="230" font-size="11" fill="#5A6472">vendor accepted</text>
+            </g>
+            <path d="M330 139 L335 139 L335 68 L336 68" fill="none" stroke="#4F7A52" stroke-width="1.5" marker-end="url(#ar)"/>
+            <path d="M330 139 L335 139 L335 212 L336 212" fill="none" stroke="#B08315" stroke-width="1.5" marker-end="url(#ar)"/>
+            <line x1="542" y1="215" x2="576" y2="215" stroke="#4F7A52" stroke-width="1.5" marker-end="url(#ar)"/>
+            <text x="352" y="125" font-size="11" fill="#4F7A52">none apply</text>
+            <text x="352" y="172" font-size="11" fill="#B08315">any apply</text>
+          </g>
+        </svg>
+      </figure>
+      <div class="stack animate-in">
+        <p class="callout"><strong>A confirmed trip can go back to pending.</strong> If it is a limited-availability trip and it gets modified, the vendor has to re-accept.</p>
+        <p class="callout"><strong>A late edit can push an ordinary trip into pending</strong> — because the edit itself brings it inside the pickup cutoff. Your users re-time flights late, and late is exactly when this triggers. Worth expecting rather than treating as a fault.</p>
+        <p class="callout"><strong>This also answers your question six.</strong> Coverage, lead time and vehicle availability are not a static rule set you would hold a copy of. They are evaluated per reservation, and the pricing call is where you find out.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 8 MODIFY -->
+<section class="slide" id="s7">
+  <div class="slide-content">
+    <div class="leg animate-in"><i></i><span></span><em class="tag tag-fact">How Savoya works today</em></div>
+    <h2 class="slide-title animate-in">When a flight moves</h2>
+    <p class="slide-lede animate-in">Modify is live today and covers time, pickup, dropoff, vehicle class, rider and passenger count. Time matters most, since it is the one flights force on you.</p>
+    <figure class="animate-in">
+      <svg class="dia" viewBox="0 0 1400 250" role="img" aria-label="Modify flow with two branches">
+        <g font-family="IBM Plex Sans" text-anchor="middle">
+          <rect x="30" y="95" width="230" height="64" rx="10" fill="#E7EDF5" stroke="#456A9E" stroke-width="1.5"/>
+          <text x="145" y="124" font-size="13.5" fill="#14171C">Flight moves in</text>
+          <text x="145" y="143" font-size="13.5" fill="#14171C">Airplane Manager</text>
+
+          <rect x="310" y="95" width="230" height="64" rx="10" fill="#F3E4D3" stroke="#B87333" stroke-width="1.8"/>
+          <text x="425" y="124" font-size="13.5" fill="#5A6472">We validate and</text>
+          <text x="425" y="143" font-size="13.5" fill="#5A6472">apply the change</text>
+
+          <path d="M590 127 L700 72 L810 127 L700 182 Z" fill="#FAF8F5" stroke="#14171C" stroke-width="1.6"/>
+          <text x="700" y="122" font-size="12" fill="#14171C">Limited availability, or</text>
+          <text x="700" y="139" font-size="12" fill="#14171C">now inside the cutoff?</text>
+
+          <rect x="880" y="30" width="270" height="64" rx="10" fill="#E4EDE5" stroke="#4F7A52" stroke-width="1.8"/>
+          <text x="1015" y="56" font-size="14" font-weight="600" fill="#14171C">Stays confirmed</text>
+          <text x="1015" y="78" font-size="11.5" fill="#5A6472">new snapshot, nothing else changes</text>
+
+          <rect x="880" y="160" width="270" height="64" rx="10" fill="#FAF0D6" stroke="#B08315" stroke-width="1.8"/>
+          <text x="1015" y="186" font-size="14" font-weight="600" fill="#14171C">Back to pending</text>
+          <text x="1015" y="208" font-size="11.5" fill="#5A6472">until the vendor re-accepts</text>
+
+          <rect x="1200" y="160" width="170" height="64" rx="10" fill="#E4EDE5" stroke="#4F7A52" stroke-width="1.8"/>
+          <text x="1285" y="197" font-size="14" font-weight="600" fill="#14171C">Confirmed again</text>
+
+          <line x1="262" y1="127" x2="306" y2="127" stroke="#5A6472" stroke-width="1.6" marker-end="url(#ar)"/>
+          <line x1="542" y1="127" x2="586" y2="127" stroke="#B87333" stroke-width="1.6" marker-end="url(#arc)"/>
+          <path d="M810 127 L845 127 L845 62 L876 62" fill="none" stroke="#4F7A52" stroke-width="1.6" marker-end="url(#ar)"/>
+          <path d="M810 127 L845 127 L845 192 L876 192" fill="none" stroke="#B08315" stroke-width="1.6" marker-end="url(#ar)"/>
+          <line x1="1152" y1="192" x2="1196" y2="192" stroke="#4F7A52" stroke-width="1.6" marker-end="url(#ar)"/>
+          <text x="846" y="42" font-size="11.5" text-anchor="start" fill="#4F7A52">no</text>
+          <text x="846" y="228" font-size="11.5" text-anchor="start" fill="#B08315">yes</text>
+        </g>
+      </svg>
+    </figure>
+  </div>
+</section>
+
+<!-- 9 STATUSES -->
+<section class="slide" id="s8">
+  <div class="slide-content">
+    <div class="leg animate-in"><i></i><span></span><em class="tag tag-fact">How Savoya works today</em></div>
+    <h2 class="slide-title animate-in">Statuses — ours onto yours</h2>
+    <p class="slide-lede animate-in">We run around twenty reservation statuses internally and collapse them to ten for clients. You get the client set. Here is our best read of how it lands on your ten states — please correct it.</p>
+    <div class="two-col wide-l">
+      <div class="animate-in">
+        <table>
+          <thead><tr><th>Savoya shows the client</th><th>Your state</th><th></th></tr></thead>
+          <tbody>
+            <tr><td>pending availability</td><td style="color:var(--slate)">Pending? Awaiting Confirmation?</td><td><span class="pill q">ask</span></td></tr>
+            <tr><td>confirmed</td><td>Confirmed</td><td><span class="pill ok">clean</span></td></tr>
+            <tr><td>driver assigned</td><td style="color:var(--slate)">no equivalent</td><td><span class="pill q">ask</span></td></tr>
+            <tr><td>enroute</td><td>Driver En Route</td><td><span class="pill ok">clean</span></td></tr>
+            <tr><td>driver onsite</td><td>At Location</td><td><span class="pill ok">clean</span></td></tr>
+            <tr><td>driver waiting</td><td>Driving <span style="color:var(--slate)">— mid-trip stop</span></td><td><span class="pill q">ask</span></td></tr>
+            <tr><td>circling</td><td style="color:var(--slate)">no equivalent</td><td><span class="pill q">ask</span></td></tr>
+            <tr><td>passenger onboard</td><td>Driving</td><td><span class="pill ok">clean</span></td></tr>
+            <tr><td>completed</td><td>Completed</td><td><span class="pill ok">clean</span></td></tr>
+            <tr><td>billed</td><td>Completed, price final</td><td><span class="pill ok">clean</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="stack animate-in">
+        <p class="callout"><strong>Driver assigned.</strong> Your lifecycle goes Confirmed straight to Driver En Route, but your original sketch had a dispatched state. We assign a driver some time before they set off, and that is when chauffeur name, phone and plate become real. Enough as Confirmed-with-details, or would you rather have the state?</p>
+        <p class="callout"><strong>Two that sit between your states.</strong> <em style="font-style:normal;color:var(--ink)">Circling</em> — the driver is at the airport but moving, going round the terminal because they cannot wait at the kerb. Very common at FBOs. <em style="font-style:normal;color:var(--ink)">Driver waiting</em> — the trip is underway and the car is holding at an intermediate stop. We would fold the first into At Location and the second into Driving, but neither is exact. Tell us if you would rather have them.</p>
+        <p class="callout"><strong>Two of yours have no home here.</strong> Pending Cancelation — our cancel is a flag, immediate, with no workflow. And Rejected — when no vendor can be found we cancel and notify, so it would reach you as a cancellation carrying a reason. Does that work?</p>
+        <p class="callout"><strong>Statuses can run backwards.</strong> Onsite, onboard, closeout and billing can all roll back — a billed trip can be corrected and re-billed. Because every event is a full snapshot and you upsert, your handler needs no special case. It only matters where you have copied a price onto an expense record.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICE THEN BOOK -->
+<section class="slide" id="s9">
+  <div class="slide-content">
+    <div class="leg animate-in"><i></i><span></span><em class="tag tag-prop">What we are proposing</em></div>
+    <h2 class="slide-title animate-in">Price, then book</h2>
+    <p class="slide-lede animate-in" style="margin-bottom:var(--sp-md)">None of this exists yet — it is the shape we would propose. The pricing call would double as the availability check, so you hold no copy of our rules. Tell us if it does not fit how your users work.</p>
+    <figure class="animate-in">
+      <svg class="dia" viewBox="0 0 1400 420" role="img" aria-label="Swimlane: booker, Airplane Manager, Savoya API, engine and vendor">
+        <g font-family="IBM Plex Sans">
+          <rect x="0" y="0" width="1400" height="100" fill="#F5F8FC"/>
+          <rect x="0" y="100" width="1400" height="100" fill="#FCFBF9"/>
+          <rect x="0" y="200" width="1400" height="100" fill="#FDF7F0"/>
+          <rect x="0" y="300" width="1400" height="100" fill="#FCFBF9"/>
+          <rect x="0" y="0" width="132" height="400" fill="#F2EFEA"/>
+          <g stroke="#DFD9D1" stroke-width="1">
+            <line x1="0" y1="100" x2="1400" y2="100"/><line x1="0" y1="200" x2="1400" y2="200"/>
+            <line x1="0" y1="300" x2="1400" y2="300"/><line x1="132" y1="0" x2="132" y2="400"/>
+            <line x1="0" y1="400" x2="1400" y2="400"/>
+          </g>
+          <rect x="0" y="200" width="5" height="100" fill="#B87333"/>
+          <g font-size="12" font-weight="600" fill="#5A6472">
+            <text x="20" y="55">Booker</text>
+            <text x="20" y="146">Airplane</text><text x="20" y="162">Manager</text>
+            <text x="20" y="255" fill="#B87333">Savoya API</text>
+            <text x="20" y="346">Engine and</text><text x="20" y="362">vendor</text>
+          </g>
+          <g text-anchor="middle">
+            <rect x="158" y="16" width="184" height="68" rx="9" fill="#E7EDF5" stroke="#456A9E" stroke-width="1.4"/>
+            <text x="250" y="44" font-size="12.5" font-weight="600" fill="#14171C">Pick a leg</text>
+            <text x="250" y="64" font-size="11" fill="#5A6472">click Ground transport</text>
+
+            <rect x="366" y="116" width="184" height="68" rx="9" fill="#E7EDF5" stroke="#456A9E" stroke-width="1.4"/>
+            <text x="458" y="140" font-size="12.5" font-weight="600" fill="#14171C">Pricing request</text>
+            <text x="458" y="158" font-size="10.5" fill="#5A6472">code · pickup · dropoff</text>
+            <text x="458" y="173" font-size="10.5" fill="#5A6472">time · passengers</text>
+
+            <rect x="574" y="216" width="184" height="68" rx="9" fill="#F3E4D3" stroke="#B87333" stroke-width="1.6"/>
+            <text x="666" y="238" font-size="10.5" fill="#5A6472">resolve company · filter</text>
+            <text x="666" y="253" font-size="10.5" fill="#5A6472">by capacity · pick rate</text>
+            <text x="666" y="268" font-size="10.5" fill="#5A6472">price · check availability</text>
+
+            <rect x="782" y="16" width="184" height="68" rx="9" fill="#E7EDF5" stroke="#456A9E" stroke-width="1.4"/>
+            <text x="874" y="40" font-size="12.5" font-weight="600" fill="#14171C">Choose a vehicle</text>
+            <text x="874" y="58" font-size="10.5" fill="#5A6472">type · price · availability</text>
+            <text x="874" y="73" font-size="10.5" fill="#5A6472">cancellation terms</text>
+
+            <rect x="990" y="116" width="184" height="68" rx="9" fill="#E7EDF5" stroke="#456A9E" stroke-width="1.4"/>
+            <text x="1082" y="140" font-size="12.5" font-weight="600" fill="#14171C">Booking request</text>
+            <text x="1082" y="158" font-size="10.5" fill="#5A6472">rate id · vehicle · rider</text>
+            <text x="1082" y="173" font-size="10.5" fill="#5A6472">idempotency key</text>
+
+            <rect x="1198" y="216" width="184" height="68" rx="9" fill="#F3E4D3" stroke="#B87333" stroke-width="1.6"/>
+            <text x="1290" y="240" font-size="10.5" fill="#5A6472">validate · match rider</text>
+            <text x="1290" y="255" font-size="10.5" fill="#5A6472">and booker · create</text>
+            <text x="1290" y="270" font-size="10.5" fill="#5A6472">reservation</text>
+
+            <rect x="1198" y="316" width="184" height="68" rx="9" fill="#E4EDE5" stroke="#4F7A52" stroke-width="1.6"/>
+            <text x="1290" y="344" font-size="12.5" font-weight="600" fill="#14171C">Confirmed</text>
+            <text x="1290" y="363" font-size="10.5" fill="#5A6472">or pending</text>
+
+            <rect x="574" y="316" width="392" height="68" rx="9" fill="#F2EFEA" stroke="#5A6472" stroke-width="1.4"/>
+            <text x="770" y="340" font-size="11" fill="#5A6472">vendor accepts · driver assigned · en route · on location</text>
+            <text x="770" y="356" font-size="11" fill="#5A6472">onboard · completed · closed out</text>
+            <text x="770" y="374" font-size="10.5" font-weight="600" fill="#B87333">webhooks, every step</text>
+          </g>
+          <g fill="none">
+            <path d="M342 50 L354 50 L354 150 L362 150" stroke="#456A9E" stroke-width="1.5" marker-end="url(#ar)"/>
+            <path d="M550 150 L562 150 L562 250 L570 250" stroke="#456A9E" stroke-width="1.5" marker-end="url(#ar)"/>
+            <path d="M758 250 L770 250 L770 50 L778 50" stroke="#B87333" stroke-width="1.5" marker-end="url(#arc)"/>
+            <path d="M966 50 L978 50 L978 150 L986 150" stroke="#456A9E" stroke-width="1.5" marker-end="url(#ar)"/>
+            <path d="M1174 150 L1186 150 L1186 250 L1194 250" stroke="#456A9E" stroke-width="1.5" marker-end="url(#ar)"/>
+            <path d="M1290 284 L1290 312" stroke="#B87333" stroke-width="1.5" marker-end="url(#arc)"/>
+            <path d="M1194 350 L974 350" stroke="#5A6472" stroke-width="1.5" marker-end="url(#ar)"/>
+            <path d="M574 350 L458 350 L458 188" stroke="#B87333" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arc)"/>
+          </g>
+        </g>
+      </svg>
+    </figure>
+    <p class="callout animate-in" style="margin-top:var(--sp-sm);max-width:110ch"><strong>Nothing exists on our side until the booking call.</strong> The pricing step returns a held price against a rate id, not a reservation — so a user can wander off and come back without leaving anything behind.</p>
+  </div>
+</section>
+
+<!-- 10 ONBOARDING -->
+<section class="slide" id="s10">
+  <div class="slide-content">
+    <div class="leg animate-in"><i></i><span></span><em class="tag tag-prop">What we are proposing</em><em class="tag" style="background:var(--ink);color:var(--paper)">Your decision</em></div>
+    <h2 class="slide-title animate-in">Getting a flight department set up</h2>
+    <p class="slide-lede animate-in" style="margin-bottom:var(--sp-md)">Sign-up is only mandatory for direct bill — retail card bookings need none. So the question is not whether, but when and who drives it.</p>
+    <figure class="animate-in">
+      <svg class="dia" viewBox="0 0 1400 370" role="img" aria-label="Two onboarding options side by side">
+        <g font-family="IBM Plex Sans" text-anchor="middle">
+          <text x="310" y="16" font-size="14" font-weight="600" font-family="Space Grotesk" fill="#456A9E" text-anchor="start">Option 1 — sign-up inside Airplane Manager</text>
+          <text x="790" y="16" font-size="14" font-weight="600" font-family="Space Grotesk" fill="#B87333" text-anchor="start">Option 2 — deep link the first booking</text>
+
+          <rect x="30" y="34" width="500" height="56" rx="9" fill="#E7EDF5" stroke="#456A9E" stroke-width="1.4"/>
+          <text x="280" y="68" font-size="12.5" fill="#14171C">First-time flight department clicks Book ground transport</text>
+
+          <rect x="30" y="118" width="500" height="56" rx="9" fill="#E7EDF5" stroke="#456A9E" stroke-width="1.4"/>
+          <text x="280" y="152" font-size="12.5" fill="#14171C"><tspan font-weight="600">Airplane Manager</tspan> shows a short sign-up step</text>
+
+          <rect x="30" y="202" width="500" height="62" rx="9" fill="#F3E4D3" stroke="#B87333" stroke-width="1.6"/>
+          <text x="280" y="228" font-size="12.5" fill="#14171C"><tspan font-weight="600">Savoya</tspan> creates company, coordinator</text>
+          <text x="280" y="247" font-size="12.5" fill="#14171C">profile and code mapping — returns the code</text>
+
+          <rect x="30" y="292" width="500" height="56" rx="9" fill="#E4EDE5" stroke="#4F7A52" stroke-width="1.6"/>
+          <text x="280" y="326" font-size="12.5" font-weight="600" fill="#14171C">Every booking is API, from the first one</text>
+
+          <rect x="700" y="34" width="500" height="56" rx="9" fill="#E7EDF5" stroke="#456A9E" stroke-width="1.4"/>
+          <text x="950" y="68" font-size="12.5" fill="#14171C">First-time flight department clicks Book ground transport</text>
+
+          <rect x="700" y="118" width="500" height="56" rx="9" fill="#F3E4D3" stroke="#B87333" stroke-width="1.6"/>
+          <text x="950" y="145" font-size="12.5" fill="#14171C"><tspan font-weight="600">Deep link</tspan> to Savoya, leg prefilled — they book</text>
+          <text x="950" y="163" font-size="11" fill="#5A6472">card, pre-charged, rack rate</text>
+
+          <rect x="700" y="202" width="500" height="62" rx="9" fill="#F3E4D3" stroke="#B87333" stroke-width="1.6"/>
+          <text x="950" y="228" font-size="12.5" fill="#14171C"><tspan font-weight="600">Sales onboards</tspan> — billing, rates, code</text>
+          <text x="950" y="247" font-size="11" fill="#5A6472">about a week · card refunds onto direct bill</text>
+
+          <rect x="700" y="292" width="500" height="56" rx="9" fill="#E4EDE5" stroke="#4F7A52" stroke-width="1.6"/>
+          <text x="950" y="326" font-size="12.5" font-weight="600" fill="#14171C">Every booking after this one is API</text>
+
+          <g fill="none" stroke-width="1.5">
+            <path d="M280 92 L280 114" stroke="#456A9E" marker-end="url(#ar)"/>
+            <path d="M280 176 L280 198" stroke="#456A9E" marker-end="url(#ar)"/>
+            <path d="M280 266 L280 288" stroke="#B87333" marker-end="url(#arc)"/>
+            <path d="M950 92 L950 114" stroke="#456A9E" marker-end="url(#ar)"/>
+            <path d="M950 176 L950 198" stroke="#B87333" marker-end="url(#arc)"/>
+            <path d="M950 266 L950 288" stroke="#B87333" marker-end="url(#arc)"/>
+          </g>
+          <line x1="615" y1="30" x2="615" y2="350" stroke="#DFD9D1" stroke-width="1" stroke-dasharray="4 5"/>
+        </g>
+      </svg>
+    </figure>
+    <div class="grid g3 animate-in" style="margin-top:var(--sp-md)">
+      <p class="callout"><strong>Option 1 — cleanest, but you build a form.</strong> User never leaves your product and billing is right from booking one. If credit approval is needed we owe you a pending state.</p>
+      <p class="callout"><strong>Option 2 — nothing is ever blocked.</strong> Nothing for you to build, one context switch the first time only, and the first trip converts off the card onto direct bill.</p>
+      <p class="callout"><strong>Neither is obviously right</strong> — it turns on things only you know. How your customers react to leaving the product, and how much form-building you are willing to do.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 11 ASSUMPTIONS -->
+<section class="slide slide-dark" id="s11">
+  <div class="hero-glow" style="opacity:.6"></div>
+  <div class="slide-content">
+    <div class="leg animate-in"><i></i><span></span></div>
+    <h2 class="slide-title animate-in">What we have assumed about your side</h2>
+    <p class="slide-lede animate-in">This is the part we would most like you to pull apart. Everything below is a guess we have built on.</p>
+    <div class="grid g2 animate-in">
+      <ul class="clean">
+        <li><strong>Flight department is the billing entity</strong>, with nothing above it — you told us this, and it settled an argument on our side</li>
+        <li><strong>One flight department maps to one Savoya company</strong>, one to one, and stays that way</li>
+        <li><strong>Riders can be sent as name, phone and email</strong> with no pre-registration — you asked for this and we can do it</li>
+        <li><strong>Crew and passengers can both be riders</strong> and we do not need the distinction</li>
+        <li><strong>Only airport-to-first-destination legs</strong>, not the trips in between</li>
+      </ul>
+      <ul class="clean">
+        <li><strong>Time changes are the dominant modification</strong></li>
+        <li><strong>Sedan and SUV cover almost everything</strong>; groups above 14 are rare</li>
+        <li><strong>You can adopt price-then-book</strong> rather than booking direct</li>
+        <li><strong>You will adopt our field names</strong> and translate in your integration layer — as you offered</li>
+        <li><strong>Direct bill to the flight department is acceptable</strong>, and no card data ever crosses to you</li>
+      </ul>
+    </div>
+    <p class="callout animate-in" style="margin-top:var(--sp-md);border-color:var(--copper);max-width:96ch"><strong>The one we are least sure of:</strong> that crew and passengers can be treated the same. Your base does both self-serve and booking-for-others — a pilot arranging his own hotel run is booker and rider at once. We support that, but tell us if the distinction needs to reach us for rating or reporting.</p>
+  </div>
+</section>
+
+<!-- 12 ASKS -->
+<section class="slide" id="s12">
+  <div class="slide-content">
+    <div class="leg animate-in"><i></i><span></span></div>
+    <h2 class="slide-title animate-in">What we would like from you</h2>
+    <p class="slide-lede animate-in" style="margin-bottom:var(--sp-md)">Ten things, roughly in the order they block us.</p>
+    <div class="two-col animate-in">
+      <div>
+        <div class="ask"><b>01</b><p><em>The onboarding decision.</em> Option 1 or Option 2 — and if Option 1, are you willing to build the form?</p></div>
+        <div class="ask"><b>02</b><p><em>Does price-then-book actually work in your product?</em> It assumes your UI can show vehicle types with prices and let the user pick. If it cannot, tell us now — we would need the vehicle types your product already knows, and a different shape.</p></div>
+        <div class="ask"><b>03</b><p><em>Billing, and who we actually work with.</em> If flight departments contract with us directly, someone has to be the counterparty for billing, invoices and credit. But any of your users can start a booking. Who is that person, and do you have an owner or admin concept — or are all users equal?</p></div>
+        <div class="ask"><b>04</b><p><em>Show us your UI.</em> Where would our booking live, what does the timeline look like around it, and how much of it can you shape for us? A walkthrough would answer more than another email exchange.</p></div>
+        <div class="ask"><b>05</b><p><em>The status questions.</em> Driver assigned, circling and driver waiting, and whether your Awaiting Confirmation covers our limited-availability case.</p></div>
+      </div>
+      <div>
+        <div class="ask"><b>06</b><p><em>The booking types your customers actually use.</em> You said partial coverage is what kills these integrations. We would rather check the list against the API now and tell you where the gaps are.</p></div>
+        <div class="ask"><b>07</b><p><em>Master trip linking.</em> You raised it on our first call and we still owe you an answer. Send an identifier tying legs to one trip and we can carry it and echo it back.</p></div>
+        <div class="ask"><b>08</b><p><em>Notifications.</em> We can turn ours off entirely if you would rather own it. The car detail already prints on your tripsheets — tell us what avoids telling the same person twice.</p></div>
+        <div class="ask"><b>09</b><p><em>Rewards.</em> You raised this first and you were right that it decides whether crews actually use this. We would like to brainstorm it with you.</p></div>
+        <div class="ask"><b>10</b><p><em>Two small ones.</em> How long your schedulers sit on a booking screen, since that sets how long we hold a price. And whether an airport change is a modify or a cancel-and-rebook.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<script>
+(function(){
+  var slides=[].slice.call(document.querySelectorAll('.slide'));
+  var container=document.querySelector('.slides-container');
+  var counter=document.querySelector('.slide-counter');
+  var bar=document.querySelector('.progress-bar');
+  var hint=document.querySelector('.nav-hint');
+  var current=0;
+
+  function paint(i){
+    current=i;
+    counter.textContent=(i+1)+' / '+slides.length;
+    bar.style.width=((i+1)/slides.length*100)+'%';
+    var dark=slides[i].classList.contains('slide-dark');
+    var c=dark?'rgba(250,248,245,.55)':'';
+    counter.style.color=c; hint.style.color=c;
+    hint.style.opacity=i===0?'.45':'0';
+  }
+
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting&&e.intersectionRatio>0.55){
+          e.target.classList.add('active');
+          paint(slides.indexOf(e.target));
+        }
+      });
+    },{threshold:[0.55]});
+    slides.forEach(function(s){io.observe(s)});
+  } else {
+    slides.forEach(function(s){s.classList.add('active')});
+  }
+
+  function go(i){
+    if(i<0||i>=slides.length)return;
+    slides[i].scrollIntoView({behavior:'smooth'});
+  }
+
+  document.addEventListener('keydown',function(e){
+    if(e.key==='ArrowDown'||e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){e.preventDefault();go(current+1)}
+    else if(e.key==='ArrowUp'||e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();go(current-1)}
+    else if(e.key==='Home'){e.preventDefault();go(0)}
+    else if(e.key==='End'){e.preventDefault();go(slides.length-1)}
+  });
+
+  var y0=null;
+  container.addEventListener('touchstart',function(e){y0=e.touches[0].clientY},{passive:true});
+  container.addEventListener('touchend',function(e){
+    if(y0===null)return;
+    var d=y0-e.changedTouches[0].clientY;
+    if(Math.abs(d)>60)go(current+(d>0?1:-1));
+    y0=null;
+  },{passive:true});
+
+  slides[0].classList.add('active');
+  paint(0);
+})();
+</script>
+</body>
+</html>
